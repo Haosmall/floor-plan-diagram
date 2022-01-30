@@ -1,0 +1,4 @@
+p, admin, /*, *
+p, anonymous, /auth/*, POST
+p, member, /auth/*, POST
+p, member, /users/me, GET

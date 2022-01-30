@@ -1,0 +1,22 @@
+#home-container {
+	width: 600px;
+	height: 100vh;
+	position: absolute;
+	left: 50%;
+
+	transform: translateX(-50%);
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+	.ant-layout {
+		height: 100%;
+	}
+
+	.ant-layout-header {
+		padding-inline: 20px;
+		background-color: #1890ff;
+	}
+}
+
+#home-content {
+	padding: 20px;
+}
