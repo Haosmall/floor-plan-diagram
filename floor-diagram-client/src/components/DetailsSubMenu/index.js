@@ -197,4 +197,4 @@ const DetailsSubMenu = (props) => {
 DetailsSubMenu.propTypes = {};
 
 DetailsSubMenu.defaultProps = {};
-export default DetailsSubMenu;
+export default React.memo(DetailsSubMenu);

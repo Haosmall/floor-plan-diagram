@@ -1,25 +1,22 @@
 import { Layout } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import Canvas from "components/Canvas";
+import DetailsSubMenu from "components/DetailsSubMenu";
+import FloorBottomBar from "components/FloorBottomBar";
+import FloorSubMenu from "components/FloorSubMenu";
+import FloorTopBar from "components/FloorTopBar";
+import GroupSubMenu from "components/GroupSubMenu";
+import ProjectSubMenu from "components/ProjectSubMenu";
+import ToolBar from "components/ToolBar";
+import UserBar from "components/UserBar";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router";
-import Canvas from "../../components/Canvas";
-import DetailsSubMenu from "../../components/DetailsSubMenu";
-import FloorBottomBar from "../../components/FloorBottomBar";
-import FloorSubMenu from "../../components/FloorSubMenu";
-import FloorTopBar from "../../components/FloorTopBar";
-import GroupSubMenu from "../../components/GroupSubMenu";
-import ProjectSubMenu from "../../components/ProjectSubMenu";
-import ToolBar from "../../components/ToolBar";
-import UserBar from "../../components/UserBar";
-import { INITIAL_SHAPE, SHAPE_TYPE } from "../../constants";
-import {
-	fetchBuildingById,
-	fetchListBuildings,
-} from "../../redux/buildingSlice";
-import { fetchListFloorsByBuildingId } from "../../redux/floorSlice";
-import { fetchListGroupByBuilding } from "../../redux/groupSlice";
-import { fetchListProjectByBuilding } from "../../redux/projectSlice";
-import { fetchListUsers } from "../../redux/userSlice";
+import { fetchBuildingById, fetchListBuildings } from "redux/buildingSlice";
+import { fetchListFloorsByBuildingId } from "redux/floorSlice";
+import { fetchListGroupByBuilding } from "redux/groupSlice";
+import { fetchListProjectByBuilding } from "redux/projectSlice";
+import { fetchListUsers } from "redux/userSlice";
+import { INITIAL_SHAPE } from "utils/constants";
 import "./style.scss";
 
 const BuildingPage = (props) => {
@@ -63,15 +60,30 @@ const BuildingPage = (props) => {
 		dispatch(fetchListProjectByBuilding({ id }));
 	}, [id]);
 
+	const isBuildingAdmin = useMemo(() => {
+		if (!building) return;
+		if (building.admin === user._id) return true;
+		return false;
+	}, [building]);
+
 	if (isError) return <Navigate to="/error" />;
 	return (
 		<>
 			<Layout>
 				<Sider className="left-sider" width={255} theme="light">
 					<div className="building-title">{building?.name}</div>
-					<FloorSubMenu building={building} />
-					<GroupSubMenu building={building} />
-					<ProjectSubMenu building={building} />
+					<FloorSubMenu
+						building={building}
+						isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+					/>
+					<GroupSubMenu
+						building={building}
+						isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+					/>
+					<ProjectSubMenu
+						building={building}
+						isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+					/>
 					<DetailsSubMenu />
 				</Sider>
 
@@ -87,8 +99,6 @@ const BuildingPage = (props) => {
 						listShapes={listShapes}
 						setSelectedShape={setSelectedShape}
 						selectedShape={selectedShape}
-						// handleScaling={handleScaling}
-						// handleDragEnd={handleDragEnd}
 						isLockBackGround={isLockBackGround}
 						stageRef={stageRef}
 					/>

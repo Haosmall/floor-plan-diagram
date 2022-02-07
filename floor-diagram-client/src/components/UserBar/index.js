@@ -23,4 +23,4 @@ UserBar.propTypes = {
 UserBar.defaultProps = {
 	name: PropTypes.string,
 };
-export default UserBar;
+export default React.memo(UserBar);

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import floorApi from "../../api/floorApi";
 import shapeApi from "../../api/shapeApi";
-import { INITIAL_FLOOR } from "../../constants";
+import { INITIAL_FLOOR } from "../../utils/constants";
 import { deleteFloor, setFloor } from "../../redux/floorSlice";
 import {
 	fetchListShapeByFloor,
@@ -24,7 +24,7 @@ import FloorModal from "../FloorModal";
 import "./style.scss";
 
 const FloorSubMenu = (props) => {
-	const { building } = props;
+	const { building, isBuildingAdmin } = props;
 
 	const { floors, floor } = useSelector((state) => state.floor);
 	const { listNewShapes } = useSelector((state) => state.shape);
@@ -91,18 +91,20 @@ const FloorSubMenu = (props) => {
 				mode="inline"
 			>
 				<SubMenu key="sub1" icon={<AppstoreOutlined />} title="Floor">
-					<Menu.ItemGroup className="menu-item-group">
-						<div>
-							<Button
-								className="menu-item-btn btn-add"
-								icon={<PlusCircleOutlined />}
-								shape="round"
-								onClick={showAddFloorModal}
-							>
-								Add
-							</Button>
-						</div>
-					</Menu.ItemGroup>
+					{isBuildingAdmin && (
+						<Menu.ItemGroup className="menu-item-group">
+							<div>
+								<Button
+									className="menu-item-btn btn-add"
+									icon={<PlusCircleOutlined />}
+									shape="round"
+									onClick={showAddFloorModal}
+								>
+									Add
+								</Button>
+							</div>
+						</Menu.ItemGroup>
+					)}
 					{floors?.map((floor) => (
 						<Menu.Item
 							key={floor._id}
@@ -110,19 +112,21 @@ const FloorSubMenu = (props) => {
 						>
 							<div className="menu-item">
 								<div className="menu-item-name">{floor.name}</div>
-								<div className="menu-item-btn">
-									<Button
-										shape="circle"
-										icon={<EditOutlined />}
-										onClick={(e) => showUpdateFloorModal(e, floor._id)}
-									/>
-									<Button
-										shape="circle"
-										danger
-										icon={<DeleteOutlined />}
-										onClick={(e) => handleDelete(e, floor._id)}
-									/>
-								</div>
+								{isBuildingAdmin && (
+									<div className="menu-item-btn">
+										<Button
+											shape="circle"
+											icon={<EditOutlined />}
+											onClick={(e) => showUpdateFloorModal(e, floor._id)}
+										/>
+										<Button
+											shape="circle"
+											danger
+											icon={<DeleteOutlined />}
+											onClick={(e) => handleDelete(e, floor._id)}
+										/>
+									</div>
+								)}
 							</div>
 						</Menu.Item>
 					))}
@@ -160,4 +164,4 @@ FloorSubMenu.defaultProps = {
 	onAddProject: null,
 	onEditProject: null,
 };
-export default FloorSubMenu;
+export default React.memo(FloorSubMenu);

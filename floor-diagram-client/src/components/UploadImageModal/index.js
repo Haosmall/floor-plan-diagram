@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectApi from "../../api/projectApi";
 import shapeApi from "../../api/shapeApi";
-import { INITIAL_PROJECT } from "../../constants";
+import { INITIAL_PROJECT } from "../../utils/constants";
 import { addNewProject, updateProject } from "../../redux/projectSlice";
 import {
 	addNewShape,

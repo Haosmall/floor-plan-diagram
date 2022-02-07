@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router";
 import floorApi from "../../api/floorApi";
 import groupApi from "../../api/groupApi";
 import projectApi from "../../api/projectApi";
-import { ACTION_TYPE } from "../../constants";
+import { ACTION_TYPE } from "../../utils/constants";
 import { deleteFloor } from "../../redux/floorSlice";
 import { deleteGroup } from "../../redux/groupSlice";
 import {
@@ -21,14 +21,7 @@ import ProjectSubMenu from "../ProjectSubMenu";
 import "./style.scss";
 
 const FloorLeftBar = (props) => {
-	const {
-		onAddFloor,
-		onEditFloor,
-		onAddGroup,
-		onEditGroup,
-		onAddProject,
-		onEditProject,
-	} = props;
+	const { onEditFloor, onEditGroup, onEditProject } = props;
 	const { building } = useSelector((state) => state.building);
 	const { floors } = useSelector((state) => state.floor);
 	const { groups } = useSelector((state) => state.group);
@@ -41,17 +34,6 @@ const FloorLeftBar = (props) => {
 
 	const { Option } = Select;
 	const { SubMenu } = Menu;
-
-	const formItemLayout = {
-		labelCol: { span: 7 },
-		wrapperCol: { span: 16 },
-	};
-	const formItemLayoutWithOutLabel = {
-		wrapperCol: {
-			span: 16,
-			offset: 7,
-		},
-	};
 
 	const handleUpdate = (e, id, type) => {
 		e.stopPropagation();

@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import groupApi from "../../api/groupApi";
-import { INITIAL_GROUP } from "../../constants";
+import { INITIAL_GROUP } from "../../utils/constants";
 import { deleteGroup } from "../../redux/groupSlice";
 import { fetchListProjectByBuilding } from "../../redux/projectSlice";
 import commonUtils from "../../utils/commonUtils";
@@ -17,7 +17,7 @@ import GroupModal from "../GroupModal";
 import "./style.scss";
 
 const GroupSubMenu = (props) => {
-	const { building } = props;
+	const { building, isAdmin, isBuildingAdmin } = props;
 
 	const { groups } = useSelector((state) => state.group);
 
@@ -66,35 +66,39 @@ const GroupSubMenu = (props) => {
 				mode="inline"
 			>
 				<SubMenu key="sub2" icon={<TeamOutlined />} title="Group">
-					<Menu.ItemGroup className="menu-item-group">
-						<div>
-							<Button
-								className="menu-item-btn btn-add"
-								icon={<PlusCircleOutlined />}
-								shape="round"
-								onClick={showAddGroupModal}
-							>
-								Add
-							</Button>
-						</div>
-					</Menu.ItemGroup>
+					{isBuildingAdmin && (
+						<Menu.ItemGroup className="menu-item-group">
+							<div>
+								<Button
+									className="menu-item-btn btn-add"
+									icon={<PlusCircleOutlined />}
+									shape="round"
+									onClick={showAddGroupModal}
+								>
+									Add
+								</Button>
+							</div>
+						</Menu.ItemGroup>
+					)}
 					{groups?.map((group) => (
 						<Menu.Item key={group._id}>
 							<div className="menu-item">
 								<div className="menu-item-name">{group.title}</div>
-								<div className="menu-item-btn">
-									<Button
-										shape="circle"
-										icon={<EditOutlined />}
-										onClick={(e) => showUpdateGroupModal(e, group._id)}
-									/>
-									<Button
-										shape="circle"
-										danger
-										icon={<DeleteOutlined />}
-										onClick={(e) => handleDelete(e, group._id)}
-									/>
-								</div>
+								{isBuildingAdmin && (
+									<div className="menu-item-btn">
+										<Button
+											shape="circle"
+											icon={<EditOutlined />}
+											onClick={(e) => showUpdateGroupModal(e, group._id)}
+										/>
+										<Button
+											shape="circle"
+											danger
+											icon={<DeleteOutlined />}
+											onClick={(e) => handleDelete(e, group._id)}
+										/>
+									</div>
+								)}
 							</div>
 						</Menu.Item>
 					))}
@@ -123,4 +127,4 @@ GroupSubMenu.defaultProps = {
 	groups: [],
 	building: null,
 };
-export default GroupSubMenu;
+export default React.memo(GroupSubMenu);

@@ -4,7 +4,7 @@ const API_URL = "/shape";
 
 const shapeApi = {
 	addShape: (shape) => {
-		return axiosClient.post(`${API_URL}`, shape);
+		return axiosClient.post(`${API_URL}/`, shape);
 	},
 
 	updateShape: (shape) => {

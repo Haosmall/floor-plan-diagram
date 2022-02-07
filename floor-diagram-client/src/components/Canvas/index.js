@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Image, Layer, Stage } from "react-konva";
 import { useDispatch, useSelector } from "react-redux";
-import { DEFAULT_SHAPE, SHAPE_TYPE } from "../../constants";
+import { DEFAULT_SHAPE, SHAPE_TYPE } from "../../utils/constants";
 import { setShape, updateShape } from "../../redux/shapeSlice";
 import Shape from "../Shape";
 import "./style.scss";
@@ -80,4 +80,4 @@ Canvas.propTypes = {
 Canvas.defaultProps = {
 	floors: [],
 };
-export default Canvas;
+export default React.memo(Canvas);

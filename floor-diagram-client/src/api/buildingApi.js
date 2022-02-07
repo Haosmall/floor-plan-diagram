@@ -4,23 +4,31 @@ const API_URL = "/buildings";
 
 const buildingApi = {
 	fetchListBuildings: () => {
-		return axiosClient.get(`${API_URL}`);
+		return axiosClient.get(`${API_URL}/`);
 	},
 
 	fetchBuildingById: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}`);
+		return axiosClient.get(`${API_URL}/${buildingId}`, {
+			params: { buildingId },
+		});
 	},
 
 	fetchListFloorsByBuildingId: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}/floors`);
+		return axiosClient.get(`${API_URL}/${buildingId}/floors`, {
+			params: { buildingId },
+		});
 	},
 
 	fetchListGroupsByBuildingId: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}/groups`);
+		return axiosClient.get(`${API_URL}/${buildingId}/groups`, {
+			params: { buildingId },
+		});
 	},
 
 	fetchListProjectsByBuildingId: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}/projects`);
+		return axiosClient.get(`${API_URL}/${buildingId}/projects`, {
+			params: { buildingId },
+		});
 	},
 
 	addBuilding: (name, users, admin) => {

@@ -4,7 +4,7 @@ import { Button, Result } from "antd";
 import "./style.scss";
 import { useNavigate } from "react-router";
 
-function NotFoundPage(props) {
+function ExceptionPage(props) {
 	useEffect(() => {
 		document.title = "404 error";
 	}, []);
@@ -27,6 +27,6 @@ function NotFoundPage(props) {
 		</div>
 	);
 }
-NotFoundPage.propTypes = {};
+ExceptionPage.propTypes = {};
 
-export default NotFoundPage;
+export default ExceptionPage;

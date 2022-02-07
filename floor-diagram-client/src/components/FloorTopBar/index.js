@@ -1,4 +1,4 @@
-import { Button, message, Select } from "antd";
+import { Button, Select } from "antd";
 import { Header } from "antd/lib/layout/layout";
 import PropTypes from "prop-types";
 import React from "react";
@@ -12,7 +12,6 @@ import {
 	resetShape,
 	resetShapeState,
 	resetTempShapeState,
-	saveShape,
 	setListOriginalShapes,
 } from "../../redux/shapeSlice";
 import "./style.scss";
@@ -98,4 +97,4 @@ FloorTopBar.propTypes = {
 FloorTopBar.defaultProps = {
 	floors: [],
 };
-export default FloorTopBar;
+export default React.memo(FloorTopBar);

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import shapeApi from "../../api/shapeApi";
-import { SHAPE_TYPE, DEFAULT_SHAPE } from "../../constants";
+import { SHAPE_TYPE, DEFAULT_SHAPE } from "../../utils/constants";
 import { addNewShape } from "../../redux/shapeSlice";
 import UploadImageModal from "../UploadImageModal";
 import "./style.scss";

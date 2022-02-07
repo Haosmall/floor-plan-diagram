@@ -1,5 +1,5 @@
 import "antd/dist/antd.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
 	BrowserRouter as Router,
@@ -11,13 +11,18 @@ import "./App.css";
 import Login from "./components/LoginForm";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BuildingPage from "./pages/BuildingPage";
+import ExceptionPage from "./pages/ExceptionPage";
 import HomePage from "./pages/HomePage";
-import NotFoundPage from "./pages/NotFoundPage";
 import { fetchUserProfile } from "./redux/userSlice";
 
 function App() {
 	const dispatch = useDispatch();
 	const [isFetch, setIsFetch] = useState(false);
+
+	// if (process.env.NODE_ENV !== "production") {
+	// 	const { whyDidYouUpdate } = require("why-did-you-update");
+	// 	whyDidYouUpdate(React);
+	// }
 
 	useEffect(() => {
 		const fetchProfile = async () => {
@@ -52,7 +57,7 @@ function App() {
 						<Route path="/buildings/:id" element={<BuildingPage />} />
 					</Route>
 
-					<Route path="*" element={<NotFoundPage />} />
+					<Route path="*" element={<ExceptionPage />} />
 				</Routes>
 			</div>
 		</Router>

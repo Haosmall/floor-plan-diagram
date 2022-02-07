@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import floorApi from "../../api/floorApi";
-import { INITIAL_FLOOR, ROLE } from "../../constants";
+import { INITIAL_FLOOR, ROLE } from "../../utils/constants";
 import { addNewFloor, updateFloor } from "../../redux/floorSlice";
 import { fetchListUsers } from "../../redux/userSlice";
 

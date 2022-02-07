@@ -10,7 +10,7 @@ import buildingApi from "../../api/buildingApi";
 import BuildingModal from "../../components/BuildingModal";
 import BuildingTable from "../../components/BuildingTable";
 import UserBar from "../../components/UserBar";
-import { INITIAL_BUILDING } from "../../constants";
+import { INITIAL_BUILDING } from "../../utils/constants";
 import {
 	fetchListBuildings,
 	addNewBuilding,

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectApi from "../../api/projectApi";
-import { INITIAL_PROJECT } from "../../constants";
+import { INITIAL_PROJECT } from "../../utils/constants";
 import { addNewProject, updateProject } from "../../redux/projectSlice";
 
 const ProjectModal = (props) => {

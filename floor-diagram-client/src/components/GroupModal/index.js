@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import groupApi from "../../api/groupApi";
-import { INITIAL_GROUP } from "../../constants";
+import { INITIAL_GROUP } from "../../utils/constants";
 import { addNewGroup, updateGroup } from "../../redux/groupSlice";
 
 const GroupModal = (props) => {
