@@ -14,8 +14,9 @@ import { fetchBuildingById, fetchListBuildings } from "redux/buildingSlice";
 import { fetchListFloorsByBuildingId } from "redux/floorSlice";
 import { fetchListGroupByBuilding } from "redux/groupSlice";
 import { fetchListProjectByBuilding } from "redux/projectSlice";
+import { setShape } from "redux/shapeSlice";
 import { fetchListUsers } from "redux/userSlice";
-import { INITIAL_SHAPE } from "utils/constants";
+import { INITIAL_SHAPE, SHAPE_TYPE } from "utils/constants";
 import "./style.scss";
 
 const BuildingPage = (props) => {
@@ -23,6 +24,7 @@ const BuildingPage = (props) => {
 	const { building, buildings, isError } = useSelector(
 		(state) => state.building
 	);
+	const { shape } = useSelector((state) => state.shape);
 
 	const { Sider } = Layout;
 
@@ -64,6 +66,13 @@ const BuildingPage = (props) => {
 		if (building.admin === user._id) return true;
 		return false;
 	}, [building]);
+
+	const handleLockBackground = (isLock) => {
+		if (shape?.type === SHAPE_TYPE.image) {
+			dispatch(setShape({ _id: null }));
+		}
+		setIsLockBackGround(isLock);
+	};
 
 	if (isError) return <Navigate to="/error" />;
 	return (
@@ -108,7 +117,7 @@ const BuildingPage = (props) => {
 						<UserBar name={user.name} />
 					</div>
 					<ToolBar
-						onLockBackGround={setIsLockBackGround}
+						onLockBackGround={handleLockBackground}
 						isLockBackGround={isLockBackGround}
 					/>
 				</Sider>

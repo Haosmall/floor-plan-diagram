@@ -31,6 +31,17 @@ class GroupController {
 			next(err);
 		}
 	}
+
+	// [GET] /groups/:id/shapes
+	async getShapesByGroup(req, res, next) {
+		try {
+			const response = await groupService.getShapesByGroup(req.params.id);
+
+			res.status(200).json(response);
+		} catch (err) {
+			next(err);
+		}
+	}
 }
 
 module.exports = new GroupController();

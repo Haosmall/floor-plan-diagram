@@ -6,6 +6,7 @@ const projectRouter = () => {
 	router.post("", projectController.addProject);
 	router.put("/:id", projectController.updateProject);
 	router.delete("/:id", projectController.deleteProject);
+	router.get("/:id/shapes", projectController.getShapesByProject);
 
 	return router;
 };

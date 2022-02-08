@@ -28,6 +28,10 @@ const projectApi = {
 			params: { projectId },
 		});
 	},
+
+	fetchListShapeByProject: (projectId) => {
+		return axiosClient.get(`${API_URL}/${projectId}/shapes/`);
+	},
 };
 
 export default projectApi;

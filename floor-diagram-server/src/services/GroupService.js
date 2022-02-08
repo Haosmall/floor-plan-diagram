@@ -25,6 +25,27 @@ class GroupService {
 		await Group.deleteOne({ _id: ObjectId(_id) });
 		await Project.deleteMany({ groupId: ObjectId(_id) });
 	}
+
+	async getShapesByGroup(groupId) {
+		const result = await Project.aggregate([
+			{
+				$match: { groupId: ObjectId(groupId) },
+			},
+			{
+				$lookup: {
+					from: "shapes",
+					localField: "_id",
+					foreignField: "projectId",
+					as: "result",
+				},
+			},
+			{ $unwind: "$result" },
+			{ $project: { _id: "$result._id" } },
+			{ $group: { _id: "$_id" } },
+		]);
+		const listShapes = result.map((ele) => ele._id);
+		return listShapes;
+	}
 }
 
 module.exports = new GroupService();

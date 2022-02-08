@@ -14,11 +14,13 @@ import { deleteProject } from "../../redux/projectSlice";
 import commonUtils from "../../utils/commonUtils";
 import ProjectModal from "../ProjectModal";
 import "./style.scss";
+import { fetchListShapeByProject } from "redux/shapeSlice";
 
 const ProjectSubMenu = (props) => {
 	const { building, isAdmin, isBuildingAdmin } = props;
 
 	const { projects } = useSelector((state) => state.project);
+	const { floor } = useSelector((state) => state.floor);
 
 	const [isAddProject, setIsAddProject] = useState(true);
 	const [selectedProject, setSelectedProject] = useState(INITIAL_PROJECT);
@@ -54,6 +56,11 @@ const ProjectSubMenu = (props) => {
 		setSelectedProject(project);
 	};
 
+	const handleSelectProject = (projectId) => {
+		if (!floor?._id) return;
+		dispatch(fetchListShapeByProject({ projectId }));
+	};
+
 	return (
 		<>
 			<Menu
@@ -79,7 +86,10 @@ const ProjectSubMenu = (props) => {
 						</Menu.ItemGroup>
 					)}
 					{projects?.map((project) => (
-						<Menu.Item key={project._id}>
+						<Menu.Item
+							key={project._id}
+							onClick={() => handleSelectProject(project._id)}
+						>
 							<div className="menu-item">
 								<div className="menu-item-name">{project.title}</div>
 								{isBuildingAdmin && (

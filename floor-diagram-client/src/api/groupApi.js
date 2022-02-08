@@ -28,6 +28,10 @@ const groupApi = {
 			params: { groupId },
 		});
 	},
+
+	fetchListShapeByGroup: (groupId) => {
+		return axiosClient.get(`${API_URL}/${groupId}/shapes/`);
+	},
 };
 
 export default groupApi;

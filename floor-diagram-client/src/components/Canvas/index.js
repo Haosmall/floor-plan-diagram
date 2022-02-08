@@ -11,7 +11,7 @@ import "./style.scss";
 const Canvas = (props) => {
 	const { stageRef, isLockBackGround } = props;
 
-	const { shapes, shape } = useSelector((state) => state.shape);
+	const { shapes, shape, selectedShapes } = useSelector((state) => state.shape);
 	const { floor } = useSelector((state) => state.floor);
 	const { users } = useSelector((state) => state.user);
 
@@ -41,8 +41,12 @@ const Canvas = (props) => {
 		}
 	};
 
+	const handleDragOver = () => {
+		alert("drag over");
+	};
+
 	return (
-		<Content style={{ backgroundColor: "#fff" }}>
+		<Content style={{ backgroundColor: "#fff" }} onDragOver={handleDragOver}>
 			<Stage
 				width={window.innerWidth - 455}
 				height={window.innerHeight - 64}
@@ -59,7 +63,9 @@ const Canvas = (props) => {
 								<Shape
 									key={ele._id}
 									onClick={(e) => handleSelectShape(ele._id)}
-									isSelected={shape?._id === ele._id}
+									isSelected={
+										shape?._id === ele._id || selectedShapes?.includes(ele._id)
+									}
 									shape={{ ...ele, text }}
 									onChange={handleScaling}
 									onDragEnd={handleDragEnd}

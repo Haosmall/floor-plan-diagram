@@ -12,7 +12,7 @@ const shapeApi = {
 	},
 
 	updateManyShape: (shapes) => {
-		return axiosClient.put(`${API_URL}`, { shapes });
+		return axiosClient.put(`${API_URL}/`, { shapes });
 	},
 
 	deleteShape: (shapeId) => {
@@ -20,15 +20,15 @@ const shapeApi = {
 	},
 
 	deleteManyShape: (shapeIds) => {
-		return axiosClient.delete(`${API_URL}`, { data: { shapeIds } });
+		return axiosClient.delete(`${API_URL}/`, { data: { shapeIds } });
 	},
 
 	addImageShape: (body) => {
-		return axiosClient.post(`${API_URL}/back-ground`, body);
+		return axiosClient.post(`${API_URL}/back-ground/`, body);
 	},
 
 	updateImageShape: (shapeId, file) => {
-		return axiosClient.patch(`${API_URL}/${shapeId}/back-ground`, file);
+		return axiosClient.patch(`${API_URL}/${shapeId}/back-ground/`, file);
 	},
 };
 

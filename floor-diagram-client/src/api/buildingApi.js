@@ -26,7 +26,7 @@ const buildingApi = {
 	},
 
 	fetchListProjectsByBuildingId: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}/projects`, {
+		return axiosClient.get(`${API_URL}/${buildingId}/projects/`, {
 			params: { buildingId },
 		});
 	},
@@ -36,11 +36,11 @@ const buildingApi = {
 	},
 
 	updateBuilding: (buildingId, name, users, admin) => {
-		return axiosClient.put(`${API_URL}/${buildingId}`, { name, users, admin });
+		return axiosClient.put(`${API_URL}/${buildingId}/`, { name, users, admin });
 	},
 
 	deleteBuilding: (buildingId) => {
-		return axiosClient.delete(`${API_URL}/${buildingId}`);
+		return axiosClient.delete(`${API_URL}/${buildingId}/`);
 	},
 };
 

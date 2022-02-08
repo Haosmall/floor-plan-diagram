@@ -67,7 +67,7 @@ const FloorSubMenu = (props) => {
 		setIsFloorModalVisible(true);
 		setSelectedFloor(floor);
 
-		console.log({ floor });
+		// console.log({ floor });
 	};
 
 	const handleSelectFloor = async (floorId) => {

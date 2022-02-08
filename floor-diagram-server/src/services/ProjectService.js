@@ -2,6 +2,7 @@ const Building = require("../models/Building");
 const mongoose = require("mongoose");
 const UserPlace = require("../models/UserPlace");
 const Project = require("../models/Project");
+const Shape = require("../models/Shape");
 const ObjectId = mongoose.Types.ObjectId;
 
 class ProjectService {
@@ -22,7 +23,7 @@ class ProjectService {
 			},
 		]);
 
-		console.log(listProjects);
+		// console.log(listProjects);
 		return listProjects;
 	}
 
@@ -39,6 +40,23 @@ class ProjectService {
 
 	async deleteProject(_id) {
 		await Project.deleteOne({ _id });
+	}
+
+	async getShapesByProject(projectId) {
+		const result = await Shape.aggregate([
+			{
+				$match: {
+					projectId: ObjectId(projectId),
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+				},
+			},
+		]);
+		const listShapes = result.map((ele) => ele._id);
+		return listShapes;
 	}
 }
 

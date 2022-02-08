@@ -61,27 +61,11 @@ const Shape = (props) => {
 		const scaleX = node.scaleX();
 		const scaleY = node.scaleY();
 
-		console.log("node ", shapeRef.current);
-		console.log("scaleX ", scaleX);
-		console.log("scaleY ", scaleY);
-		console.log("shape ", shape);
-
 		shape.width = width * scaleX;
 		shape.height = height * scaleY;
 		shape.rotation = node.rotation();
 
-		const values = {
-			// x: node.x(),
-			// y: node.y(),
-			width: width * scaleX,
-			height: height * scaleY,
-			rotation: node.rotation(),
-		};
-
-		console.log("new Shape: ", shape);
-
-		console.log("values: ", values);
-		await onChange(shape);
+		onChange(shape);
 
 		node.scaleX(1);
 		node.scaleY(1);
@@ -94,15 +78,6 @@ const Shape = (props) => {
 	};
 
 	const [image] = useImage(src);
-
-	console.log("===============================", {
-		_id,
-		type,
-		x,
-		y,
-		width,
-		height,
-	});
 
 	return (
 		<>
@@ -136,7 +111,7 @@ const Shape = (props) => {
 					{type === SHAPE_TYPE.ellipse && (
 						<Ellipse
 							stroke="black"
-							radius={radius}
+							radius={[radius, radius]}
 							width={width}
 							height={height}
 							fill="#fff"

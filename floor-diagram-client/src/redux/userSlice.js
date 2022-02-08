@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userApi from "../api/userApi";
 
-const KEY = "user";
+const PREFIX = "user";
 
 export const fetchUserProfile = createAsyncThunk(
-	`${KEY}/fetchUser`,
+	`${PREFIX}/fetchUser`,
 	async (params, thunkApi) => {
 		const user = await userApi.fetchUserProfile();
 		return user;
@@ -12,7 +12,7 @@ export const fetchUserProfile = createAsyncThunk(
 );
 
 export const fetchListUsers = createAsyncThunk(
-	`${KEY}/fetchListUsers`,
+	`${PREFIX}/fetchListUsers`,
 	async (params, thunkApi) => {
 		const users = await userApi.fetchListUsers();
 		return users;
@@ -20,7 +20,7 @@ export const fetchListUsers = createAsyncThunk(
 );
 
 const userSlice = createSlice({
-	name: KEY,
+	name: PREFIX,
 	initialState: {
 		isLoading: false,
 		isLogin: false,

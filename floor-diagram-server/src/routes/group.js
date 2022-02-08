@@ -6,6 +6,7 @@ const groupRouter = () => {
 	router.post("", groupController.addGroup);
 	router.put("/:id", groupController.updateGroup);
 	router.delete("/:id", groupController.deleteGroup);
+	router.get("/:id/shapes", groupController.getShapesByGroup);
 
 	return router;
 };

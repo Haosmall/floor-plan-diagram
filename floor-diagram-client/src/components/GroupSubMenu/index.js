@@ -15,9 +15,11 @@ import { fetchListProjectByBuilding } from "../../redux/projectSlice";
 import commonUtils from "../../utils/commonUtils";
 import GroupModal from "../GroupModal";
 import "./style.scss";
+import { fetchListShapeByGroup } from "redux/shapeSlice";
 
 const GroupSubMenu = (props) => {
 	const { building, isAdmin, isBuildingAdmin } = props;
+	const { floor } = useSelector((state) => state.floor);
 
 	const { groups } = useSelector((state) => state.group);
 
@@ -56,6 +58,11 @@ const GroupSubMenu = (props) => {
 		setSelectedGroup(group);
 	};
 
+	const handleSelectGroup = (groupId) => {
+		if (!floor?._id) return;
+		dispatch(fetchListShapeByGroup({ groupId }));
+	};
+
 	return (
 		<>
 			<Menu
@@ -81,7 +88,10 @@ const GroupSubMenu = (props) => {
 						</Menu.ItemGroup>
 					)}
 					{groups?.map((group) => (
-						<Menu.Item key={group._id}>
+						<Menu.Item
+							key={group._id}
+							onClick={() => handleSelectGroup(group._id)}
+						>
 							<div className="menu-item">
 								<div className="menu-item-name">{group.title}</div>
 								{isBuildingAdmin && (
