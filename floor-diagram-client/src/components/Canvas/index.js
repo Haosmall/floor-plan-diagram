@@ -1,15 +1,14 @@
 import { Content } from "antd/lib/layout/layout";
 import PropTypes from "prop-types";
 import React from "react";
-import { Image, Layer, Stage } from "react-konva";
+import { Layer, Stage } from "react-konva";
 import { useDispatch, useSelector } from "react-redux";
-import { DEFAULT_SHAPE, SHAPE_TYPE } from "../../utils/constants";
 import { setShape, updateShape } from "../../redux/shapeSlice";
 import Shape from "../Shape";
 import "./style.scss";
 
 const Canvas = (props) => {
-	const { stageRef, isLockBackGround } = props;
+	const { stageRef, isLockBackGround, handleDrop } = props;
 
 	const { shapes, shape, selectedShapes } = useSelector((state) => state.shape);
 	const { floor } = useSelector((state) => state.floor);
@@ -41,12 +40,8 @@ const Canvas = (props) => {
 		}
 	};
 
-	const handleDragOver = () => {
-		alert("drag over");
-	};
-
 	return (
-		<Content style={{ backgroundColor: "#fff" }} onDragOver={handleDragOver}>
+		<Content style={{ backgroundColor: "#fff" }}>
 			<Stage
 				width={window.innerWidth - 455}
 				height={window.innerHeight - 64}

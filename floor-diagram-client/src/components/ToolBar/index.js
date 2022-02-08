@@ -3,13 +3,17 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import shapeApi from "../../api/shapeApi";
-import { SHAPE_TYPE, DEFAULT_SHAPE } from "../../utils/constants";
+import {
+	SHAPE_TYPE,
+	DEFAULT_SHAPE,
+	DRAG_DATA_KEY,
+} from "../../utils/constants";
 import { addNewShape } from "../../redux/shapeSlice";
 import UploadImageModal from "../UploadImageModal";
 import "./style.scss";
 
 const ToolBar = (props) => {
-	const { onDragEnd, onLockBackGround, isLockBackGround } = props;
+	const { onLockBackGround, isLockBackGround } = props;
 
 	const { floor } = useSelector((state) => state.floor);
 	const { shapes } = useSelector((state) => state.shape);
@@ -31,7 +35,7 @@ const ToolBar = (props) => {
 		const x = e.nativeEvent.x - 255;
 		const y = e.nativeEvent.y - 64;
 
-		if (x < 0 || y < 0) return;
+		if (x < 0 || y < 0 || x > window.innerWidth - 455) return;
 
 		const shape = {
 			...DEFAULT_SHAPE,

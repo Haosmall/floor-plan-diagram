@@ -1,9 +1,8 @@
 import {
+	AppstoreOutlined,
 	DeleteOutlined,
 	EditOutlined,
-	MailOutlined,
 	PlusCircleOutlined,
-	AppstoreOutlined,
 } from "@ant-design/icons";
 import { Button, Menu, message } from "antd";
 import PropTypes from "prop-types";
@@ -12,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import floorApi from "../../api/floorApi";
 import shapeApi from "../../api/shapeApi";
-import { INITIAL_FLOOR } from "../../utils/constants";
 import { deleteFloor, setFloor } from "../../redux/floorSlice";
 import {
 	fetchListShapeByFloor,
@@ -20,6 +18,7 @@ import {
 	resetTempShapeState,
 } from "../../redux/shapeSlice";
 import commonUtils from "../../utils/commonUtils";
+import { INITIAL_FLOOR } from "../../utils/constants";
 import FloorModal from "../FloorModal";
 import "./style.scss";
 
