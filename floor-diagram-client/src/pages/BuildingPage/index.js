@@ -1,7 +1,6 @@
 import { Layout } from "antd";
 import Canvas from "components/Canvas";
 import DetailsSubMenu from "components/DetailsSubMenu";
-import FloorBottomBar from "components/FloorBottomBar";
 import FloorSubMenu from "components/FloorSubMenu";
 import FloorTopBar from "components/FloorTopBar";
 import GroupSubMenu from "components/GroupSubMenu";
@@ -102,8 +101,6 @@ const BuildingPage = (props) => {
 						isLockBackGround={isLockBackGround}
 						stageRef={stageRef}
 					/>
-
-					<FloorBottomBar floors={buildings?.floors} />
 				</Layout>
 
 				<Sider theme="light">

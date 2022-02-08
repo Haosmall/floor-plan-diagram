@@ -1,6 +1,14 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
-import { Circle, Group, Image, Rect, Text, Transformer } from "react-konva";
+import {
+	Circle,
+	Ellipse,
+	Group,
+	Image,
+	Rect,
+	Text,
+	Transformer,
+} from "react-konva";
 import useImage from "use-image";
 import { DEFAULT_SHAPE, SHAPE_TYPE } from "../../utils/constants";
 
@@ -47,7 +55,7 @@ const Shape = (props) => {
 		return { x, y };
 	})(type);
 
-	const handleTransform = (e) => {
+	const handleTransform = async (e) => {
 		const node = shapeRef.current;
 
 		const scaleX = node.scaleX();
@@ -73,10 +81,10 @@ const Shape = (props) => {
 		console.log("new Shape: ", shape);
 
 		console.log("values: ", values);
-		node.scaleX(scaleX);
-		node.scaleY(scaleY);
+		await onChange(shape);
 
-		onChange(shape);
+		node.scaleX(1);
+		node.scaleY(1);
 	};
 
 	const handleDragEnd = (e) => {
@@ -117,6 +125,16 @@ const Shape = (props) => {
 
 					{type === SHAPE_TYPE.circle && (
 						<Circle
+							stroke="black"
+							radius={radius}
+							width={width}
+							height={height}
+							fill="#fff"
+						/>
+					)}
+
+					{type === SHAPE_TYPE.ellipse && (
+						<Ellipse
 							stroke="black"
 							radius={radius}
 							width={width}

@@ -2,6 +2,7 @@ const SHAPE_TYPE = {
 	circle: "circle",
 	rect: "rect",
 	image: "image",
+	ellipse: "ellipse",
 };
 
 const INITIAL_SHAPE = [

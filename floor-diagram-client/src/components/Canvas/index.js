@@ -45,7 +45,7 @@ const Canvas = (props) => {
 		<Content style={{ backgroundColor: "#fff" }}>
 			<Stage
 				width={window.innerWidth - 455}
-				height={window.innerHeight - 128}
+				height={window.innerHeight - 64}
 				ref={stageRef}
 				onClick={onClickEmptyArea}
 			>

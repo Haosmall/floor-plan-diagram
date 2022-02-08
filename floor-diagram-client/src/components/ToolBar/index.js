@@ -81,6 +81,14 @@ const ToolBar = (props) => {
 				}}
 			></div>
 
+			<div
+				className="shape ellipse"
+				draggable="true"
+				onDragEnd={(e) => {
+					handleAddShape(e, SHAPE_TYPE.ellipse);
+				}}
+			></div>
+
 			<Button onClick={handleOpenModal}>Background</Button>
 			<Checkbox onChange={() => onLockBackGround(!isLockBackGround)}>
 				Lock background
