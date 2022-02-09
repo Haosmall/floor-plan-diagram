@@ -7,7 +7,7 @@ class AuthController {
 		try {
 			const response = await authService.registry(req.body);
 
-			res.status(200).json(response);
+			res.status(201).json(response);
 		} catch (err) {
 			// console.log(err);
 			next(err);

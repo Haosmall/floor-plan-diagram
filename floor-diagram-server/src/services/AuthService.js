@@ -21,7 +21,6 @@ class AuthService {
 		const { error } = loginValidator(account);
 		if (error) throw new Error(error.details[0].message);
 
-		console.log(account);
 		const { _id, name, username, isAdmin } = await User.findByCredentials(
 			account.username,
 			account.password
