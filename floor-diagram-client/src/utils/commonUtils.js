@@ -31,7 +31,6 @@ const commonUtils = {
 			}
 		}
 
-		console.log("newArray: ", newArray);
 		return newArray;
 	},
 };

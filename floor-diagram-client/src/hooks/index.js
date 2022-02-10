@@ -16,6 +16,7 @@ function useWindowSize(reduceWidth, reduceHeight) {
 
 	return size;
 }
+
 function useDisable(listShapesDelete, listShapesUpdate, listNewShapes) {
 	const [isDisable, setDisable] = useState(false);
 	useEffect(() => {
