@@ -37,8 +37,6 @@ const BuildingPage = (props) => {
 	const [selectedShape, setSelectedShape] = useState(null);
 	const [isLockBackGround, setIsLockBackGround] = useState(false);
 
-	const stageRef = useRef(null);
-
 	const deleteShape = () => {
 		if (selectedShape !== null) {
 			console.log(selectedShape);
@@ -96,20 +94,9 @@ const BuildingPage = (props) => {
 				</Sider>
 
 				<Layout>
-					<FloorTopBar
-						buildings={buildings}
-						selectedShape={selectedShape}
-						deleteShape={deleteShape}
-						setListShapes={setListShapes}
-					/>
+					<FloorTopBar buildings={buildings} />
 
-					<Canvas
-						listShapes={listShapes}
-						setSelectedShape={setSelectedShape}
-						selectedShape={selectedShape}
-						isLockBackGround={isLockBackGround}
-						stageRef={stageRef}
-					/>
+					<Canvas isLockBackGround={isLockBackGround} />
 				</Layout>
 
 				<Sider theme="light">

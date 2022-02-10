@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import PropTypes from "prop-types";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "./style.scss";
 
 const BuildingTable = (props) => {
@@ -11,8 +11,6 @@ const BuildingTable = (props) => {
 	const { user } = useSelector((state) => state.user);
 
 	const { Column } = Table;
-
-	const dispatch = useDispatch();
 
 	const handleOnEdit = (e, building) => {
 		e.stopPropagation();

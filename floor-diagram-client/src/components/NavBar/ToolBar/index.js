@@ -1,15 +1,11 @@
 import { Button, Checkbox, message } from "antd";
+import shapeApi from "api/shapeApi";
+import UploadImageModal from "components/Modal/UploadImageModal";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import shapeApi from "../../../api/shapeApi";
-import {
-	SHAPE_TYPE,
-	DEFAULT_SHAPE,
-	DRAG_DATA_KEY,
-} from "../../../utils/constants";
-import { addNewShape } from "../../../redux/shapeSlice";
-import UploadImageModal from "../../Modal/UploadImageModal";
+import { addNewShape } from "redux/shapeSlice";
+import { DEFAULT_SHAPE, SHAPE_TYPE } from "utils/constants";
 import "./style.scss";
 
 const ToolBar = (props) => {
@@ -108,10 +104,12 @@ const ToolBar = (props) => {
 };
 
 ToolBar.propTypes = {
-	onDragEnd: PropTypes.func,
+	onLockBackGround: PropTypes.func,
+	isLockBackGround: PropTypes.bool,
 };
 
 ToolBar.defaultProps = {
-	onDragEnd: null,
+	onLockBackGround: null,
+	isLockBackGround: false,
 };
 export default ToolBar;

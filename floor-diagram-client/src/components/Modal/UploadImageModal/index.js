@@ -1,22 +1,15 @@
-import { Form, Input, message, Modal, Select } from "antd";
+import { message, Modal } from "antd";
+import shapeApi from "api/shapeApi";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import projectApi from "../../../api/projectApi";
-import shapeApi from "../../../api/shapeApi";
-import { INITIAL_PROJECT } from "../../../utils/constants";
-import { addNewProject, updateProject } from "../../../redux/projectSlice";
-import {
-	addNewShape,
-	updateImageShape,
-	updateShape,
-} from "../../../redux/shapeSlice";
+import { addNewShape, updateImageShape } from "redux/shapeSlice";
+import { INITIAL_PROJECT } from "utils/constants";
 
 const UploadImageModal = (props) => {
 	const { visible, onCancel, isAddMode, title } = props;
 	const { floor } = useSelector((state) => state.floor);
 	const { shapes } = useSelector((state) => state.shape);
-	const { Option } = Select;
 
 	const dispatch = useDispatch();
 	const [file, setFile] = useState(null);

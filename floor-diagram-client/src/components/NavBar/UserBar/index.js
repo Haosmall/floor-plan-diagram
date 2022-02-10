@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./style.scss";
 import { Button } from "antd";
 import { useDispatch } from "react-redux";
-import { logout } from "../../../redux/userSlice";
+import { logout } from "redux/userSlice";
 
 const UserBar = (props) => {
 	const { name } = props;

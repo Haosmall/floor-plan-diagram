@@ -10,7 +10,7 @@ import {
 	Transformer,
 } from "react-konva";
 import useImage from "use-image";
-import { DEFAULT_SHAPE, SHAPE_TYPE } from "../../utils/constants";
+import { DEFAULT_SHAPE, SHAPE_TYPE } from "utils/constants";
 
 const Shape = (props) => {
 	const { shape, onClick, isSelected, onChange, onDragEnd, isLockBackGround } =

@@ -5,21 +5,21 @@ import {
 	PlusCircleOutlined,
 } from "@ant-design/icons";
 import { Button, Menu, message } from "antd";
+import floorApi from "api/floorApi";
+import shapeApi from "api/shapeApi";
+import FloorModal from "components/Modal/FloorModal";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import floorApi from "../../../api/floorApi";
-import shapeApi from "../../../api/shapeApi";
-import { deleteFloor, setFloor } from "../../../redux/floorSlice";
+import { deleteFloor, setFloor } from "redux/floorSlice";
 import {
 	fetchListShapeByFloor,
 	resetShapeState,
 	resetTempShapeState,
-} from "../../../redux/shapeSlice";
-import commonUtils from "../../../utils/commonUtils";
-import { INITIAL_FLOOR } from "../../../utils/constants";
-import FloorModal from "../../Modal/FloorModal";
+} from "redux/shapeSlice";
+import commonUtils from "utils/commonUtils";
+import { INITIAL_FLOOR } from "utils/constants";
 import "./style.scss";
 
 const FloorSubMenu = (props) => {

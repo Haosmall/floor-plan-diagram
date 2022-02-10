@@ -5,17 +5,17 @@ import {
 	TeamOutlined,
 } from "@ant-design/icons";
 import { Button, Menu, message } from "antd";
+import groupApi from "api/groupApi";
+import GroupModal from "components/Modal/GroupModal";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import groupApi from "../../../api/groupApi";
-import { INITIAL_GROUP } from "../../../utils/constants";
-import { deleteGroup } from "../../../redux/groupSlice";
-import { fetchListProjectByBuilding } from "../../../redux/projectSlice";
-import commonUtils from "../../../utils/commonUtils";
-import GroupModal from "../../Modal/GroupModal";
-import "./style.scss";
+import { deleteGroup } from "redux/groupSlice";
+import { fetchListProjectByBuilding } from "redux/projectSlice";
 import { fetchListShapeByGroup } from "redux/shapeSlice";
+import commonUtils from "utils/commonUtils";
+import { INITIAL_GROUP } from "utils/constants";
+import "./style.scss";
 
 const GroupSubMenu = (props) => {
 	const { building, isAdmin, isBuildingAdmin } = props;

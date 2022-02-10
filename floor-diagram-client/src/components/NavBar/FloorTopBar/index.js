@@ -1,23 +1,23 @@
 import { Button, Select } from "antd";
 import { Header } from "antd/lib/layout/layout";
+import shapeApi from "api/shapeApi";
+import { useDisable } from "hooks";
 import PropTypes from "prop-types";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import shapeApi from "../../../api/shapeApi";
-import { useDisable } from "../../../hooks";
-import { setFloor } from "../../../redux/floorSlice";
+import { setFloor } from "redux/floorSlice";
 import {
 	deleteShape,
 	resetShape,
 	resetShapeState,
 	resetTempShapeState,
 	setListOriginalShapes,
-} from "../../../redux/shapeSlice";
+} from "redux/shapeSlice";
 import "./style.scss";
 
 const FloorTopBar = (props) => {
-	const { buildings, selectedShape } = props;
+	const { buildings } = props;
 
 	const { shape, listShapesDelete, listShapesUpdate, listNewShapes } =
 		useSelector((state) => state.shape);
@@ -91,10 +91,10 @@ const FloorTopBar = (props) => {
 };
 
 FloorTopBar.propTypes = {
-	floors: PropTypes.array,
+	buildings: PropTypes.array,
 };
 
 FloorTopBar.defaultProps = {
-	floors: [],
+	buildings: [],
 };
 export default React.memo(FloorTopBar);

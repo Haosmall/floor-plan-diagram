@@ -3,20 +3,16 @@ import {
 	PlusCircleOutlined,
 } from "@ant-design/icons";
 import { Button, Col, Layout, message, Modal, Row, Table } from "antd";
+import buildingApi from "api/buildingApi";
+import BuildingTable from "components/BuildingTable";
+import BuildingModal from "components/Modal/BuildingModal";
+import UserBar from "components/NavBar/UserBar";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import buildingApi from "../../api/buildingApi";
-import BuildingModal from "../../components/Modal/BuildingModal";
-import BuildingTable from "../../components/BuildingTable";
-import UserBar from "../../components/NavBar/UserBar";
-import { INITIAL_BUILDING } from "../../utils/constants";
-import {
-	fetchListBuildings,
-	addNewBuilding,
-	deleteBuilding,
-} from "../../redux/buildingSlice";
-import { fetchListUsers, logout } from "../../redux/userSlice";
+import { deleteBuilding, fetchListBuildings } from "redux/buildingSlice";
+import { fetchListUsers } from "redux/userSlice";
+import { INITIAL_BUILDING } from "utils/constants";
 import "./style.scss";
 
 const HomePage = (props) => {

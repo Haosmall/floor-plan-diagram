@@ -1,23 +1,20 @@
 import { Menu, message, Select } from "antd";
+import floorApi from "api/floorApi";
+import groupApi from "api/groupApi";
+import projectApi from "api/projectApi";
+import DetailsSubMenu from "components/SubMenu/DetailsSubMenu";
+import FloorSubMenu from "components/SubMenu/FloorSubMenu";
+import GroupSubMenu from "components/SubMenu/GroupSubMenu";
+import ProjectSubMenu from "components/SubMenu/ProjectSubMenu";
 import PropTypes from "prop-types";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import floorApi from "../../../api/floorApi";
-import groupApi from "../../../api/groupApi";
-import projectApi from "../../../api/projectApi";
-import { ACTION_TYPE } from "../../../utils/constants";
-import { deleteFloor } from "../../../redux/floorSlice";
-import { deleteGroup } from "../../../redux/groupSlice";
-import {
-	deleteProject,
-	fetchListProjectByBuilding,
-} from "../../../redux/projectSlice";
-import commonUtils from "../../../utils/commonUtils";
-import DetailsSubMenu from "../../SubMenu/DetailsSubMenu";
-import FloorSubMenu from "../../SubMenu/FloorSubMenu";
-import GroupSubMenu from "../../SubMenu/GroupSubMenu";
-import ProjectSubMenu from "../../SubMenu/ProjectSubMenu";
+import { deleteFloor } from "redux/floorSlice";
+import { deleteGroup } from "redux/groupSlice";
+import { deleteProject, fetchListProjectByBuilding } from "redux/projectSlice";
+import commonUtils from "utils/commonUtils";
+import { ACTION_TYPE } from "utils/constants";
 import "./style.scss";
 
 const FloorLeftBar = (props) => {

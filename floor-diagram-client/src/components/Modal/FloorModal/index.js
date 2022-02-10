@@ -1,12 +1,12 @@
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message, Modal, Select } from "antd";
+import floorApi from "api/floorApi";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import floorApi from "../../../api/floorApi";
-import { INITIAL_FLOOR, ROLE } from "../../../utils/constants";
-import { addNewFloor, updateFloor } from "../../../redux/floorSlice";
-import { fetchListUsers } from "../../../redux/userSlice";
+import { addNewFloor, updateFloor } from "redux/floorSlice";
+import { fetchListUsers } from "redux/userSlice";
+import { INITIAL_FLOOR } from "utils/constants";
 
 const FloorModal = (props) => {
 	const { visible, onCancel, initialValues, isAddMode, title, buildingId } =

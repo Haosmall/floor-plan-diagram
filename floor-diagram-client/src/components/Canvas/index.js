@@ -1,14 +1,14 @@
 import { Content } from "antd/lib/layout/layout";
+import Shape from "components/Shape";
 import PropTypes from "prop-types";
 import React from "react";
 import { Layer, Stage } from "react-konva";
 import { useDispatch, useSelector } from "react-redux";
-import { setShape, updateShape } from "../../redux/shapeSlice";
-import Shape from "../Shape";
+import { setShape, updateShape } from "redux/shapeSlice";
 import "./style.scss";
 
 const Canvas = (props) => {
-	const { stageRef, isLockBackGround, handleDrop } = props;
+	const { isLockBackGround } = props;
 
 	const { shapes, shape, selectedShapes } = useSelector((state) => state.shape);
 	const { floor } = useSelector((state) => state.floor);
@@ -45,7 +45,6 @@ const Canvas = (props) => {
 			<Stage
 				width={window.innerWidth - 455}
 				height={window.innerHeight - 64}
-				ref={stageRef}
 				onClick={onClickEmptyArea}
 			>
 				<Layer>
@@ -75,10 +74,10 @@ const Canvas = (props) => {
 };
 
 Canvas.propTypes = {
-	floors: PropTypes.array,
+	isLockBackGround: PropTypes.bool,
 };
 
 Canvas.defaultProps = {
-	floors: [],
+	isLockBackGround: false,
 };
 export default React.memo(Canvas);
