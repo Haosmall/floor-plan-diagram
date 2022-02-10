@@ -41,7 +41,7 @@ class BuildingController {
 	// [GET] /buildings
 	async getListBuildings(req, res, next) {
 		try {
-			const response = await buildingService.getListBuildings();
+			const response = await buildingService.getListBuildings(req._id);
 			res.status(200).json(response);
 		} catch (err) {
 			next(err);

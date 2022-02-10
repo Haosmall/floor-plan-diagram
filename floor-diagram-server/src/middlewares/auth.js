@@ -3,7 +3,7 @@ const tokenUtils = require("../utils/tokenUtils");
 
 const auth = async (req, res, next) => {
 	try {
-		const token = req.header("Authorization").replace("Bearer ", "");
+		const token = req.header("Authorization")?.replace("Bearer ", "");
 		const data = await tokenUtils.verifyToken(token);
 
 		const user = await User.findOne({

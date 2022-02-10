@@ -50,5 +50,10 @@ userSchema.statics.findByCredentials = async (username, password) => {
 	return user;
 };
 
+userSchema.statics.isAdmin = async (userId) => {
+	const { isAdmin } = await User.findById(userId);
+	return isAdmin;
+};
+
 const User = mongoose.model("User", userSchema);
 module.exports = User;

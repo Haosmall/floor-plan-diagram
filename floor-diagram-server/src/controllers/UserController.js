@@ -6,7 +6,7 @@ class UserController {
 	async getListUser(req, res, next) {
 		try {
 			const response = await userService.getListUsers();
-			res.status(201).json(response);
+			res.status(200).json(response);
 		} catch (err) {
 			// console.log(err);
 			next(err);

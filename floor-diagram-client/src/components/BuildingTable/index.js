@@ -2,15 +2,15 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import PropTypes from "prop-types";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import "./style.scss";
 
 const BuildingTable = (props) => {
 	const { data, onEdit, onDelete, onSelect } = props;
 
-	const { Column } = Table;
+	const { user } = useSelector((state) => state.user);
 
-	const dispatch = useDispatch();
+	const { Column } = Table;
 
 	const handleOnEdit = (e, building) => {
 		e.stopPropagation();
@@ -57,27 +57,29 @@ const BuildingTable = (props) => {
 				dataIndex="admin"
 				render={(_, { admin }) => <span>{admin.name}</span>}
 			/>
-			<Column
-				align="left"
-				width={120}
-				render={(record) => {
-					return (
-						<div className="btn-group">
-							<Button
-								shape="circle"
-								icon={<EditOutlined />}
-								onClick={(e) => handleOnEdit(e, record)}
-							/>
-							<Button
-								shape="circle"
-								danger
-								icon={<DeleteOutlined />}
-								onClick={(e) => handleOnDelete(e, record._id)}
-							/>
-						</div>
-					);
-				}}
-			/>
+			{user.isAdmin && (
+				<Column
+					align="left"
+					width={120}
+					render={(record) => {
+						return (
+							<div className="btn-group">
+								<Button
+									shape="circle"
+									icon={<EditOutlined />}
+									onClick={(e) => handleOnEdit(e, record)}
+								/>
+								<Button
+									shape="circle"
+									danger
+									icon={<DeleteOutlined />}
+									onClick={(e) => handleOnDelete(e, record._id)}
+								/>
+							</div>
+						);
+					}}
+				/>
+			)}
 		</Table>
 	);
 };
@@ -95,4 +97,4 @@ BuildingTable.defaultProps = {
 	onSelect: null,
 };
 
-export default BuildingTable;
+export default React.memo(BuildingTable);

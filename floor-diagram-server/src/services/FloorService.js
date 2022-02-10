@@ -58,7 +58,19 @@ class FloorService {
 			// 	},
 			// },
 		]);
-		console.log({ listFloors });
+
+		// const listFloors = [];
+
+		// if (result.length > 0) {
+		// 	for (const floor of result) {
+		// 		const { _id, name, buildingId, admin } = floor;
+
+		// 		console.log({ uu: floor.users });
+		// 		const users = floor.users.map((ele) => ele.userId);
+		// 		listFloors.push({ _id, name, buildingId, admin, users });
+		// 	}
+		// }
+
 		return listFloors;
 	}
 
@@ -70,12 +82,12 @@ class FloorService {
 		let userPlaces = [];
 
 		if (users?.length > 0) {
-			for (const user of users) {
+			console.log({ users });
+			for (const userId of users) {
 				const userFloor = await userPlaceService.addUserPlace(
-					user.userId,
+					userId,
 					floor._id,
-					floor.buildingId,
-					user.role
+					floor.buildingId
 				);
 				userPlaces.push(userFloor);
 			}
@@ -95,16 +107,12 @@ class FloorService {
 		await Floor.updateOne({ _id }, { name, buildingId, admin });
 		const listUserPlace = await UserPlace.find({ floorId: ObjectId(_id) });
 
-		const userPlaceIds = users.map((ele) => ele._id);
+		// const userPlaceIds = users.map((ele) => ele._id);
 		const listId = listUserPlace.map((ele) => ele._id.toString());
 
-		const ListUserPlaceDelete = listId.filter(
-			(ele) => !userPlaceIds.includes(ele)
-		);
-		const ListUserPlaceAdd = users.filter((ele) => !ele._id);
-		const ListUserPlaceUpdate = users.filter(
-			(ele) => !ListUserPlaceDelete.includes(ele._id)
-		);
+		const ListUserPlaceDelete = listId.filter((ele) => !users.includes(ele));
+
+		const ListUserPlaceAdd = users.filter((ele) => !listId.includes(ele));
 
 		if (ListUserPlaceDelete.length > 0) {
 			for (const userPlaceId of ListUserPlaceDelete) {
@@ -113,25 +121,8 @@ class FloorService {
 		}
 
 		if (ListUserPlaceAdd.length > 0) {
-			for (const userPlace of ListUserPlaceAdd) {
-				await userPlaceService.addUserPlace(
-					userPlace.userId,
-					_id,
-					buildingId,
-					userPlace.role
-				);
-			}
-		}
-
-		if (ListUserPlaceUpdate.length > 0) {
-			for (const userPlace of ListUserPlaceUpdate) {
-				await userPlaceService.updateUserPlace(
-					userPlace._id,
-					userPlace.userId,
-					_id,
-					buildingId,
-					userPlace.role
-				);
+			for (const userId of ListUserPlaceAdd) {
+				await userPlaceService.addUserPlace(userId, _id, buildingId);
 			}
 		}
 
@@ -150,6 +141,10 @@ class FloorService {
 		await Floor.findByIdAndDelete(_id);
 		await UserPlace.deleteMany({ floorId: ObjectId(_id) });
 		await Shape.deleteMany({ floorId: ObjectId(_id) });
+	}
+
+	async getFloorById(_id) {
+		return await Floor.findById(_id);
 	}
 }
 

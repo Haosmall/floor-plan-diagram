@@ -11,10 +11,10 @@ const shapeRouter = require("./shape");
 const route = (app) => {
 	app.use("/auth", authRouter());
 	app.use("/users", auth, userRouter());
-	app.use("/buildings", auth, buildingRouter());
-	app.use("/floor", auth, floorRouter());
-	app.use("/groups", auth, groupRouter());
-	app.use("/projects", auth, projectRouter());
-	app.use("/shape", auth, shapeRouter());
+	app.use("/buildings", auth, casbinAuth, buildingRouter());
+	app.use("/floor", auth, casbinAuth, floorRouter());
+	app.use("/groups", auth, casbinAuth, groupRouter());
+	app.use("/projects", auth, casbinAuth, projectRouter());
+	app.use("/shape", auth, casbinAuth, shapeRouter());
 };
 module.exports = route;

@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import buildingApi from "../api/buildingApi";
 
-const KEY = "building";
+const PREFIX = "building";
 
 export const fetchListBuildings = createAsyncThunk(
-	`${KEY}/fetchListBuildings`,
+	`${PREFIX}/fetchListBuildings`,
 	async (params, thunkApi) => {
 		const buildings = await buildingApi.fetchListBuildings();
 		return buildings;
@@ -12,7 +12,7 @@ export const fetchListBuildings = createAsyncThunk(
 );
 
 export const fetchBuildingById = createAsyncThunk(
-	`${KEY}/fetchBuildingById`,
+	`${PREFIX}/fetchBuildingById`,
 	async (params, thunkApi) => {
 		const { id } = params;
 		const buildings = await buildingApi.fetchBuildingById(id);
@@ -21,7 +21,7 @@ export const fetchBuildingById = createAsyncThunk(
 );
 
 const buildingSlice = createSlice({
-	name: KEY,
+	name: PREFIX,
 	initialState: {
 		isLoading: false,
 		building: null,

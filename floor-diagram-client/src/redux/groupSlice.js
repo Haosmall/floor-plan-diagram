@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import buildingApi from "../api/buildingApi";
 
-const KEY = "group";
+const PREFIX = "group";
 
 export const fetchListGroupByBuilding = createAsyncThunk(
-	`${KEY}/fetchListGroupByBuilding`,
+	`${PREFIX}/fetchListGroupByBuilding`,
 	async (params, thunkApi) => {
 		const { id } = params;
 		const groups = await buildingApi.fetchListGroupsByBuildingId(id);
@@ -13,7 +13,7 @@ export const fetchListGroupByBuilding = createAsyncThunk(
 );
 
 const groupSlice = createSlice({
-	name: KEY,
+	name: PREFIX,
 	initialState: {
 		isLoading: false,
 		groups: [],

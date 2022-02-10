@@ -1,17 +1,16 @@
 import { Content } from "antd/lib/layout/layout";
+import Shape from "components/Shape";
 import PropTypes from "prop-types";
 import React from "react";
-import { Image, Layer, Stage } from "react-konva";
+import { Layer, Stage } from "react-konva";
 import { useDispatch, useSelector } from "react-redux";
-import { DEFAULT_SHAPE, SHAPE_TYPE } from "../../constants";
-import { setShape, updateShape } from "../../redux/shapeSlice";
-import Shape from "../Shape";
+import { setShape, updateShape } from "redux/shapeSlice";
 import "./style.scss";
 
 const Canvas = (props) => {
-	const { stageRef, isLockBackGround } = props;
+	const { isLockBackGround } = props;
 
-	const { shapes, shape } = useSelector((state) => state.shape);
+	const { shapes, shape, selectedShapes } = useSelector((state) => state.shape);
 	const { floor } = useSelector((state) => state.floor);
 	const { users } = useSelector((state) => state.user);
 
@@ -45,8 +44,7 @@ const Canvas = (props) => {
 		<Content style={{ backgroundColor: "#fff" }}>
 			<Stage
 				width={window.innerWidth - 455}
-				height={window.innerHeight - 128}
-				ref={stageRef}
+				height={window.innerHeight - 64}
 				onClick={onClickEmptyArea}
 			>
 				<Layer>
@@ -59,7 +57,9 @@ const Canvas = (props) => {
 								<Shape
 									key={ele._id}
 									onClick={(e) => handleSelectShape(ele._id)}
-									isSelected={shape?._id === ele._id}
+									isSelected={
+										shape?._id === ele._id || selectedShapes?.includes(ele._id)
+									}
 									shape={{ ...ele, text }}
 									onChange={handleScaling}
 									onDragEnd={handleDragEnd}
@@ -74,10 +74,10 @@ const Canvas = (props) => {
 };
 
 Canvas.propTypes = {
-	floors: PropTypes.array,
+	isLockBackGround: PropTypes.bool,
 };
 
 Canvas.defaultProps = {
-	floors: [],
+	isLockBackGround: false,
 };
-export default Canvas;
+export default React.memo(Canvas);

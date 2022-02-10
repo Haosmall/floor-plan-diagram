@@ -1,14 +1,14 @@
 const UserPlace = require("../models/UserPlace");
 
 class UserPlaceService {
-	async addUserPlace(userId, floorId, buildingId, role) {
-		const userPlace = new UserPlace({ userId, floorId, buildingId, role });
+	async addUserPlace(userId, floorId, buildingId) {
+		const userPlace = new UserPlace({ userId, floorId, buildingId });
 		const newUserPlace = userPlace.save(userPlace);
 		return newUserPlace;
 	}
 
-	async updateUserPlace(_id, userId, floorId, buildingId, role) {
-		await UserPlace.updateOne({ _id }, { userId, floorId, buildingId, role });
+	async updateUserPlace(_id, userId, floorId, buildingId) {
+		await UserPlace.updateOne({ _id }, { userId, floorId, buildingId });
 	}
 
 	async deleteUserPlace(_id) {

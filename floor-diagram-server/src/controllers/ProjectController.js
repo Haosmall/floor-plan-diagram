@@ -34,6 +34,16 @@ class ProjectController {
 			next(err);
 		}
 	}
+
+	// [DELETE] /projects/:id/shapes
+	async getShapesByProject(req, res, next) {
+		try {
+			const response = await projectService.getShapesByProject(req.params.id);
+			res.status(200).json(response);
+		} catch (err) {
+			next(err);
+		}
+	}
 }
 
 module.exports = new ProjectController();

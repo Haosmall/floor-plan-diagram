@@ -3,7 +3,8 @@ const multer = require("multer");
 const routes = require("./routes");
 const db = require("./config/db");
 const handleErr = require("./middlewares/handleErr");
-require("dotenv").config({ path: __dirname + "/.env" });
+// require("dotenv").config({ path: __dirname + "/.env" });
+
 const cors = require("cors");
 
 const app = express();
@@ -21,9 +22,14 @@ routes(app);
 db.connect();
 
 const SERVER_PORT = process.env.SERVER_PORT || 5000;
-app.listen(SERVER_PORT, () =>
-	console.log(`Server is running on port ${SERVER_PORT}`)
-);
+
+if (process.env.NODE_ENV !== "test") {
+	app.listen(SERVER_PORT, () => {
+		// console.log(`Server is running on port ${SERVER_PORT}`)
+	});
+}
 
 // middleware handle error
 app.use(handleErr);
+
+module.exports = app;

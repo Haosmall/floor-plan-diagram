@@ -18,10 +18,6 @@ const userFloorSchema = new Schema(
 			ref: "Building",
 			required: true,
 		},
-		role: {
-			type: String,
-			default: "member",
-		},
 	},
 	{ timestamps: true }
 );

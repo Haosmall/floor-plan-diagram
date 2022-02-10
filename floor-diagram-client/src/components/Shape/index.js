@@ -1,8 +1,16 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
-import { Circle, Group, Image, Rect, Text, Transformer } from "react-konva";
+import {
+	Circle,
+	Ellipse,
+	Group,
+	Image,
+	Rect,
+	Text,
+	Transformer,
+} from "react-konva";
 import useImage from "use-image";
-import { DEFAULT_SHAPE, SHAPE_TYPE } from "../../constants";
+import { DEFAULT_SHAPE, SHAPE_TYPE } from "utils/constants";
 
 const Shape = (props) => {
 	const { shape, onClick, isSelected, onChange, onDragEnd, isLockBackGround } =
@@ -47,36 +55,20 @@ const Shape = (props) => {
 		return { x, y };
 	})(type);
 
-	const handleTransform = (e) => {
+	const handleTransform = async (e) => {
 		const node = shapeRef.current;
 
 		const scaleX = node.scaleX();
 		const scaleY = node.scaleY();
 
-		console.log("node ", shapeRef.current);
-		console.log("scaleX ", scaleX);
-		console.log("scaleY ", scaleY);
-		console.log("shape ", shape);
-
 		shape.width = width * scaleX;
 		shape.height = height * scaleY;
 		shape.rotation = node.rotation();
 
-		const values = {
-			// x: node.x(),
-			// y: node.y(),
-			width: width * scaleX,
-			height: height * scaleY,
-			rotation: node.rotation(),
-		};
-
-		console.log("new Shape: ", shape);
-
-		console.log("values: ", values);
-		node.scaleX(scaleX);
-		node.scaleY(scaleY);
-
 		onChange(shape);
+
+		node.scaleX(1);
+		node.scaleY(1);
 	};
 
 	const handleDragEnd = (e) => {
@@ -86,15 +78,6 @@ const Shape = (props) => {
 	};
 
 	const [image] = useImage(src);
-
-	console.log("===============================", {
-		_id,
-		type,
-		x,
-		y,
-		width,
-		height,
-	});
 
 	return (
 		<>
@@ -119,6 +102,16 @@ const Shape = (props) => {
 						<Circle
 							stroke="black"
 							radius={radius}
+							width={width}
+							height={height}
+							fill="#fff"
+						/>
+					)}
+
+					{type === SHAPE_TYPE.ellipse && (
+						<Ellipse
+							stroke="black"
+							radius={[radius, radius]}
 							width={width}
 							height={height}
 							fill="#fff"

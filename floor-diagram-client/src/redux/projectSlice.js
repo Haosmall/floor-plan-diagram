@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import buildingApi from "../api/buildingApi";
 
-const KEY = "project";
+const PREFIX = "project";
 
 export const fetchListProjectByBuilding = createAsyncThunk(
-	`${KEY}/fetchListProjectByBuilding`,
+	`${PREFIX}/fetchListProjectByBuilding`,
 	async (params, thunkApi) => {
 		const { id } = params;
 		const projects = await buildingApi.fetchListProjectsByBuildingId(id);
@@ -13,7 +13,7 @@ export const fetchListProjectByBuilding = createAsyncThunk(
 );
 
 const projectSlice = createSlice({
-	name: KEY,
+	name: PREFIX,
 	initialState: {
 		isLoading: false,
 		projects: [],

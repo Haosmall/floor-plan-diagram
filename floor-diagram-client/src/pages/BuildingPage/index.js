@@ -1,25 +1,22 @@
 import { Layout } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import Canvas from "components/Canvas";
+import DetailsSubMenu from "components/SubMenu/DetailsSubMenu";
+import FloorSubMenu from "components/SubMenu/FloorSubMenu";
+import FloorTopBar from "components/NavBar/FloorTopBar";
+import GroupSubMenu from "components/SubMenu/GroupSubMenu";
+import ProjectSubMenu from "components/SubMenu/ProjectSubMenu";
+import ToolBar from "components/NavBar/ToolBar";
+import UserBar from "components/NavBar/UserBar";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router";
-import Canvas from "../../components/Canvas";
-import DetailsSubMenu from "../../components/DetailsSubMenu";
-import FloorBottomBar from "../../components/FloorBottomBar";
-import FloorSubMenu from "../../components/FloorSubMenu";
-import FloorTopBar from "../../components/FloorTopBar";
-import GroupSubMenu from "../../components/GroupSubMenu";
-import ProjectSubMenu from "../../components/ProjectSubMenu";
-import ToolBar from "../../components/ToolBar";
-import UserBar from "../../components/UserBar";
-import { INITIAL_SHAPE, SHAPE_TYPE } from "../../constants";
-import {
-	fetchBuildingById,
-	fetchListBuildings,
-} from "../../redux/buildingSlice";
-import { fetchListFloorsByBuildingId } from "../../redux/floorSlice";
-import { fetchListGroupByBuilding } from "../../redux/groupSlice";
-import { fetchListProjectByBuilding } from "../../redux/projectSlice";
-import { fetchListUsers } from "../../redux/userSlice";
+import { fetchBuildingById, fetchListBuildings } from "redux/buildingSlice";
+import { fetchListFloorsByBuildingId } from "redux/floorSlice";
+import { fetchListGroupByBuilding } from "redux/groupSlice";
+import { fetchListProjectByBuilding } from "redux/projectSlice";
+import { setShape } from "redux/shapeSlice";
+import { fetchListUsers } from "redux/userSlice";
+import { INITIAL_SHAPE, SHAPE_TYPE } from "utils/constants";
 import "./style.scss";
 
 const BuildingPage = (props) => {
@@ -27,6 +24,7 @@ const BuildingPage = (props) => {
 	const { building, buildings, isError } = useSelector(
 		(state) => state.building
 	);
+	const { shape } = useSelector((state) => state.shape);
 
 	const { Sider } = Layout;
 
@@ -38,8 +36,6 @@ const BuildingPage = (props) => {
 	const [listShapes, setListShapes] = useState(INITIAL_SHAPE);
 	const [selectedShape, setSelectedShape] = useState(null);
 	const [isLockBackGround, setIsLockBackGround] = useState(false);
-
-	const stageRef = useRef(null);
 
 	const deleteShape = () => {
 		if (selectedShape !== null) {
@@ -63,37 +59,44 @@ const BuildingPage = (props) => {
 		dispatch(fetchListProjectByBuilding({ id }));
 	}, [id]);
 
+	const isBuildingAdmin = useMemo(() => {
+		if (!building) return;
+		if (building.admin === user._id) return true;
+		return false;
+	}, [building]);
+
+	const handleLockBackground = (isLock) => {
+		if (shape?.type === SHAPE_TYPE.image) {
+			dispatch(setShape({ _id: null }));
+		}
+		setIsLockBackGround(isLock);
+	};
+
 	if (isError) return <Navigate to="/error" />;
 	return (
 		<>
 			<Layout>
 				<Sider className="left-sider" width={255} theme="light">
 					<div className="building-title">{building?.name}</div>
-					<FloorSubMenu building={building} />
-					<GroupSubMenu building={building} />
-					<ProjectSubMenu building={building} />
+					<FloorSubMenu
+						building={building}
+						isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+					/>
+					<GroupSubMenu
+						building={building}
+						isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+					/>
+					<ProjectSubMenu
+						building={building}
+						isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+					/>
 					<DetailsSubMenu />
 				</Sider>
 
 				<Layout>
-					<FloorTopBar
-						buildings={buildings}
-						selectedShape={selectedShape}
-						deleteShape={deleteShape}
-						setListShapes={setListShapes}
-					/>
+					<FloorTopBar buildings={buildings} />
 
-					<Canvas
-						listShapes={listShapes}
-						setSelectedShape={setSelectedShape}
-						selectedShape={selectedShape}
-						// handleScaling={handleScaling}
-						// handleDragEnd={handleDragEnd}
-						isLockBackGround={isLockBackGround}
-						stageRef={stageRef}
-					/>
-
-					<FloorBottomBar floors={buildings?.floors} />
+					<Canvas isLockBackGround={isLockBackGround} />
 				</Layout>
 
 				<Sider theme="light">
@@ -101,7 +104,7 @@ const BuildingPage = (props) => {
 						<UserBar name={user.name} />
 					</div>
 					<ToolBar
-						onLockBackGround={setIsLockBackGround}
+						onLockBackGround={handleLockBackground}
 						isLockBackGround={isLockBackGround}
 					/>
 				</Sider>

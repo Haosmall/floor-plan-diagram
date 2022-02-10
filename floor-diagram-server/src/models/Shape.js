@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const shapeSchema = new Schema(
 	{
-		type: { type: String, required: true },
+		type: { type: String, required: true, default: "rect" },
 		width: { type: Number, required: true, default: 150 },
 		height: { type: Number, required: true, default: 100 },
 		fill: { type: String },

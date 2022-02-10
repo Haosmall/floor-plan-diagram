@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import authApi from "../../api/authApi";
 import { useDispatch } from "react-redux";
-import { fetchUserProfile, setLogin } from "../../redux/userSlice";
 import "./style.scss";
+import authApi from "api/authApi";
+import { fetchUserProfile, setLogin } from "redux/userSlice";
 
 const LoginForm = (props) => {
 	const { isRegister } = props;

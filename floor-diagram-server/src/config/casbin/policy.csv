@@ -1,4 +1,21 @@
 p, admin, /*, *
 p, anonymous, /auth/*, POST
-p, member, /auth/*, POST
-p, member, /users/me, GET
+
+p, member, /users/*, GET
+p, member, /buildings/*, GET
+p, member, /floor/*, GET
+p, member, /groups/*, GET
+p, member, /projects/*, GET
+p, member, /shape/*, (GET)|(POST)|(PUT)|(DELETE)|(PATCH)
+
+p, building-admin, /users/*, GET
+p, building-admin, /buildings/*, GET
+p, building-admin, /floor/*, (GET)|(POST)|(PUT)|(DELETE)
+p, building-admin, /groups/*, (GET)|(POST)|(PUT)|(DELETE)
+p, building-admin, /projects/*, (GET)|(POST)|(PUT)|(DELETE)
+p, building-admin, /shape/*, (GET)|(POST)|(PUT)|(DELETE)|(PATCH)
+
+p, floor-admin, /users/*, GET
+p, floor-admin, /buildings/*, GET
+p, floor-admin, /floor/*, (GET)|(PUT)
+p, floor-admin, /shape/*, (GET)|(POST)|(PUT)|(DELETE)|(PATCH)
