@@ -3,10 +3,10 @@ import { Button, Form, Input, message, Modal, Select } from "antd";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import floorApi from "../../api/floorApi";
-import { INITIAL_FLOOR, ROLE } from "../../utils/constants";
-import { addNewFloor, updateFloor } from "../../redux/floorSlice";
-import { fetchListUsers } from "../../redux/userSlice";
+import floorApi from "../../../api/floorApi";
+import { INITIAL_FLOOR, ROLE } from "../../../utils/constants";
+import { addNewFloor, updateFloor } from "../../../redux/floorSlice";
+import { fetchListUsers } from "../../../redux/userSlice";
 
 const FloorModal = (props) => {
 	const { visible, onCancel, initialValues, isAddMode, title, buildingId } =
@@ -29,6 +29,7 @@ const FloorModal = (props) => {
 		const values = await form.validateFields();
 		console.log(values);
 		const { name, admin, users } = values;
+
 		try {
 			if (isAddMode) {
 				const response = await floorApi.addFloor(
@@ -126,7 +127,26 @@ const FloorModal = (props) => {
 					</Select>
 				</Form.Item>
 
-				<Form.List name="users">
+				<Form.Item
+					label="Users"
+					name="users"
+					rules={[
+						{
+							required: true,
+							message: "Select users!",
+						},
+					]}
+				>
+					<Select mode="multiple" allowClear placeholder="Please select users">
+						{users?.map((user) => (
+							<Option key={user._id} value={user._id}>
+								{user.name}
+							</Option>
+						))}
+					</Select>
+				</Form.Item>
+
+				{/* <Form.List name="users">
 					{(fields, { add, remove }, { errors }) => (
 						<>
 							{fields.map(({ key, name, ...field }, index) => {
@@ -203,7 +223,7 @@ const FloorModal = (props) => {
 							</Form.Item>
 						</>
 					)}
-				</Form.List>
+				</Form.List> */}
 			</Form>
 		</Modal>
 	);

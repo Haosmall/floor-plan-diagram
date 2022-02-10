@@ -2,9 +2,9 @@ import { Form, Input, message, Modal, Select } from "antd";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import projectApi from "../../api/projectApi";
-import { INITIAL_PROJECT } from "../../utils/constants";
-import { addNewProject, updateProject } from "../../redux/projectSlice";
+import projectApi from "../../../api/projectApi";
+import { INITIAL_PROJECT } from "../../../utils/constants";
+import { addNewProject, updateProject } from "../../../redux/projectSlice";
 
 const ProjectModal = (props) => {
 	const { visible, onCancel, initialValues, isAddMode, title, buildingId } =

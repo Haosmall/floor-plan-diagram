@@ -9,17 +9,17 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import floorApi from "../../api/floorApi";
-import shapeApi from "../../api/shapeApi";
-import { deleteFloor, setFloor } from "../../redux/floorSlice";
+import floorApi from "../../../api/floorApi";
+import shapeApi from "../../../api/shapeApi";
+import { deleteFloor, setFloor } from "../../../redux/floorSlice";
 import {
 	fetchListShapeByFloor,
 	resetShapeState,
 	resetTempShapeState,
-} from "../../redux/shapeSlice";
-import commonUtils from "../../utils/commonUtils";
-import { INITIAL_FLOOR } from "../../utils/constants";
-import FloorModal from "../FloorModal";
+} from "../../../redux/shapeSlice";
+import commonUtils from "../../../utils/commonUtils";
+import { INITIAL_FLOOR } from "../../../utils/constants";
+import FloorModal from "../../Modal/FloorModal";
 import "./style.scss";
 
 const FloorSubMenu = (props) => {
@@ -62,11 +62,14 @@ const FloorSubMenu = (props) => {
 	const showUpdateFloorModal = (e, id) => {
 		e.stopPropagation();
 		const floor = floors.find((ele) => ele._id === id);
+
+		const users = floor.users.map((ele) => ele.userId);
+
 		setIsAddFloor(false);
 		setIsFloorModalVisible(true);
-		setSelectedFloor(floor);
+		setSelectedFloor({ ...floor, users });
 
-		// console.log({ floor });
+		console.log({ floor });
 	};
 
 	const handleSelectFloor = async (floorId) => {

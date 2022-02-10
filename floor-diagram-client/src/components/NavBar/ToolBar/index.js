@@ -2,14 +2,14 @@ import { Button, Checkbox, message } from "antd";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import shapeApi from "../../api/shapeApi";
+import shapeApi from "../../../api/shapeApi";
 import {
 	SHAPE_TYPE,
 	DEFAULT_SHAPE,
 	DRAG_DATA_KEY,
-} from "../../utils/constants";
-import { addNewShape } from "../../redux/shapeSlice";
-import UploadImageModal from "../UploadImageModal";
+} from "../../../utils/constants";
+import { addNewShape } from "../../../redux/shapeSlice";
+import UploadImageModal from "../../Modal/UploadImageModal";
 import "./style.scss";
 
 const ToolBar = (props) => {

@@ -8,11 +8,11 @@ import { Button, Menu, message } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import projectApi from "../../api/projectApi";
-import { ACTION_TYPE, INITIAL_PROJECT } from "../../utils/constants";
-import { deleteProject } from "../../redux/projectSlice";
-import commonUtils from "../../utils/commonUtils";
-import ProjectModal from "../ProjectModal";
+import projectApi from "../../../api/projectApi";
+import { ACTION_TYPE, INITIAL_PROJECT } from "../../../utils/constants";
+import { deleteProject } from "../../../redux/projectSlice";
+import commonUtils from "../../../utils/commonUtils";
+import ProjectModal from "../../Modal/ProjectModal";
 import "./style.scss";
 import { fetchListShapeByProject } from "redux/shapeSlice";
 

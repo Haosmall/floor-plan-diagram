@@ -19,7 +19,7 @@ test("Should add valid floor", async () => {
 			name: "floor 3",
 			admin: CACHE_VALUE.userId2,
 			buildingId: CACHE_VALUE.buildingId2,
-			users: [{ userId: CACHE_VALUE.userId1, role: "member" }],
+			users: [CACHE_VALUE.userId1],
 		})
 		.query({ buildingId: CACHE_VALUE.buildingId2 })
 		.set("Authorization", `Bearer ${CACHE_VALUE.tokenUser2}`)
@@ -36,7 +36,7 @@ test("Should add invalid floor", async () => {
 			name: "floor 3",
 			admin: CACHE_VALUE.userId2,
 			buildingId: "wrong-building-id",
-			users: [{ userId: CACHE_VALUE.userId1, role: "member" }],
+			users: [CACHE_VALUE.userId1],
 		})
 		.set("Authorization", `Bearer ${CACHE_VALUE.tokenUser2}`)
 		.expect(400);
@@ -49,7 +49,7 @@ test("Should update valid floor", async () => {
 			name: "floor 3",
 			admin: CACHE_VALUE.userId1,
 			buildingId: CACHE_VALUE.buildingId2,
-			users: [{ userId: CACHE_VALUE.userId1, role: "member" }],
+			users: [CACHE_VALUE.userId1],
 		})
 		.query({ buildingId: CACHE_VALUE.buildingId2 })
 		.set("Authorization", `Bearer ${CACHE_VALUE.tokenUser2}`)
@@ -63,7 +63,7 @@ test("Should update invalid floor", async () => {
 			name: "floor 3",
 			admin: CACHE_VALUE.userId2,
 			buildingId: "wrong-building-id",
-			users: [{ userId: CACHE_VALUE.userId1, role: "member" }],
+			users: [CACHE_VALUE.userId1],
 		})
 		.query({ buildingId: CACHE_VALUE.buildingId2 })
 		.set("Authorization", `Bearer ${CACHE_VALUE.tokenUser2}`)

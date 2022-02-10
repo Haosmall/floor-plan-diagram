@@ -4,16 +4,16 @@ import PropTypes from "prop-types";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import shapeApi from "../../api/shapeApi";
-import { useDisable } from "../../hooks";
-import { setFloor } from "../../redux/floorSlice";
+import shapeApi from "../../../api/shapeApi";
+import { useDisable } from "../../../hooks";
+import { setFloor } from "../../../redux/floorSlice";
 import {
 	deleteShape,
 	resetShape,
 	resetShapeState,
 	resetTempShapeState,
 	setListOriginalShapes,
-} from "../../redux/shapeSlice";
+} from "../../../redux/shapeSlice";
 import "./style.scss";
 
 const FloorTopBar = (props) => {

@@ -8,12 +8,12 @@ import { Button, Menu, message } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import groupApi from "../../api/groupApi";
-import { INITIAL_GROUP } from "../../utils/constants";
-import { deleteGroup } from "../../redux/groupSlice";
-import { fetchListProjectByBuilding } from "../../redux/projectSlice";
-import commonUtils from "../../utils/commonUtils";
-import GroupModal from "../GroupModal";
+import groupApi from "../../../api/groupApi";
+import { INITIAL_GROUP } from "../../../utils/constants";
+import { deleteGroup } from "../../../redux/groupSlice";
+import { fetchListProjectByBuilding } from "../../../redux/projectSlice";
+import commonUtils from "../../../utils/commonUtils";
+import GroupModal from "../../Modal/GroupModal";
 import "./style.scss";
 import { fetchListShapeByGroup } from "redux/shapeSlice";
 

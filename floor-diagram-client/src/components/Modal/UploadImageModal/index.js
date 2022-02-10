@@ -2,15 +2,15 @@ import { Form, Input, message, Modal, Select } from "antd";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import projectApi from "../../api/projectApi";
-import shapeApi from "../../api/shapeApi";
-import { INITIAL_PROJECT } from "../../utils/constants";
-import { addNewProject, updateProject } from "../../redux/projectSlice";
+import projectApi from "../../../api/projectApi";
+import shapeApi from "../../../api/shapeApi";
+import { INITIAL_PROJECT } from "../../../utils/constants";
+import { addNewProject, updateProject } from "../../../redux/projectSlice";
 import {
 	addNewShape,
 	updateImageShape,
 	updateShape,
-} from "../../redux/shapeSlice";
+} from "../../../redux/shapeSlice";
 
 const UploadImageModal = (props) => {
 	const { visible, onCancel, isAddMode, title } = props;

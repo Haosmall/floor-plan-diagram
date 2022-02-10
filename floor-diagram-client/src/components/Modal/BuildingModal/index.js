@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Modal, Button, Form, Input, Select } from "antd";
 import { useSelector } from "react-redux";
-import { INITIAL_BUILDING } from "../../utils/constants";
+import { INITIAL_BUILDING } from "../../../utils/constants";
 
 const BuildingModal = (props) => {
 	const { visible, onCancel, onSubmit, initialValues, isAddMode, title } =

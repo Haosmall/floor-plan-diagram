@@ -7,8 +7,8 @@ import { Button, Form, Input, Menu, Select } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { getProjectsByGroup } from "../../redux/projectSlice";
-import { updateShapeDetails } from "../../redux/shapeSlice";
+import { getProjectsByGroup } from "../../../redux/projectSlice";
+import { updateShapeDetails } from "../../../redux/shapeSlice";
 import "./style.scss";
 
 const DetailsSubMenu = (props) => {

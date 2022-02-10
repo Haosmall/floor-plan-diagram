@@ -7,9 +7,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import buildingApi from "../../api/buildingApi";
-import BuildingModal from "../../components/BuildingModal";
+import BuildingModal from "../../components/Modal/BuildingModal";
 import BuildingTable from "../../components/BuildingTable";
-import UserBar from "../../components/UserBar";
+import UserBar from "../../components/NavBar/UserBar";
 import { INITIAL_BUILDING } from "../../utils/constants";
 import {
 	fetchListBuildings,

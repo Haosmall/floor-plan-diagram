@@ -56,7 +56,7 @@ const addFloor = async () => {
 	const floor = new Floor({
 		name: "floor 1",
 		admin: CACHE_VALUE.userId1,
-		users: [{ userId: CACHE_VALUE.userId2, role: "member" }],
+		users: [CACHE_VALUE.userId2],
 		buildingId: CACHE_VALUE.buildingId2,
 	});
 	await floor.save();
@@ -64,7 +64,7 @@ const addFloor = async () => {
 	const floor2 = new Floor({
 		name: "floor 2",
 		admin: CACHE_VALUE.userId2,
-		users: [{ userId: CACHE_VALUE.userId1, role: "member" }],
+		users: [CACHE_VALUE.userId1],
 		buildingId: CACHE_VALUE.buildingId2,
 	});
 	await floor2.save();

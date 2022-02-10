@@ -65,7 +65,7 @@ const INITIAL_BUILDING = {
 const INITIAL_FLOOR = {
 	name: "New floor",
 	admin: "",
-	users: [undefined],
+	users: [],
 };
 
 const INITIAL_GROUP = {

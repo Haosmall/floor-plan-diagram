@@ -2,9 +2,9 @@ import { Form, Input, message, Modal } from "antd";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import groupApi from "../../api/groupApi";
-import { INITIAL_GROUP } from "../../utils/constants";
-import { addNewGroup, updateGroup } from "../../redux/groupSlice";
+import groupApi from "../../../api/groupApi";
+import { INITIAL_GROUP } from "../../../utils/constants";
+import { addNewGroup, updateGroup } from "../../../redux/groupSlice";
 
 const GroupModal = (props) => {
 	const { visible, onCancel, initialValues, isAddMode, title, buildingId } =
