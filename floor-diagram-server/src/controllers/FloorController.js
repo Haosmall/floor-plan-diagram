@@ -35,8 +35,8 @@ class FloorController {
 	// [GET] /floor/:id
 	async getFloorById(req, res, next) {
 		try {
-			// const response = await floorService.getBuildingById(req.params.id);
-			// res.status(201).json(response);
+			const response = await floorService.getFloorById(req.params.id);
+			res.status(200).json(response);
 		} catch (err) {
 			next(err);
 		}

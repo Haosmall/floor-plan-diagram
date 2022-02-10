@@ -4,17 +4,10 @@ const request = require("supertest");
 const mongoose = require("mongoose");
 const tokenUtils = require("../utils/tokenUtils");
 const { ADMIN, USER, CACHE_VALUE } = require("../utils/constants");
+const importData = require("../utils/importData");
 
 beforeAll(async () => {
-	await User.deleteMany();
-	const user = new User(ADMIN);
-	await user.save();
-
-	const user2 = new User(USER);
-	await user2.save();
-
-	CACHE_VALUE.userId1 = user._id.toString();
-	CACHE_VALUE.userId2 = user2._id.toString();
+	await importData();
 });
 
 test("Should signup a new user", async () => {

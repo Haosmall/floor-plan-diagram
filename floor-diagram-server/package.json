@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "nodemon src/index.js dotenv/config dotenv -e .env",
-		"test": "NODE_ENV=test jest --forceExit --watchAll --runInBand --setupFiles dotenv/config dotenv -e .env"
+		"test": "NODE_ENV=test DATABASE_NAME=floor-diagram-db-test jest --forceExit --coverage --verbose --watchAll --runInBand --setupFiles dotenv/config dotenv -e .env"
 	},
 	"keywords": [],
 	"author": "",

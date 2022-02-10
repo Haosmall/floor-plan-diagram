@@ -5,31 +5,10 @@ const mongoose = require("mongoose");
 const tokenUtils = require("../utils/tokenUtils");
 const Building = require("../models/Building");
 const { ADMIN, USER, CACHE_VALUE } = require("../utils/constants");
+const importData = require("../utils/importData");
 
 beforeAll(async () => {
-	await Building.deleteMany();
-
-	CACHE_VALUE.tokenUser2 = await tokenUtils.generateToken(
-		{ _id: CACHE_VALUE.userId1 },
-		process.env.JWT_LIFE_ACCESS_TOKEN
-	);
-
-	const building = new Building({
-		name: "building 1",
-		admin: CACHE_VALUE.userId1,
-	});
-	await building.save();
-
-	const building2 = new Building({
-		name: "building 2",
-		admin: CACHE_VALUE.userId2,
-	});
-	await building2.save();
-
-	CACHE_VALUE.buildingId1 = building._id.toString();
-	CACHE_VALUE.buildingId2 = building2._id.toString();
-
-	console.log({ CACHE_VALUE });
+	await importData();
 });
 
 test("Should get list building by admin", async () => {

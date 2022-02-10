@@ -63,33 +63,33 @@ const getUserRole = async (req) => {
 };
 
 const isBuildingAdmin = async (buildingId, userId) => {
-	const { admin } = await Building.findById(buildingId);
+	const building = await Building.findById(buildingId);
 
-	return admin.toString() === userId;
+	return building?.admin.toString() === userId;
 };
 
 const getRoleByFloorId = async (floorId, userId) => {
-	const { admin, buildingId } = await Floor.findById(floorId);
+	const floor = await Floor.findById(floorId);
 
-	if (isBuildingAdmin(buildingId, userId)) return ROLE.buildingAdmin;
+	if (isBuildingAdmin(floor?.buildingId, userId)) return ROLE.buildingAdmin;
 
-	if (admin.toString() === userId) return ROLE.floorAdmin;
+	if (floor?.admin.toString() === userId) return ROLE.floorAdmin;
 
 	return "";
 };
 
 const getRoleByGroupId = async (groupId) => {
-	const { buildingId } = await Group.findById(groupId);
+	const building = await Group.findById(groupId);
 
-	if (isBuildingAdmin(buildingId)) return ROLE.buildingAdmin;
+	if (isBuildingAdmin(building?.buildingId)) return ROLE.buildingAdmin;
 
 	return "";
 };
 
 const getRoleByProjectId = async (projectId) => {
-	const { groupId } = await Project.findById(projectId);
+	const group = await Project.findById(projectId);
 
-	return await getRoleByGroupId(groupId);
+	return await getRoleByGroupId(group?.groupId);
 };
 
 module.exports = casbinAuth;

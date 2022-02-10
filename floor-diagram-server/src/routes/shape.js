@@ -10,7 +10,7 @@ const shapeRouter = () => {
 	router.post("", shapeController.addShape);
 	router.delete("", shapeController.deleteManyShape);
 	router.put("", shapeController.updateManyShape);
-	router.put("/:id", shapeController.deleteShape);
+	router.put("/:id", shapeController.updateShape);
 	router.delete("/:id", shapeController.deleteShape);
 	router.patch(
 		"/:id/back-ground",

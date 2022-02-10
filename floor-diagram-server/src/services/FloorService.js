@@ -151,6 +151,10 @@ class FloorService {
 		await UserPlace.deleteMany({ floorId: ObjectId(_id) });
 		await Shape.deleteMany({ floorId: ObjectId(_id) });
 	}
+
+	async getFloorById(_id) {
+		return await Floor.findById(_id);
+	}
 }
 
 module.exports = new FloorService();
