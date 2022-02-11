@@ -168,6 +168,7 @@ const shapeSlice = createSlice({
 				: (state.listShapesUpdate[updateIndex] = newShape);
 
 			state.shapes[index] = newShape;
+			state.shape = newShape;
 		},
 	},
 
