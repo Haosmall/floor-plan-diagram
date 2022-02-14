@@ -2,7 +2,7 @@
 
 ## Deploy with Docker
 
-- Install Docker: `https://docs.docker.com/engine/install/ubuntu/`
+- Install Docker: [https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/).
 - Clone repository: `git clone https://github.com/Haosmall/floor-plan-diagram.git`
 - Provide ENV for blanks in file docker-compose.yml
 - Run: `docker-compose up -d`
