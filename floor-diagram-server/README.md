@@ -30,6 +30,8 @@ Start server:
 
 - `[GET] /`: get list buildings.
 
+  - params: { name: String (Optional) }
+
 - `[POST] /`: add new building.
 
   - body: {name: String, admin: String}.

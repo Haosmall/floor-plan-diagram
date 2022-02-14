@@ -9,6 +9,7 @@ const BucketName = process.env.AWS_BUCKET_NAME;
 const region = process.env.AWS_BUCKET_REGION;
 const accessKeyId = process.env.AWS_ACCESS_KEY;
 const secretAccessKey = process.env.AWS_SECRET_KEY;
+const bucketPath = process.env.AWS_NAME_PATH;
 
 const s3 = new S3({
 	region,
@@ -25,7 +26,7 @@ class AwsS3Service {
 		const uploadParams = {
 			Bucket: bucketName,
 			Body: fileStream,
-			Key: `${Date.now()}-${file.originalname}`,
+			Key: `${bucketPath}/${Date.now()}-${file.originalname}`,
 		};
 
 		const { mimetype } = file;

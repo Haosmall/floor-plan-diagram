@@ -3,6 +3,7 @@ const multer = require("multer");
 const routes = require("./routes");
 const db = require("./config/db");
 const handleErr = require("./middlewares/handleErr");
+const path = require("path");
 // require("dotenv").config({ path: __dirname + "/.env" });
 
 const cors = require("cors");
@@ -22,6 +23,8 @@ routes(app);
 db.connect();
 
 const SERVER_PORT = process.env.SERVER_PORT || 5000;
+
+app.use(express.static("public"));
 
 if (process.env.NODE_ENV !== "test") {
 	app.listen(SERVER_PORT, () => {

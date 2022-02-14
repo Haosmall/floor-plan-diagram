@@ -13,6 +13,17 @@ class UserService {
 		if (!user) throw new Error("User not found");
 		return user;
 	}
+
+	async searchUserByName(name) {
+		const users = await User.aggregate([
+			{
+				$match: {
+					name: { $regex: name, $options: "i" },
+				},
+			},
+		]);
+		return users;
+	}
 }
 
 module.exports = new UserService();
