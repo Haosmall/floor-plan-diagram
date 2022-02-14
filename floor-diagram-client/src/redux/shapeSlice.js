@@ -81,6 +81,7 @@ const shapeSlice = createSlice({
 				: (state.listShapesUpdate[updateIndex] = shape);
 
 			state.shapes[index] = shape;
+			state.shape = shape;
 		},
 
 		updateImageShape: (state, action) => {
