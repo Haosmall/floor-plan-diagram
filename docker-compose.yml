@@ -25,9 +25,9 @@ services:
     environment:
       MAX_IMAGE_UPLOAD_SIZE: 20971520
       SERVER_PORT: 5000
-      FRONT_END_URL: http://localhost:3000
-      MONGODB_URL: mongodb://localhost:27017/floor-diagram-db
-      DATABASE_HOST: localhost
+      FRONT_END_URL: your-domain
+      MONGODB_URL: mongodb://mongo-database:27017/floor-diagram-db
+      DATABASE_HOST: mongo-database
       DATABASE_PORT: 27017
       DATABASE_NAME: floor-diagram-db
       JWT_KEY:
@@ -55,7 +55,8 @@ services:
     build:
       context: ./floor-diagram-client
       args:
-        - REACT_APP_API_URL=
+        #- REACT_APP_API_URL=http://floor-plan-diagram.xyz/api
+        - REACT_APP_API_URL= http://your-domain/api
     networks:
       - floor-diagram
 
