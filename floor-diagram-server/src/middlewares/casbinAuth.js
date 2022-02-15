@@ -10,7 +10,6 @@ const Project = require("../models/Project");
 const casbinAuth = async (req, res, next) => {
 	const __dirname = path.resolve();
 
-	console.log({ __dirname });
 	const enforcer = await newEnforcer(
 		path.join(__dirname, "src", "config", "casbin", "model.conf"),
 		path.join(__dirname, "src", "config", "casbin", "policy.csv")
