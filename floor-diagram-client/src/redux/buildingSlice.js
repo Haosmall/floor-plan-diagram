@@ -6,7 +6,7 @@ const PREFIX = "building";
 export const fetchListBuildings = createAsyncThunk(
 	`${PREFIX}/fetchListBuildings`,
 	async (params, thunkApi) => {
-		const buildings = await buildingApi.fetchListBuildings();
+		const buildings = await buildingApi.fetchListBuildings(params?.name);
 		return buildings;
 	}
 );

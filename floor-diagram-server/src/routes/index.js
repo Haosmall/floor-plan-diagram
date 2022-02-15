@@ -1,5 +1,5 @@
-const casbinAuth = require("../middlewares/casbinAuth");
-const auth = require("../middlewares/auth");
+const casbinAuth = require("../middleware/casbinAuth");
+const auth = require("../middleware/auth");
 const authRouter = require("./auth");
 const userRouter = require("./user");
 const buildingRouter = require("./building");

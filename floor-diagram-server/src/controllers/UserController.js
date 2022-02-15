@@ -5,7 +5,7 @@ class UserController {
 	// [GET] /users
 	async getListUser(req, res, next) {
 		try {
-			const response = await userService.getListUsers();
+			const response = await userService.getListUsers(req.query.name || "");
 			res.status(200).json(response);
 		} catch (err) {
 			// console.log(err);

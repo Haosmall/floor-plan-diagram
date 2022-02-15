@@ -96,6 +96,11 @@ class BuildingService {
 						admin: { _id: "$admin._id", name: "$admin.name" },
 					},
 				},
+				{
+					$match: {
+						name: { $regex: name, $options: "i" },
+					},
+				},
 			]);
 
 			const listBuildingByAdmin = await Building.aggregate([
@@ -124,6 +129,11 @@ class BuildingService {
 						_id: 1,
 						name: 1,
 						admin: { _id: "$admin._id", name: "$admin.name" },
+					},
+				},
+				{
+					$match: {
+						name: { $regex: name, $options: "i" },
 					},
 				},
 			]);

@@ -14,7 +14,7 @@ export const fetchUserProfile = createAsyncThunk(
 export const fetchListUsers = createAsyncThunk(
 	`${PREFIX}/fetchListUsers`,
 	async (params, thunkApi) => {
-		const users = await userApi.fetchListUsers();
+		const users = await userApi.fetchListUsers(params?.name);
 		return users;
 	}
 );

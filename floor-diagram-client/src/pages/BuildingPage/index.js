@@ -49,9 +49,7 @@ const BuildingPage = (props) => {
 	};
 
 	useEffect(() => {
-		if (buildings.length <= 0) {
-			dispatch(fetchListBuildings());
-		}
+		dispatch(fetchListBuildings());
 		dispatch(fetchListUsers());
 		dispatch(fetchBuildingById({ id }));
 		dispatch(fetchListFloorsByBuildingId({ id }));
