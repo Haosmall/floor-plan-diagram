@@ -43,8 +43,8 @@ class AwsS3Service {
 		try {
 			const { Location, Key } = await s3.upload(uploadParams).promise();
 
-			return `${hostName}/${bucketName}/${Key}`;
-			// return Location;
+			if (hostName?.length > 0) return `${hostName}/${bucketName}/${Key}`;
+			return Location;
 		} catch (err) {
 			console.log("err: ", err);
 			throw new Error("Upload file Aws S3 failed");

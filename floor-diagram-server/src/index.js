@@ -26,6 +26,10 @@ const SERVER_PORT = process.env.SERVER_PORT || 5000;
 
 app.use(express.static("public"));
 
+app.use((req, res, next) => {
+	res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+});
+
 if (process.env.NODE_ENV !== "test") {
 	app.listen(SERVER_PORT, () => {
 		// console.log(`Server is running on port ${SERVER_PORT}`)
