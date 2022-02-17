@@ -27,7 +27,6 @@ const FloorModal = (props) => {
 
 	const handleSubmit = async () => {
 		const values = await form.validateFields();
-		console.log(values);
 		const { name, admin, users } = values;
 
 		try {
@@ -53,7 +52,7 @@ const FloorModal = (props) => {
 			}
 			message.success(`${isAddMode ? "Add" : "Update"} floor successfully`);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			message.error("An error has occurred");
 		}
 		handleCancel();
@@ -84,6 +83,7 @@ const FloorModal = (props) => {
 			onOk={handleSubmit}
 			onCancel={handleCancel}
 			okText="Save"
+			forceRender
 		>
 			<Form
 				labelCol={{
@@ -150,7 +150,6 @@ const FloorModal = (props) => {
 					{(fields, { add, remove }, { errors }) => (
 						<>
 							{fields.map(({ key, name, ...field }, index) => {
-								console.log({ name });
 								return (
 									<Form.Item
 										{...(index === 0

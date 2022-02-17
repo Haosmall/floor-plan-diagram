@@ -13,7 +13,7 @@ const commonUtils = {
 				try {
 					callback();
 				} catch (error) {
-					console.log(error);
+					console.error(error);
 					message.error("An error has occurred");
 				}
 			},

@@ -24,3 +24,14 @@
 		display: none;
 	}
 }
+
+.ant-menu-item .ant-menu-item-disabled .ant-menu-item-only-child .details-form {
+}
+#details-sub-menu {
+	.ant-menu-item {
+		height: auto;
+	}
+	.details-form {
+		margin-left: 0px;
+	}
+}

@@ -17,7 +17,6 @@ const GroupModal = (props) => {
 
 	const handleSubmit = async () => {
 		const values = await form.validateFields();
-		console.log(values);
 		const { title } = values;
 		try {
 			if (isAddMode) {
@@ -25,8 +24,6 @@ const GroupModal = (props) => {
 
 				dispatch(addNewGroup({ group: response }));
 			} else {
-				console.log("initialValues._id", initialValues._id);
-
 				const response = await groupApi.updateGroup(
 					initialValues._id,
 					title,
@@ -37,7 +34,7 @@ const GroupModal = (props) => {
 			}
 			message.success(`${isAddMode ? "Add" : "Update"} group successfully`);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			message.error("An error has occurred");
 		}
 		handleCancel();
@@ -57,6 +54,7 @@ const GroupModal = (props) => {
 			onOk={handleSubmit}
 			onCancel={handleCancel}
 			okText="Save"
+			forceRender
 		>
 			<Form
 				labelCol={{

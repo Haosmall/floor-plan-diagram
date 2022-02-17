@@ -39,10 +39,8 @@ const BuildingPage = (props) => {
 
 	const deleteShape = () => {
 		if (selectedShape !== null) {
-			console.log(selectedShape);
 			const newList = listShapes.filter((_, index) => index !== selectedShape);
 
-			console.log(newList);
 			setListShapes(newList);
 			setSelectedShape(null);
 		}

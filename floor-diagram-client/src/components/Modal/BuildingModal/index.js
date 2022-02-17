@@ -35,6 +35,7 @@ const BuildingModal = (props) => {
 			onOk={handleSubmit}
 			onCancel={handleCancel}
 			okText="Save"
+			forceRender
 		>
 			<Form
 				labelCol={{

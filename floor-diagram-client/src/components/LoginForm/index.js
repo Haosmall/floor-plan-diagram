@@ -19,7 +19,6 @@ const LoginForm = (props) => {
 			localStorage.setItem("token", token);
 		} catch (error) {
 			const { response } = error;
-			console.log(response.data);
 			message.error(response.data.message);
 		}
 		await dispatch(fetchUserProfile());

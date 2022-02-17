@@ -73,7 +73,6 @@ const Shape = (props) => {
 
 	const handleDragEnd = (e) => {
 		const { x, y } = e.target.attrs;
-		console.log("gr: ", e.target.attrs);
 		onDragEnd(x, y);
 	};
 
@@ -96,7 +95,6 @@ const Shape = (props) => {
 					{type === SHAPE_TYPE.rect && (
 						<Rect stroke="black" width={width} height={height} fill="#fff" />
 					)}
-					{console.log({ width, height })}
 
 					{type === SHAPE_TYPE.circle && (
 						<Circle

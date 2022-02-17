@@ -2,7 +2,7 @@ version: "3"
 
 services:
   mongo-database:
-    image: mongo
+    image: mongo:4
     container_name: mongo-database
     restart: on-failure:5
     volumes:

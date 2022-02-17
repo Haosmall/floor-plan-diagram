@@ -43,7 +43,6 @@ const FloorLeftBar = (props) => {
 
 			case ACTION_TYPE.group:
 				const group = groups.find((ele) => ele._id === id);
-				console.log("ACTION_TYPE.group ", group);
 				onEditGroup(group);
 				break;
 

@@ -55,7 +55,7 @@ const HomePage = (props) => {
 
 			message.success(`${isAddMode ? "Add" : "Update"} building successfully`);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			message.error("An error has occurred");
 		}
 	};
