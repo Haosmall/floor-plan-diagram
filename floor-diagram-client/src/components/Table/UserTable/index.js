@@ -21,11 +21,11 @@ const UserTable = (props) => {
 			pagination={false}
 			rowKey={(record) => record._id}
 			scroll={{ y: 600 }}
-			// onRow={(record, rowIndex) => {
-			// 	return {
-			// 		onClick: () => handleOnSelect(record._id),
-			// 	};
-			// }}
+			onRow={(record, rowIndex) => {
+				return {
+					onClick: () => handleOnSelect(record._id),
+				};
+			}}
 		>
 			<Column
 				width={80}

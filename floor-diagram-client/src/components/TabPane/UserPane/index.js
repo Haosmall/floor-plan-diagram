@@ -1,10 +1,8 @@
 import { Col, Input, Row } from "antd";
-import BuildingTable from "components/Table/BuildingTable";
 import UserTable from "components/Table/UserTable";
 import PropTypes from "prop-types";
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { fetchListBuildings } from "redux/buildingSlice";
 import { fetchListUsers } from "redux/userSlice";
 
 const UserPane = (props) => {
@@ -43,7 +41,7 @@ const UserPane = (props) => {
 	);
 };
 
-UserPane.propTypes = { users: PropTypes.array };
-UserPane.defaultProps = { users: [] };
+UserPane.propTypes = { users: PropTypes.array, onSelect: PropTypes.func };
+UserPane.defaultProps = { users: [], onSelect: null };
 
 export default UserPane;

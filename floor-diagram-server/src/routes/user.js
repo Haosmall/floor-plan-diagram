@@ -4,7 +4,9 @@ const router = express.Router();
 
 const userRouter = () => {
 	router.get("/", userController.getListUser);
+	router.get("/:id", userController.getListUserPlacesByUserId);
 	router.get("/me", userController.getUserById);
+
 	return router;
 };
 

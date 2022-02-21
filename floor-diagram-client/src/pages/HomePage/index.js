@@ -3,6 +3,7 @@ import buildingApi from "api/buildingApi";
 import BuildingModal from "components/Modal/BuildingModal";
 import UserBar from "components/NavBar/UserBar";
 import BuildingPane from "components/TabPane/BuildingPane";
+import UserPane from "components/TabPane/UserPane";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -75,8 +76,12 @@ const HomePage = (props) => {
 		});
 	};
 
-	const handleSelect = (buildingId) => {
+	const handleSelectBuilding = (buildingId) => {
 		navigate(`/buildings/${buildingId}`);
+	};
+
+	const handleSelectUser = (userId) => {
+		console.log({ userId });
 	};
 
 	const { TabPane } = Tabs;
@@ -88,13 +93,30 @@ const HomePage = (props) => {
 					<UserBar name={user.name} />
 				</Header>
 				<Content id="home-content">
-					<BuildingPane
-						buildings={buildings}
-						onAdd={handleOnClickAdd}
-						onEdit={handleEdit}
-						onDelete={handleDelete}
-						onSelect={handleSelect}
-					/>
+					{user.isAdmin ? (
+						<Tabs defaultActiveKey="1">
+							<TabPane tab="Buildings" key="1">
+								<BuildingPane
+									buildings={buildings}
+									onAdd={handleOnClickAdd}
+									onEdit={handleEdit}
+									onDelete={handleDelete}
+									onSelect={handleSelectBuilding}
+								/>
+							</TabPane>
+							<TabPane tab="Users" key="2">
+								<UserPane users={users} onSelect={handleSelectUser} />
+							</TabPane>
+						</Tabs>
+					) : (
+						<BuildingPane
+							buildings={buildings}
+							onAdd={handleOnClickAdd}
+							onEdit={handleEdit}
+							onDelete={handleDelete}
+							onSelect={handleSelectBuilding}
+						/>
+					)}
 				</Content>
 				<Footer style={{ backgroundColor: "#1890ff" }}>Footer</Footer>
 			</Layout>

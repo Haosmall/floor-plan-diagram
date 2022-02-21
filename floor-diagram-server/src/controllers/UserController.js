@@ -23,6 +23,17 @@ class UserController {
 			next(err);
 		}
 	}
+
+	// [GET] /users/:id
+	async getListUserPlacesByUserId(req, res, next) {
+		try {
+			const response = await userService.getListUserPlacesByUserId(req._id);
+			res.status(200).json(response);
+		} catch (err) {
+			console.log(err);
+			next(err);
+		}
+	}
 }
 
 module.exports = new UserController();
