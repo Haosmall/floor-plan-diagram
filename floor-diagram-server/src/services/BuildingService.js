@@ -41,6 +41,13 @@ class BuildingService {
 						name: { $regex: name, $options: "i" },
 					},
 				},
+				{
+					$project: {
+						createdAt: 0,
+						updatedAt: 0,
+						__v: 0,
+					},
+				},
 			]);
 		} else {
 			const listBuildingsByUserPlace = await UserPlace.aggregate([
@@ -101,6 +108,13 @@ class BuildingService {
 						name: { $regex: name, $options: "i" },
 					},
 				},
+				{
+					$project: {
+						createdAt: 0,
+						updatedAt: 0,
+						__v: 0,
+					},
+				},
 			]);
 
 			const listBuildingByAdmin = await Building.aggregate([
@@ -134,6 +148,13 @@ class BuildingService {
 				{
 					$match: {
 						name: { $regex: name, $options: "i" },
+					},
+				},
+				{
+					$project: {
+						createdAt: 0,
+						updatedAt: 0,
+						__v: 0,
 					},
 				},
 			]);
@@ -174,6 +195,13 @@ class BuildingService {
 					localField: "_id",
 					foreignField: "buildingId",
 					as: "floors",
+				},
+			},
+			{
+				$project: {
+					createdAt: 0,
+					updatedAt: 0,
+					__v: 0,
 				},
 			},
 		]);
