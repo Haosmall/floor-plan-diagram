@@ -37,6 +37,11 @@ class UserService {
 
 	async getListUserPlacesByUserId(_id) {
 		const users = await User.aggregate([
+			// {
+			// 	$match: {
+			// 		_id: ObjectId(_id),
+			// 	},
+			// },
 			{
 				$lookup: {
 					from: "userplaces",
@@ -45,6 +50,13 @@ class UserService {
 					as: "test",
 				},
 			},
+			// { $unwind: "$test" },
+			// { $project: { test: 1 } },
+			// {
+			// 	$match: {
+			// 		"test.userId": ObjectId(_id),
+			// 	},
+			// },
 		]);
 		if (!users) throw new Error("User not found");
 		return users;

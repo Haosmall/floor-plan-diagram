@@ -22,7 +22,7 @@ const connect = async () => {
 		);
 		// console.log("connect successfully");
 	} catch (error) {
-		// console.log("connect fail", error);
+		console.error("connect fail", error);
 	}
 };
 

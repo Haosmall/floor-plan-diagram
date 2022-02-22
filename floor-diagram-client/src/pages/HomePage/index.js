@@ -14,7 +14,7 @@ import { INITIAL_BUILDING } from "utils/constants";
 import "./style.scss";
 
 const HomePage = (props) => {
-	const { user, users } = useSelector((state) => state.user);
+	const { user, users, isLogin } = useSelector((state) => state.user);
 	const { buildings } = useSelector((state) => state.building);
 
 	const [isAddMode, setIsAddMode] = useState(true);

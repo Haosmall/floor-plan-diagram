@@ -7,6 +7,7 @@ const floorRouter = require("./floor");
 const groupRouter = require("./group");
 const projectRouter = require("./project");
 const shapeRouter = require("./shape");
+const healthRouter = require("./health");
 
 const route = (app) => {
 	app.use("/api/auth", authRouter());
@@ -16,5 +17,6 @@ const route = (app) => {
 	app.use("/api/groups", auth, casbinAuth, groupRouter());
 	app.use("/api/projects", auth, casbinAuth, projectRouter());
 	app.use("/api/shape", auth, casbinAuth, shapeRouter());
+	app.use("/api/health", healthRouter());
 };
 module.exports = route;

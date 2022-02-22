@@ -7,8 +7,10 @@ class AuthService {
 		const { error } = registerValidator(userInfo);
 		if (error) throw new Error(error.details[0].message);
 
-		const checkEmailExist = await User.findOne({ username: userInfo.username });
-		if (checkEmailExist) throw new Error("Email is exist");
+		const checkUsernameExist = await User.findOne({
+			username: userInfo.username,
+		});
+		if (checkUsernameExist) throw new Error("Username is exist");
 
 		const newUser = new User(userInfo);
 		const { _id, name, username, isAdmin } = await newUser.save();

@@ -17,13 +17,13 @@ const LoginForm = (props) => {
 		try {
 			const { token } = await authApi.login(username, password);
 			localStorage.setItem("token", token);
+			await dispatch(fetchUserProfile());
+			dispatch(setLogin(true));
+			navigate("/");
 		} catch (error) {
 			const { response } = error;
 			message.error(response.data.message);
 		}
-		await dispatch(fetchUserProfile());
-		dispatch(setLogin(true));
-		navigate("/");
 	};
 
 	const handleRegister = async (value) => {
