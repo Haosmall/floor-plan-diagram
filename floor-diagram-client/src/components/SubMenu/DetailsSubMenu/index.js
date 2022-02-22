@@ -54,10 +54,11 @@ const DetailsSubMenu = (props) => {
 	useEffect(() => {
 		form.resetFields();
 		dispatch(getProjectsByGroup({ groupId: shape?.groupId }));
-	}, [shape]);
+	}, [shape?._id]);
 
 	const handleChange = (_, values) => {
 		const { groupId, ...changeValues } = values;
+		console.log({ changeValues });
 
 		dispatch(updateShapeDetails({ id: shape._id, details: values }));
 	};
