@@ -172,3 +172,10 @@ Start server:
 - `[PATCH] /:shapeId/back-ground/`: update background.
 
   - body: {file: File}
+
+### Health `/health`
+
+- Check health before deploy:
+  - webserver
+  - database
+  - AWS S3
