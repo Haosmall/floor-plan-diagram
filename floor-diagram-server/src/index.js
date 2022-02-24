@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 // start express server
 if (process.env.NODE_ENV !== "test") {
 	app.listen(SERVER_PORT, () => {
-		// console.log(`Server is running on port ${SERVER_PORT}`)
+		console.log(`Server is running on port ${SERVER_PORT}`)
 	});
 }
 
