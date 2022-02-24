@@ -59,7 +59,7 @@ services:
       context: ./floor-diagram-client
       args:
         #- REACT_APP_API_URL=http://floor-plan-diagram.xyz
-        - REACT_APP_API_URL= http://your-domain
+        - REACT_APP_API_URL= http://local
     networks:
       - floor-diagram
 
