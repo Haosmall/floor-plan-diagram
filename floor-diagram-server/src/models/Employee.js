@@ -30,7 +30,6 @@ const employeeSchema = new Schema(
     building: {
       type: String,
       required: true,
-      default: "New building",
     },
     floor: {
       type: mongoose.Schema.Types.ObjectId,

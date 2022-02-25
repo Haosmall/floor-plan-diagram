@@ -6,7 +6,6 @@ const floorSchema = new Schema(
     name: {
       type: String,
       required: true,
-      default: "New floor",
     },
     building: {
       type: mongoose.Schema.Types.ObjectId,

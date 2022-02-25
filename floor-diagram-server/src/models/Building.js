@@ -6,7 +6,6 @@ const buildingSchema = new Schema(
     name: {
       type: String,
       required: true,
-      default: "New building",
     },
     admin: {
       type: mongoose.Schema.Types.ObjectId,
