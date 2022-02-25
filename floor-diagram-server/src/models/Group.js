@@ -3,7 +3,11 @@ const Schema = mongoose.Schema;
 
 const groupSchema = new Schema({
   name: { type: String, required: true },
+<<<<<<< HEAD
   room: {
+=======
+  floor: {
+>>>>>>> 21b8cabcb2163aa706dc810d6ab85577506b9c23
     type: mongoose.Schema.Types.ObjectId,
     ref: "Room",
     required: true,
