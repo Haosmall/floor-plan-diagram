@@ -19,6 +19,12 @@ const buildingSchema = new Schema(
         ref: "Floor",
       },
     ],
+    rooms: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Room",
+      },
+    ],
     groups: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -6,13 +6,18 @@ const floorSchema = new Schema(
     name: {
       type: String,
       required: true,
-      default: "New floor",
     },
     building: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Building",
       required: true,
     },
+    rooms: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Room",
+      },
+    ],
     groups: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -37,6 +42,10 @@ const floorSchema = new Schema(
         ref: "Employee",
       },
     ],
+    shape: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Shape",
+    },
   },
   { timestamps: true }
 );

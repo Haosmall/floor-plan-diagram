@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const groupSchema = new Schema({
-  name: { type: String, default: "New group", required: true },
-  floor: {
+  name: { type: String, required: true },
+  room: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Floor",
+    ref: "Room",
     required: true,
   },
   teams: [
