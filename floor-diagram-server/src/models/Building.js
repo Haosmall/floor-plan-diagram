@@ -5,12 +5,12 @@ const buildingSchema = new Schema(
   {
     name: {
       type: String,
+      unique: true,
       required: true,
     },
     admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employee",
-      required: true,
     },
     floors: [
       {

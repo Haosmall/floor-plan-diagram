@@ -10,7 +10,6 @@ const floorSchema = new Schema(
     building: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Building",
-      required: true,
     },
     rooms: [
       {

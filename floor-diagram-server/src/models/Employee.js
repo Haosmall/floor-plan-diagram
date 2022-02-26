@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
 
 const employeeSchema = new Schema(
   {
@@ -25,11 +26,12 @@ const employeeSchema = new Schema(
     isAdmin: {
       // true => admin building
       type: Boolean,
+      required: true,
       default: false,
     },
     building: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Building",
     },
     floor: {
       type: mongoose.Schema.Types.ObjectId,
@@ -54,6 +56,18 @@ const employeeSchema = new Schema(
   },
   { timestamps: true }
 );
+
+employeeSchema.statics.findByCredentials = async (username, password) => {
+  const employee = await Employee.findOne({
+    username,
+  });
+  if (!employee) throw new Error("Employee not found");
+
+  const isPasswordMatch = await bcrypt.compare(password, employee.password);
+  if (!isPasswordMatch) throw new Error("Password invalid");
+
+  return employee;
+};
 
 const Employee = mongoose.model("Employee", employeeSchema);
 
