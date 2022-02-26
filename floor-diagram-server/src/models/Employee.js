@@ -35,6 +35,10 @@ const employeeSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Floor",
     },
+    room: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
+    },
     group: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Group",
