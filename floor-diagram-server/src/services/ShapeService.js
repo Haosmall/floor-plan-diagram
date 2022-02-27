@@ -73,11 +73,27 @@ class ShapeService {
 	}
 
 	async deleteShape(_id) {
+		const shape = await Shape.findOne({ _id: ObjectId(_id) });
+
+		if (shape && shape.type === "image") {
+			await awsS3Service.deleteFile(shape?.src);
+		}
 		await Shape.deleteOne({ _id: ObjectId(_id) });
 	}
 
 	async deleteManyShape(shapeIds) {
 		const listObjectId = shapeIds.map((id) => ObjectId(id));
+
+		const shapes = await Shape.find({
+			_id: {
+				$in: listObjectId,
+			},
+		});
+		const imageShape = shapes.find((ele) => ele.type === "image");
+
+		if (imageShape && imageShape?.type === "image") {
+			await awsS3Service.deleteFile(imageShape?.src);
+		}
 
 		await Shape.deleteMany({ _id: { $in: listObjectId } });
 	}

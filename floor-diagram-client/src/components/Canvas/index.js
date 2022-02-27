@@ -18,13 +18,11 @@ const Canvas = (props) => {
 
 	const handleDragEnd = (x, y) => {
 		const newShape = { ...shape, x, y };
-		console.log("handleDragEnd: ", newShape);
 		dispatch(updateShape({ shape: newShape }));
 	};
 
 	const handleScaling = (values) => {
 		const newShape = { ...shape, ...values };
-		console.log("handleScaling: ", newShape);
 		dispatch(updateShape({ shape: newShape }));
 		dispatch(setShape({ _id: newShape._id }));
 	};

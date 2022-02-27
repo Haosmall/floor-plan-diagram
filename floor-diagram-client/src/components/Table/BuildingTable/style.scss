@@ -1,0 +1,12 @@
+.building-table {
+	margin-block: 20px;
+
+	.btn-group {
+		display: flex;
+		justify-content: space-around;
+	}
+
+	.ant-table-body {
+		overflow-y: auto !important;
+	}
+}

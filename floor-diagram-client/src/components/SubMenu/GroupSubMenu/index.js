@@ -75,7 +75,7 @@ const GroupSubMenu = (props) => {
 				<SubMenu key="sub2" icon={<TeamOutlined />} title="Group">
 					{isBuildingAdmin && (
 						<Menu.ItemGroup className="menu-item-group">
-							<div>
+							<Menu.Item key="-1" disabled className="item-group">
 								<Button
 									className="menu-item-btn btn-add"
 									icon={<PlusCircleOutlined />}
@@ -84,7 +84,7 @@ const GroupSubMenu = (props) => {
 								>
 									Add
 								</Button>
-							</div>
+							</Menu.Item>
 						</Menu.ItemGroup>
 					)}
 					{groups?.map((group) => (

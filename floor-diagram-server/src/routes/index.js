@@ -1,5 +1,5 @@
-const casbinAuth = require("../middlewares/casbinAuth");
-const auth = require("../middlewares/auth");
+const casbinAuth = require("../middleware/casbinAuth");
+const auth = require("../middleware/auth");
 const authRouter = require("./auth");
 const userRouter = require("./user");
 const buildingRouter = require("./building");
@@ -9,12 +9,12 @@ const projectRouter = require("./project");
 const shapeRouter = require("./shape");
 
 const route = (app) => {
-	app.use("/auth", authRouter());
-	app.use("/users", auth, userRouter());
-	app.use("/buildings", auth, casbinAuth, buildingRouter());
-	app.use("/floor", auth, casbinAuth, floorRouter());
-	app.use("/groups", auth, casbinAuth, groupRouter());
-	app.use("/projects", auth, casbinAuth, projectRouter());
-	app.use("/shape", auth, casbinAuth, shapeRouter());
+	app.use("/api/auth", authRouter());
+	app.use("/api/users", auth, userRouter());
+	app.use("/api/buildings", auth, casbinAuth, buildingRouter());
+	app.use("/api/floor", auth, casbinAuth, floorRouter());
+	app.use("/api/groups", auth, casbinAuth, groupRouter());
+	app.use("/api/projects", auth, casbinAuth, projectRouter());
+	app.use("/api/shape", auth, casbinAuth, shapeRouter());
 };
 module.exports = route;

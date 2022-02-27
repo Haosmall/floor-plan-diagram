@@ -3,8 +3,10 @@ import axiosClient from "./axiosClient";
 const API_URL = "/buildings";
 
 const buildingApi = {
-	fetchListBuildings: () => {
-		return axiosClient.get(`${API_URL}/`);
+	fetchListBuildings: (name) => {
+		return axiosClient.get(`${API_URL}/`, {
+			params: { name },
+		});
 	},
 
 	fetchBuildingById: (buildingId) => {

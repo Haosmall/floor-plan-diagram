@@ -81,6 +81,7 @@ const shapeSlice = createSlice({
 				: (state.listShapesUpdate[updateIndex] = shape);
 
 			state.shapes[index] = shape;
+			state.shape = shape;
 		},
 
 		updateImageShape: (state, action) => {
@@ -181,12 +182,9 @@ const shapeSlice = createSlice({
 
 		[fetchListShapeByFloor.fulfilled]: (state, action) => {
 			const listShapes = action.payload;
-			console.log("before ", listShapes);
 			let backGroundIndex = -1;
 			if (listShapes.length > 0) {
 				backGroundIndex = listShapes.findIndex((ele) => ele?.src !== "");
-
-				console.log({ backGroundIndex });
 			}
 
 			if (backGroundIndex >= 0) {

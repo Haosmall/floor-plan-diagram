@@ -5,7 +5,7 @@ const User = require("../models/User");
 const ObjectId = mongoose.Types.ObjectId;
 
 class BuildingService {
-	async getListBuildings(userId) {
+	async getListBuildings(userId, name) {
 		const isAdmin = await User.isAdmin(userId);
 
 		// console.log({ userId });
@@ -34,6 +34,11 @@ class BuildingService {
 						_id: 1,
 						name: 1,
 						admin: { _id: "$admin._id", name: "$admin.name" },
+					},
+				},
+				{
+					$match: {
+						name: { $regex: name, $options: "i" },
 					},
 				},
 			]);
@@ -91,6 +96,11 @@ class BuildingService {
 						admin: { _id: "$admin._id", name: "$admin.name" },
 					},
 				},
+				{
+					$match: {
+						name: { $regex: name, $options: "i" },
+					},
+				},
 			]);
 
 			const listBuildingByAdmin = await Building.aggregate([
@@ -119,6 +129,11 @@ class BuildingService {
 						_id: 1,
 						name: 1,
 						admin: { _id: "$admin._id", name: "$admin.name" },
+					},
+				},
+				{
+					$match: {
+						name: { $regex: name, $options: "i" },
 					},
 				},
 			]);
@@ -170,6 +185,18 @@ class BuildingService {
 	async deleteBuilding(_id) {
 		await Building.findByIdAndDelete(_id);
 		await UserPlace.deleteMany({ buildingId: ObjectId(_id) });
+	}
+
+	async searchBuildingByName(name) {
+		const buildings = await await Building.aggregate([
+			{
+				$match: {
+					name: { $regex: name, $options: "i" },
+				},
+			},
+		]);
+
+		return buildings;
 	}
 }
 

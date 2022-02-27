@@ -27,7 +27,6 @@ function App() {
 	useEffect(() => {
 		const fetchProfile = async () => {
 			const token = localStorage.getItem("token");
-			console.log("App: " + token);
 
 			if (token) await dispatch(fetchUserProfile());
 

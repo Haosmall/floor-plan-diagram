@@ -36,7 +36,7 @@ const ProjectModal = (props) => {
 			}
 			message.success(`${isAddMode ? "Add" : "Update"} project successfully`);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			message.error("An error has occurred");
 		}
 		handleCancel();
@@ -56,6 +56,7 @@ const ProjectModal = (props) => {
 			onOk={handleSubmit}
 			onCancel={handleCancel}
 			okText="Save"
+			forceRender
 		>
 			<Form
 				labelCol={{

@@ -68,8 +68,6 @@ const FloorSubMenu = (props) => {
 		setIsAddFloor(false);
 		setIsFloorModalVisible(true);
 		setSelectedFloor({ ...floor, users });
-
-		console.log({ floor });
 	};
 
 	const handleSelectFloor = async (floorId) => {
@@ -95,7 +93,7 @@ const FloorSubMenu = (props) => {
 				<SubMenu key="sub1" icon={<AppstoreOutlined />} title="Floor">
 					{isBuildingAdmin && (
 						<Menu.ItemGroup className="menu-item-group">
-							<div>
+							<Menu.Item key="-1" disabled className="item-group">
 								<Button
 									className="menu-item-btn btn-add"
 									icon={<PlusCircleOutlined />}
@@ -104,11 +102,12 @@ const FloorSubMenu = (props) => {
 								>
 									Add
 								</Button>
-							</div>
+							</Menu.Item>
 						</Menu.ItemGroup>
 					)}
 					{floors?.map((floor) => (
 						<Menu.Item
+							eventKey={floor._id}
 							key={floor._id}
 							onClick={() => handleSelectFloor(floor._id)}
 						>

@@ -1,22 +1,19 @@
-import {
-	ExclamationCircleOutlined,
-	PlusCircleOutlined,
-} from "@ant-design/icons";
-import { Button, Col, Layout, message, Modal, Row, Table } from "antd";
+import { Layout, message, Table, Tabs } from "antd";
 import buildingApi from "api/buildingApi";
-import BuildingTable from "components/BuildingTable";
 import BuildingModal from "components/Modal/BuildingModal";
 import UserBar from "components/NavBar/UserBar";
+import BuildingPane from "components/TabPane/BuildingPane";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { deleteBuilding, fetchListBuildings } from "redux/buildingSlice";
 import { fetchListUsers } from "redux/userSlice";
+import commonUtils from "utils/commonUtils";
 import { INITIAL_BUILDING } from "utils/constants";
 import "./style.scss";
 
 const HomePage = (props) => {
-	const { user } = useSelector((state) => state.user);
+	const { user, users } = useSelector((state) => state.user);
 	const { buildings } = useSelector((state) => state.building);
 
 	const [isAddMode, setIsAddMode] = useState(true);
@@ -58,7 +55,7 @@ const HomePage = (props) => {
 
 			message.success(`${isAddMode ? "Add" : "Update"} building successfully`);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			message.error("An error has occurred");
 		}
 	};
@@ -70,29 +67,19 @@ const HomePage = (props) => {
 	};
 
 	const handleDelete = (buildingId) => {
-		Modal.confirm({
-			title: "Confirm",
-			icon: <ExclamationCircleOutlined />,
-			content: "Are you sure?",
-			okText: "Ok",
-			cancelText: "Cancel",
-			onOk: async () => {
-				try {
-					await buildingApi.deleteBuilding(buildingId);
+		commonUtils.confirmModal(async () => {
+			await buildingApi.deleteBuilding(buildingId);
 
-					dispatch(deleteBuilding({ _id: buildingId }));
-					message.success("Delete successfully");
-				} catch (error) {
-					console.log(error);
-					message.error("An error has occurred");
-				}
-			},
+			dispatch(deleteBuilding({ _id: buildingId }));
+			message.success("Delete successfully");
 		});
 	};
 
 	const handleSelect = (buildingId) => {
 		navigate(`/buildings/${buildingId}`);
 	};
+
+	const { TabPane } = Tabs;
 
 	return (
 		<div id="home-container">
@@ -101,21 +88,9 @@ const HomePage = (props) => {
 					<UserBar name={user.name} />
 				</Header>
 				<Content id="home-content">
-					<Row justify="space-between" gutter={[8, 8]}>
-						<Col xs={24} sm={24} md={24} lg={4} xl={4}>
-							<Button
-								type="primary"
-								icon={<PlusCircleOutlined />}
-								onClick={handleOnClickAdd}
-								shape="round"
-							>
-								Add
-							</Button>
-						</Col>
-					</Row>
-
-					<BuildingTable
-						data={buildings}
+					<BuildingPane
+						buildings={buildings}
+						onAdd={handleOnClickAdd}
 						onEdit={handleEdit}
 						onDelete={handleDelete}
 						onSelect={handleSelect}

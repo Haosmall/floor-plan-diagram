@@ -38,7 +38,7 @@ const UploadImageModal = (props) => {
 				`${isAddMode ? "Add" : "Update"} background successfully`
 			);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			message.error("An error has occurred");
 		}
 		handleCancel();
@@ -64,6 +64,7 @@ const UploadImageModal = (props) => {
 			onOk={handleSubmit}
 			onCancel={handleCancel}
 			okText="Save"
+			forceRender
 		>
 			<input type="file" onChange={handleOnChange} />
 		</Modal>

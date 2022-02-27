@@ -39,19 +39,15 @@ const BuildingPage = (props) => {
 
 	const deleteShape = () => {
 		if (selectedShape !== null) {
-			console.log(selectedShape);
 			const newList = listShapes.filter((_, index) => index !== selectedShape);
 
-			console.log(newList);
 			setListShapes(newList);
 			setSelectedShape(null);
 		}
 	};
 
 	useEffect(() => {
-		if (buildings.length <= 0) {
-			dispatch(fetchListBuildings());
-		}
+		dispatch(fetchListBuildings());
 		dispatch(fetchListUsers());
 		dispatch(fetchBuildingById({ id }));
 		dispatch(fetchListFloorsByBuildingId({ id }));

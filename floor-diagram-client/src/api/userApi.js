@@ -6,8 +6,10 @@ const userApi = {
 	fetchUserProfile: () => {
 		return axiosClient.get(`${API_URL}/me`);
 	},
-	fetchListUsers: () => {
-		return axiosClient.get(`${API_URL}/`);
+	fetchListUsers: (name) => {
+		return axiosClient.get(`${API_URL}/`, {
+			params: { name },
+		});
 	},
 };
 

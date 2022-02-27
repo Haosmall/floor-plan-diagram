@@ -2,3 +2,8 @@ body {
 	/* padding-inline: 20%; */
 	background-color: #c0c0c0;
 }
+
+.item-group {
+	cursor: default !important;
+	padding-left: 0px !important;
+}

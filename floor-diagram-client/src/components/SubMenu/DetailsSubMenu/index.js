@@ -58,7 +58,6 @@ const DetailsSubMenu = (props) => {
 
 	const handleChange = (_, values) => {
 		const { groupId, ...changeValues } = values;
-		console.log({ changeValues });
 
 		dispatch(updateShapeDetails({ id: shape._id, details: values }));
 	};
@@ -68,129 +67,138 @@ const DetailsSubMenu = (props) => {
 	};
 
 	return (
-		<Menu
-			style={{ width: 256 }}
-			defaultSelectedKeys={["1"]}
-			defaultOpenKeys={["sub1"]}
-			mode="inline"
-		>
-			<SubMenu key="sub4" icon={<ProfileOutlined />} title="Details">
-				<Menu.ItemGroup>
-					<div className="details-form">
-						<Form
-							name="basic"
-							labelCol={{
-								span: 7,
-							}}
-							wrapperCol={{
-								span: 16,
-							}}
-							autoComplete="off"
-							initialValues={shape}
-							form={form}
-							onValuesChange={handleChange}
+		<div id="details-sub-menu">
+			<Menu
+				style={{ width: 256 }}
+				defaultSelectedKeys={["1"]}
+				defaultOpenKeys={["sub1"]}
+				mode="inline"
+			>
+				<SubMenu key="sub4" icon={<ProfileOutlined />} title="Details">
+					<Menu.ItemGroup>
+						<Menu.Item
+							key="-1"
+							disabled
+							style={{ cursor: "default !important" }}
+							className="details-form"
 						>
-							<Form.Item label="Staff" name="staff">
-								<Select disabled={isDisable}>
-									{floor?.users.map((user) => {
-										const userName = users.find(
-											(ele) => ele._id === user.userId
-										)?.name;
-										console.log("staff detai", { user, userName });
-										return (
-											<Option key={user.userId} value={user.userId}>
-												{userName}
-											</Option>
-										);
-									})}
-								</Select>
-							</Form.Item>
-
-							<Form.Item label="Group" name="groupId">
-								<Select disabled={isDisable} onSelect={handleSelectGroup}>
-									{groups.map((group) => (
-										<Option key={group._id} value={group._id}>
-											{group.title}
-										</Option>
-									))}
-								</Select>
-							</Form.Item>
-
-							<Form.Item label="Project" name="projectId">
-								<Select disabled={isDisable}>
-									{listProjectByGroup.map((project) => (
-										<Option key={project._id} value={project._id}>
-											{project.title}
-										</Option>
-									))}
-								</Select>
-							</Form.Item>
-
-							<Form.List name="items">
-								{(fields, { add, remove }, { errors }) => (
-									<>
-										{fields.map((field, index) => (
-											<Form.Item
-												{...(index === 0
-													? formItemLayout
-													: formItemLayoutWithOutLabel)}
-												label={index === 0 ? "Items" : ""}
-												key={field.key}
-											>
-												<Form.Item
-													{...field}
-													validateTrigger={["onChange", "onBlur"]}
-													noStyle
-												>
-													<Input placeholder="Item" style={{ width: "80%" }} />
-												</Form.Item>
-
-												<MinusCircleOutlined
-													style={{ marginLeft: "8px" }}
-													className="dynamic-delete-button"
-													onClick={() => remove(field.name)}
-												/>
-											</Form.Item>
-										))}
-										<Form.Item
-											wrapperCol={{
-												offset: 7,
-												span: 20,
-											}}
-										>
-											<Button
-												type="dashed"
-												onClick={() => add()}
-												style={{ width: "50%" }}
-												icon={<PlusOutlined />}
-												disabled={isDisable}
-											>
-												Add
-											</Button>
-										</Form.Item>
-									</>
-								)}
-							</Form.List>
-
-							<Form.Item
-								wrapperCol={{
-									offset: 7,
-									span: 20,
+							<Form
+								name="basic"
+								labelCol={{
+									span: 7,
 								}}
+								wrapperCol={{
+									span: 16,
+								}}
+								autoComplete="off"
+								initialValues={shape}
+								form={form}
+								onValuesChange={handleChange}
 							>
-								{/* <Button
-									type="primary"
-									htmlType="Save"
-									style={{ marginBottom: "8px" }}
+								<Form.Item label="Staff" name="staff">
+									<Select disabled={isDisable}>
+										{floor?.users.map((user) => {
+											const userName = users.find(
+												(ele) => ele._id === user.userId
+											)?.name;
+											return (
+												<Option key={user.userId} value={user.userId}>
+													{userName}
+												</Option>
+											);
+										})}
+									</Select>
+								</Form.Item>
+
+								<Form.Item label="Group" name="groupId">
+									<Select disabled={isDisable} onSelect={handleSelectGroup}>
+										{groups.map((group) => (
+											<Option key={group._id} value={group._id}>
+												{group.title}
+											</Option>
+										))}
+									</Select>
+								</Form.Item>
+
+								<Form.Item label="Project" name="projectId">
+									<Select disabled={isDisable}>
+										{listProjectByGroup.map((project) => (
+											<Option key={project._id} value={project._id}>
+												{project.title}
+											</Option>
+										))}
+									</Select>
+								</Form.Item>
+
+								<Form.List name="items">
+									{(fields, { add, remove }, { errors }) => (
+										<>
+											{fields.map((field, index) => (
+												<Form.Item
+													{...(index === 0
+														? formItemLayout
+														: formItemLayoutWithOutLabel)}
+													label={index === 0 ? "Items" : ""}
+													key={field.key}
+												>
+													<Form.Item
+														{...field}
+														validateTrigger={["onChange", "onBlur"]}
+														noStyle
+													>
+														<Input
+															placeholder="Item"
+															style={{ width: "80%" }}
+														/>
+													</Form.Item>
+
+													<MinusCircleOutlined
+														style={{ marginLeft: "8px" }}
+														className="dynamic-delete-button"
+														onClick={() => remove(field.name)}
+													/>
+												</Form.Item>
+											))}
+											<Form.Item
+												wrapperCol={{
+													offset: 7,
+													span: 20,
+												}}
+											>
+												<Button
+													type="dashed"
+													onClick={() => add()}
+													style={{ width: "50%" }}
+													icon={<PlusOutlined />}
+													disabled={isDisable}
+												>
+													Add
+												</Button>
+											</Form.Item>
+										</>
+									)}
+								</Form.List>
+
+								<Form.Item
+									wrapperCol={{
+										offset: 7,
+										span: 20,
+									}}
 								>
-									Submit
-								</Button> */}
-							</Form.Item>
-						</Form>
-					</div>
-				</Menu.ItemGroup>
-			</SubMenu>
-		</Menu>
+									{/* <Button
+										type="primary"
+										htmlType="Save"
+										style={{ marginBottom: "8px" }}
+									>
+										Submit
+									</Button> */}
+								</Form.Item>
+							</Form>
+						</Menu.Item>
+					</Menu.ItemGroup>
+				</SubMenu>
+			</Menu>
+		</div>
 	);
 };
 
