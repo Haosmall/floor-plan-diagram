@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { dirname, join } = require("path");
 require("dotenv").config({
-	path: join(dirname(require.main.filename), ".env"),
+	path: join(__dirname, "..", "..", ".env"),
 });
 
 const DATABASE_HOST = process.env.DATABASE_HOST || "localhost";
