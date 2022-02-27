@@ -55,21 +55,6 @@ class EmployeeService {
 
     return { _id, name, username, isAdmin, token };
   }
-
-  async login(account) {
-    const { error } = loginValidator(account);
-    if (error) throw new Error(error.details[0].message);
-
-    const { _id, name, username, isAdmin } = await Employee.findByCredentials(
-      account.username,
-      account.password
-    );
-    if (!isAdmin) throw new Error("Employee is not an building admin");
-
-    const token = await generateToken(_id);
-
-    return { _id, username, name, isAdmin, token };
-  }
 }
 
 module.exports = new EmployeeService();
