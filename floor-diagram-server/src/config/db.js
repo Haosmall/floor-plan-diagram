@@ -20,9 +20,9 @@ const connect = async () => {
 				useUnifiedTopology: true,
 			}
 		);
-		// console.log("connect successfully");
+		console.log("connect successfully");
 	} catch (error) {
-		// console.log("connect fail", error);
+		console.error("connect fail", error);
 	}
 };
 

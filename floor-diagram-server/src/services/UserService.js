@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const tokenUtils = require("../utils/tokenUtils");
 const { registerValidator, loginValidator } = require("../validations/auth");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 class UserService {
 	async getListUsers(name) {
@@ -31,6 +33,33 @@ class UserService {
 		]);
 		if (!user) throw new Error("User not found");
 		return user;
+	}
+
+	async getListUserPlacesByUserId(_id) {
+		const users = await User.aggregate([
+			// {
+			// 	$match: {
+			// 		_id: ObjectId(_id),
+			// 	},
+			// },
+			{
+				$lookup: {
+					from: "userplaces",
+					localField: "_id",
+					foreignField: "userId",
+					as: "test",
+				},
+			},
+			// { $unwind: "$test" },
+			// { $project: { test: 1 } },
+			// {
+			// 	$match: {
+			// 		"test.userId": ObjectId(_id),
+			// 	},
+			// },
+		]);
+		if (!users) throw new Error("User not found");
+		return users;
 	}
 }
 

@@ -5,7 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 class GroupService {
 	async getListGroupByBuilding(buildingId) {
-		const listGroups = await Group.find({ buildingId });
+		const listGroups = await Group.find({ buildingId }).select(["-__v"]);
 
 		return listGroups;
 	}

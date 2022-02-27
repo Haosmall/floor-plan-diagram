@@ -1,0 +1,66 @@
+image: docker:19
+
+services:
+  - docker:dind
+
+stages:
+  - build
+  # - test
+  - release
+  - deploy
+
+before_script:
+  - docker version
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+build:
+  stage: build
+  variables:
+    # Replace this with your site URL
+    REACT_APP_API_URL: https://tienganhpro.xyz/api
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
+release-tag:
+  variables:
+    GIT_STRATEGY: none
+  stage: release
+  except:
+    - master
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+
+release-latest:
+  variables:
+    GIT_STRATEGY: none
+  stage: release
+  only:
+    - master
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+
+deploy:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  only:
+    - master
+  before_script:
+    - apk update && apk add openssh-client bash
+
+    - eval $(ssh-agent -s)
+    - bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
+    - mkdir -p ~/.ssh
+
+    # - ssh-keyscan -H $SSH_SERVER_IP >> ~/.ssh/known_hosts
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+  script:
+    - ssh -o StrictHostKeyChecking=no ubuntu@13.229.116.76 "pwd; cd ${PATH_TO_PROJECT}; docker-compose down; docker pull ${CI_REGISTRY_IMAGE}:latest; docker-compose up -d; docker image prune -f"

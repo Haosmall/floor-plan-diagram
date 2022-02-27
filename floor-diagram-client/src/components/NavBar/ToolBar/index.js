@@ -89,16 +89,22 @@ const ToolBar = (props) => {
 				}}
 			></div>
 
-			<Button onClick={handleOpenModal}>Background</Button>
+			<Button onClick={handleOpenModal}>
+				{shapes?.[0]?.type !== SHAPE_TYPE.image
+					? "Add background"
+					: "Update background"}
+			</Button>
 			<Checkbox onChange={() => onLockBackGround(!isLockBackGround)}>
 				Lock background
 			</Checkbox>
 
-			<UploadImageModal
-				isAddMode={isAddMode}
-				visible={isModalVisible}
-				onCancel={() => setIsModalVisible(false)}
-			/>
+			{isModalVisible && (
+				<UploadImageModal
+					isAddMode={isAddMode}
+					visible={isModalVisible}
+					onCancel={() => setIsModalVisible(false)}
+				/>
+			)}
 		</div>
 	);
 };

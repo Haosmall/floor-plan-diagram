@@ -13,9 +13,7 @@ import "./style.scss";
 
 const DetailsSubMenu = (props) => {
 	const { floor } = useSelector((state) => state.floor);
-	const { projects, listProjectByGroup } = useSelector(
-		(state) => state.project
-	);
+	const { listProjectByGroup } = useSelector((state) => state.project);
 	const { groups } = useSelector((state) => state.group);
 	const { shape } = useSelector((state) => state.shape);
 	const { users } = useSelector((state) => state.user);
@@ -54,10 +52,11 @@ const DetailsSubMenu = (props) => {
 	useEffect(() => {
 		form.resetFields();
 		dispatch(getProjectsByGroup({ groupId: shape?.groupId }));
-	}, [shape]);
+	}, [shape?._id]);
 
 	const handleChange = (_, values) => {
 		const { groupId, ...changeValues } = values;
+		console.log({ changeValues });
 
 		dispatch(updateShapeDetails({ id: shape._id, details: values }));
 	};
@@ -184,15 +183,7 @@ const DetailsSubMenu = (props) => {
 										offset: 7,
 										span: 20,
 									}}
-								>
-									{/* <Button
-										type="primary"
-										htmlType="Save"
-										style={{ marginBottom: "8px" }}
-									>
-										Submit
-									</Button> */}
-								</Form.Item>
+								></Form.Item>
 							</Form>
 						</Menu.Item>
 					</Menu.ItemGroup>

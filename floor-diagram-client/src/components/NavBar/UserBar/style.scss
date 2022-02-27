@@ -2,7 +2,18 @@
 	width: 100%;
 	height: 100%;
 	display: flex;
-	
+
 	justify-content: space-between;
 	align-items: center;
+
+	.user-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		.user-name::before {
+			content: " ";
+			white-space: pre;
+		}
+	}
 }

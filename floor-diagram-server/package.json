@@ -1,39 +1,44 @@
 {
-	"name": "floor-diagram-server",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"start": "nodemon src/index.js dotenv/config dotenv -e .env",
-		"test": "NODE_ENV=test DATABASE_NAME=floor-diagram-db-test jest --forceExit --coverage --verbose --watchAll --runInBand --setupFiles dotenv/config dotenv -e .env"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"aws-sdk": "^2.1064.0",
-		"bcryptjs": "^2.4.3",
-		"casbin": "^5.12.0",
-		"cors": "^2.8.5",
-		"dotenv": "^12.0.4",
-		"express": "^4.17.2",
-		"joi": "^17.5.0",
-		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^6.1.6",
-		"multer": "^1.4.4",
-		"nodemon": "^2.0.15",
-		"path": "^0.12.7"
-	},
-	"devDependencies": {
-		"jest": "^27.5.1"
-	},
-	"jest": {
-		"testEnvironment": "node",
-		"coveragePathIgnorePatterns": [
-			"/node_modules/"
-		],
-		"setupFiles": [
-			"./.env"
-		]
-	}
+  "name": "floor-diagram-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js dotenv/config dotenv -e .env",
+    "test": "NODE_ENV=test DATABASE_NAME=floor-diagram-db-test jest --forceExit --coverage --verbose --watchAll --runInBand --setupFiles dotenv/config dotenv -e .env"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1064.0",
+    "bcryptjs": "^2.4.3",
+    "casbin": "^5.12.0",
+    "cors": "^2.8.5",
+    "dotenv": "^12.0.4",
+    "express": "^4.17.2",
+    "joi": "^17.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.6",
+    "mongoose-data-seed": "^2.1.6",
+    "multer": "^1.4.4",
+    "nodemon": "^2.0.15",
+    "path": "^0.12.7",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "setupFiles": [
+      "./.env"
+    ]
+  },
+  "mdSeed": {
+    "seedersFolder": "./seeders"
+  }
 }

@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import Canvas from "components/Canvas";
 import DetailsSubMenu from "components/SubMenu/DetailsSubMenu";
 import FloorSubMenu from "components/SubMenu/FloorSubMenu";
-import FloorTopBar from "components/NavBar/FloorTopBar";
+import FloorTopBar from "components/NavBar/TopBar";
 import GroupSubMenu from "components/SubMenu/GroupSubMenu";
 import ProjectSubMenu from "components/SubMenu/ProjectSubMenu";
 import ToolBar from "components/NavBar/ToolBar";
@@ -36,15 +36,6 @@ const BuildingPage = (props) => {
 	const [listShapes, setListShapes] = useState(INITIAL_SHAPE);
 	const [selectedShape, setSelectedShape] = useState(null);
 	const [isLockBackGround, setIsLockBackGround] = useState(false);
-
-	const deleteShape = () => {
-		if (selectedShape !== null) {
-			const newList = listShapes.filter((_, index) => index !== selectedShape);
-
-			setListShapes(newList);
-			setSelectedShape(null);
-		}
-	};
 
 	useEffect(() => {
 		dispatch(fetchListBuildings());
@@ -100,6 +91,7 @@ const BuildingPage = (props) => {
 						<UserBar name={user.name} />
 					</div>
 					<ToolBar
+						userName={user.name}
 						onLockBackGround={handleLockBackground}
 						isLockBackGround={isLockBackGround}
 					/>

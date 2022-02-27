@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewShape, updateImageShape } from "redux/shapeSlice";
-import { INITIAL_PROJECT } from "utils/constants";
+import { INITIAL_PROJECT, SHAPE_TYPE } from "utils/constants";
+import "./style.scss";
 
 const UploadImageModal = (props) => {
 	const { visible, onCancel, isAddMode, title } = props;
@@ -13,6 +14,7 @@ const UploadImageModal = (props) => {
 
 	const dispatch = useDispatch();
 	const [file, setFile] = useState(null);
+	const [url, setUrl] = useState(null);
 
 	const handleSubmit = async () => {
 		const formData = new FormData();
@@ -54,6 +56,13 @@ const UploadImageModal = (props) => {
 		const temp = e.target.files;
 		if (temp) {
 			setFile(temp[0]);
+
+			const reader = new FileReader();
+			reader.readAsDataURL(temp[0]);
+
+			reader.onloadend = function (e) {
+				setUrl(reader.result);
+			}.bind(this);
 		}
 	};
 
@@ -67,6 +76,12 @@ const UploadImageModal = (props) => {
 			forceRender
 		>
 			<input type="file" onChange={handleOnChange} />
+			<div className="fill">
+				<img
+					src={shapes?.[0]?.type !== SHAPE_TYPE.image ? url : shapes?.[0]?.src}
+					alt=""
+				/>
+			</div>
 		</Modal>
 	);
 };
@@ -88,4 +103,5 @@ UploadImageModal.defaultProps = {
 	title: "Modal",
 	isAddMode: true,
 };
+
 export default UploadImageModal;

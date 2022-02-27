@@ -21,6 +21,14 @@ class ProjectService {
 					"group.buildingId": ObjectId(buildingId),
 				},
 			},
+			{
+				$project: {
+					group: { __v: 0 },
+					createdAt: 0,
+					updatedAt: 0,
+					__v: 0,
+				},
+			},
 		]);
 
 		// console.log(listProjects);

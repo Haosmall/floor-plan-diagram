@@ -6,7 +6,11 @@ const awsS3Service = require("./AwsS3Service");
 
 class ShapeService {
 	async getListShapeByFloor(floorId) {
-		const listShapes = await Shape.find({ floorId });
+		const listShapes = await Shape.find({ floorId }).select([
+			"-createdAt",
+			"-updatedAt",
+			"-__v",
+		]);
 		const listProjects = await Project.find({});
 
 		const result = [];
