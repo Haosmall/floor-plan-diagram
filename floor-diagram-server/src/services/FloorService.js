@@ -1,9 +1,4 @@
 const Floor = require("../models/Floor");
-const Room = require("../models/Room");
-const Group = require("../models/Group");
-const Team = require("../models/Team");
-const Project = require("../models/Project");
-const Employee = require("../models/Employee");
 
 class FloorService {
   // add
@@ -39,22 +34,25 @@ class FloorService {
 
   // update
   async updateFloor(_id, floorInfo) {
-    const floor = await Floor.findById(_id);
-    if (!floor) throw new Error("Floor not found");
-
-    floor.name = floorInfo.name;
-    floor.building = floorInfo.building;
-    floor.rooms = floorInfo.rooms?.length ? [...floorInfo.rooms] : [];
-    floor.groups = floorInfo?.groups?.length ? [...floorInfo.groups] : [];
-    floor.teams = floorInfo?.teams?.length ? [...floorInfo.teams] : [];
-    floor.projects = floorInfo?.projects?.length ? [...floorInfo.projects] : [];
-    floor.employees = floorInfo?.employees?.length
-      ? [...floorInfo.employees]
-      : [];
-
-    const updatedFloor = await floor.save();
+    let updatedFloor = await Floor.findOneAndUpdate({ _id }, floorInfo, {
+      new: true,
+    });
 
     return updatedFloor;
+
+    // const floor = await Floor.findById(_id);
+    // if (!floor) throw new Error("Floor not found");
+    // floor.name = floorInfo.name;
+    // floor.building = floorInfo.building;
+    // floor.rooms = floorInfo.rooms?.length ? [...floorInfo.rooms] : [];
+    // floor.groups = floorInfo?.groups?.length ? [...floorInfo.groups] : [];
+    // floor.teams = floorInfo?.teams?.length ? [...floorInfo.teams] : [];
+    // floor.projects = floorInfo?.projects?.length ? [...floorInfo.projects] : [];
+    // floor.employees = floorInfo?.employees?.length
+    //   ? [...floorInfo.employees]
+    //   : [];
+    // const updatedFloor = await floor.save();
+    // return updatedFloor;
   }
 
   // delete
