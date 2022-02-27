@@ -1,9 +1,10 @@
 const Employee = require("../models/Employee");
 const { generateToken } = require("../utils/tokenUtils");
-const { registerValidator, loginValidator } = require("../validations/auth");
+const { registerValidator } = require("../validations/auth");
 const bcrypt = require("bcryptjs");
 
 class EmployeeService {
+  // add
   async addEmployee(empInfo) {
     // required fields: name, username, password
     const { error } = registerValidator(empInfo);
@@ -21,6 +22,7 @@ class EmployeeService {
     return savedEmp;
   }
 
+  // get list
   async getListEmployees() {
     const employees = await Employee.find({}).populate(
       "building floor room group project team"
@@ -29,6 +31,16 @@ class EmployeeService {
     return employees;
   }
 
+  // get employee by id
+  async getEmployeeById(empId) {
+    const employee = await Employee.findById(empId).populate(
+      "building floor room group project team"
+    );
+
+    return employee;
+  }
+
+  // update
   async updateEmployee(_id, empInfo) {
     empInfo.password = bcrypt.hashSync(empInfo.password, 8);
     let updatedEmp = await Employee.findOneAndUpdate({ _id }, empInfo, {
@@ -38,6 +50,7 @@ class EmployeeService {
     return updatedEmp;
   }
 
+  // delete
   async deleteEmployee(_id) {
     const deletedEmp = await Employee.findByIdAndDelete(_id);
 

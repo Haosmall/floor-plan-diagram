@@ -25,6 +25,18 @@ class EmployeeController {
     }
   }
 
+  // [GET] /api/employees/:id
+  async getEmployeeById(req, res, next) {
+    try {
+      const response = await employeeService.getEmployeeById(req.params.id);
+
+      res.status(200).json(response);
+    } catch (err) {
+      // console.log(err);
+      next(err);
+    }
+  }
+
   // [PUT] /api/employees/:id
   async updateEmployee(req, res, next) {
     try {

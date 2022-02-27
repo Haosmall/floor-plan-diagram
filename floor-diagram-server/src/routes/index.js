@@ -7,11 +7,13 @@ const floorRouter = require("./floor");
 const groupRouter = require("./group");
 const teamRouter = require("./team");
 const projectRouter = require("./project");
+const buildingAdmin = require("./buildingAdmin");
 
 const route = (app) => {
   app.use("/api/admin", adminRouter());
-  app.use("/api/employees", isAdmin_or_buildingAdmin, employeeRouter());
+  app.use("/api/buildingAdmin", buildingAdmin());
   app.use("/api/buildings", isAdmin, buildingRouter());
+  app.use("/api/employees", isAdmin_or_buildingAdmin, employeeRouter());
   app.use("/api/floors", isAdmin_or_buildingAdmin, floorRouter());
   app.use("/api/rooms", isAdmin_or_buildingAdmin, roomRouter());
   app.use("/api/groups", isAdmin_or_buildingAdmin, groupRouter());

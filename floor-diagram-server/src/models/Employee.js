@@ -62,6 +62,7 @@ employeeSchema.statics.findByCredentials = async (username, password) => {
     username,
   });
   if (!employee) throw new Error("Employee not found");
+  if (!employee.isAdmin) throw new Error("Employee is not an admin");
 
   const isPasswordMatch = await bcrypt.compare(password, employee.password);
   if (!isPasswordMatch) throw new Error("Password invalid");
