@@ -55,7 +55,7 @@ class AdminService {
         _id: employee._id,
         name: employee.name,
         username: employee.username,
-        isBuildingAdmin: true,
+        isBuildingAdmin: employee.isBuildingAdmin,
         token,
       };
     }
