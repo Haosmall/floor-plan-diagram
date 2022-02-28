@@ -1,24 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
-import { Avatar, Button } from "antd";
+import { Avatar, Button, Popover } from "antd";
 import { useDispatch } from "react-redux";
 import { logout } from "redux/userSlice";
-import { UserOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 
 const UserBar = (props) => {
 	const { name } = props;
 	const dispatch = useDispatch();
 	return (
-		<div id="user-bar">
+		<Popover
+			content={
+				<Button
+					danger
+					shape="round"
+					icon={<LogoutOutlined />}
+					onClick={() => dispatch(logout())}
+				>
+					Logout
+				</Button>
+			}
+			// title="Title"
+			trigger="click"
+		>
 			<div className="user-info">
-				<Avatar icon={<UserOutlined />} />
 				<div className="user-name">{name}</div>
+				<Avatar icon={<UserOutlined />} />
 			</div>
-			<Button danger shape="round" onClick={() => dispatch(logout())}>
-				Logout
-			</Button>
-		</div>
+			{/* <div id="user-bar">
+			</div> */}
+		</Popover>
 	);
 };
 
