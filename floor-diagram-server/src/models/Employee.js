@@ -19,7 +19,6 @@ const employeeSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
       min: 6,
       max: 255,
     },
