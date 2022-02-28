@@ -6,9 +6,7 @@ class ShapeController {
   // [POST] /api/shape
   async addShape(req, res, next) {
     try {
-      const response = await shapeService.addShape(req.body);
-
-      console.log(response.file);
+      const response = await shapeService.addShape(req.body, req.file);
 
       res.status(201).json(response);
     } catch (err) {
@@ -41,7 +39,11 @@ class ShapeController {
   // [PUT] /api/shapes/:id
   async updateShape(req, res, next) {
     try {
-      const response = await shapeService.updateShape(req.params.id, req.body);
+      const response = await shapeService.updateShape(
+        req.params.id,
+        req.body,
+        req.file
+      );
       res.status(200).json(response);
     } catch (err) {
       next(err);

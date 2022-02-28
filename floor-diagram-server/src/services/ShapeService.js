@@ -7,7 +7,8 @@ const Room = require("../models/Room");
 
 class ShapeService {
   // add
-  async addShape(shapeInfo) {
+  async addShape(shapeInfo, file) {
+    if (file) shapeInfo.src = file.filename;
     const newShape = new Shape(shapeInfo);
     const savedShape = await newShape.save();
 
@@ -30,7 +31,8 @@ class ShapeService {
   }
 
   // update
-  async updateShape(_id, shapeInfo) {
+  async updateShape(_id, shapeInfo, file) {
+    if (file) shapeInfo.src = file.filename;
     let updatedShape = await Shape.findOneAndUpdate({ _id }, shapeInfo, {
       new: true,
     });
