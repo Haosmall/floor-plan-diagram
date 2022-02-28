@@ -99,6 +99,34 @@ class ShapeController {
     }
   }
 
+  // [PUT] /api/shapes
+  async updateManyShape(req, res, next) {
+    try {
+      const { shapes } = req.body;
+
+      for (const shape of shapes) {
+        const { _id, createdAt, updatedAt, __v, ...shapeInfo } = shape;
+        await shapeService.updateShape(_id, shapeInfo);
+      }
+
+      res.status(204).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // [DELETE] /api/shapes
+  async deleteManyShape(req, res, next) {
+    try {
+      const { shapeIds } = req.body;
+      const response = await shapeService.deleteManyShape(shapeIds);
+
+      res.status(201).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   // [POST] /api/shape/back-ground
   //   async addImageShape(req, res, next) {
   //     const { file } = req;

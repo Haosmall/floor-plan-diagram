@@ -75,11 +75,6 @@ class ShapeService {
     await Shape.deleteMany({ _id: { $in: listObjectId } });
   }
 
-  // update many
-  async updateManyShape(shapeIds) {
-    //
-  }
-
   // async getListShapeByFloor(floorId) {
   // 	const listShapes = await Shape.find({ floorId }).select([
   // 		"-createdAt",

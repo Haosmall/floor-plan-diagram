@@ -12,6 +12,8 @@ const shapeRouter = () => {
   router.get("/:id/employee", shapeController.getShapeByEmployee);
   router.get("/:id/floor", shapeController.getShapeByFloor);
   router.get("/:id/room", shapeController.getShapesByRoom);
+  router.put("", shapeController.updateManyShape);
+  router.delete("", shapeController.deleteManyShape);
 
   return router;
 
