@@ -3,7 +3,6 @@ const Admin = require("../models/Admin");
 const Employee = require("../models/Employee");
 const tokenUtils = require("../utils/tokenUtils");
 const { registerValidator, loginValidator } = require("../validations/auth");
-const bcrypt = require("bcryptjs");
 
 class AdminService {
   async registry(data) {
