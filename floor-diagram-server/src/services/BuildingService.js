@@ -1,231 +1,134 @@
 const Building = require("../models/Building");
-const mongoose = require("mongoose");
-const UserPlace = require("../models/UserPlace");
-const User = require("../models/User");
-const ObjectId = mongoose.Types.ObjectId;
 
 class BuildingService {
-	async getListBuildings(userId, name) {
-		const isAdmin = await User.isAdmin(userId);
+  // add
+  async addBuilding(buildingInfo) {
+    const building = await Building.findOne({ name: buildingInfo.name });
+    if (building) throw new Error("Building name already exist");
 
-		// console.log({ userId });
+    // required field: name
+    const newBuilding = new Building(buildingInfo);
+    const savedBuilding = await newBuilding.save();
 
-		let listBuildings = [];
+    return savedBuilding;
+  }
 
-		if (isAdmin) {
-			listBuildings = await Building.aggregate([
-				{
-					$lookup: {
-						from: "users",
-						localField: "admin",
-						foreignField: "_id",
-						as: "admin",
-					},
-				},
-				{
-					$project: {
-						_id: 1,
-						name: 1,
-						admin: { $arrayElemAt: ["$admin", 0] },
-					},
-				},
-				{
-					$project: {
-						_id: 1,
-						name: 1,
-						admin: { _id: "$admin._id", name: "$admin.name" },
-					},
-				},
-				{
-					$match: {
-						name: { $regex: name, $options: "i" },
-					},
-				},
-				{
-					$project: {
-						createdAt: 0,
-						updatedAt: 0,
-						__v: 0,
-					},
-				},
-			]);
-		} else {
-			const listBuildingsByUserPlace = await UserPlace.aggregate([
-				{
-					$match: {
-						userId: ObjectId(userId),
-					},
-				},
-				{
-					$lookup: {
-						from: "buildings",
-						localField: "buildingId",
-						foreignField: "_id",
-						as: "result",
-					},
-				},
-				{
-					$unwind: "$result",
-				},
-				{
-					$project: {
-						_id: "$result._id",
-						name: "$result.name",
-						admin: "$result.admin",
-					},
-				},
-				{
-					$group: {
-						_id: "$_id",
-						name: { $first: "$name" },
-						admin: { $first: "$admin" },
-					},
-				},
-				{
-					$lookup: {
-						from: "users",
-						localField: "admin",
-						foreignField: "_id",
-						as: "admin",
-					},
-				},
-				{
-					$project: {
-						_id: 1,
-						name: 1,
-						admin: { $arrayElemAt: ["$admin", 0] },
-					},
-				},
-				{
-					$project: {
-						_id: 1,
-						name: 1,
-						admin: { _id: "$admin._id", name: "$admin.name" },
-					},
-				},
-				{
-					$match: {
-						name: { $regex: name, $options: "i" },
-					},
-				},
-				{
-					$project: {
-						createdAt: 0,
-						updatedAt: 0,
-						__v: 0,
-					},
-				},
-			]);
+  // get list
+  async getListBuildings() {
+    const buildings = await Building.find({}).populate(
+      "floors rooms groups teams projects employees"
+    );
 
-			const listBuildingByAdmin = await Building.aggregate([
-				{
-					$match: {
-						admin: ObjectId(userId),
-					},
-				},
-				{
-					$lookup: {
-						from: "users",
-						localField: "admin",
-						foreignField: "_id",
-						as: "admin",
-					},
-				},
-				{
-					$project: {
-						_id: 1,
-						name: 1,
-						admin: { $arrayElemAt: ["$admin", 0] },
-					},
-				},
-				{
-					$project: {
-						_id: 1,
-						name: 1,
-						admin: { _id: "$admin._id", name: "$admin.name" },
-					},
-				},
-				{
-					$match: {
-						name: { $regex: name, $options: "i" },
-					},
-				},
-				{
-					$project: {
-						createdAt: 0,
-						updatedAt: 0,
-						__v: 0,
-					},
-				},
-			]);
+    return buildings;
+  }
 
-			const idTemps = [];
+  // get building by Id
+  async getBuildingById(_id) {
+    const building = await Building.findById(_id).populate(
+      "floors rooms groups teams projects employees"
+    );
+    if (!building) throw new Error("Building not found");
 
-			[...listBuildingByAdmin, ...listBuildingsByUserPlace].map((ele) => {
-				if (!idTemps.includes(ele._id.toString())) {
-					idTemps.push(ele._id.toString());
-					listBuildings.push(ele);
-				}
-			});
-		}
+    return building;
+  }
 
-		return listBuildings;
-	}
+  // update
+  async updateBuilding(_id, buildingInfo) {
+    let updatedBuilding = await Building.findOneAndUpdate(
+      { _id },
+      buildingInfo,
+      {
+        new: true,
+      }
+    );
 
-	async addBuilding(buildingInfo) {
-		const building = new Building(buildingInfo);
-		const newBuilding = building.save(building);
-		return newBuilding;
-	}
+    return updatedBuilding;
 
-	async updateBuilding(_id, buildingInfo) {
-		const building = await Building.updateOne({ _id }, buildingInfo);
-	}
+    // const building = await Building.findById(_id);
+    // if (!building) throw new Error("Building not found");
 
-	async getBuildingById(_id) {
-		const building = await await Building.aggregate([
-			{
-				$match: {
-					_id: ObjectId(_id),
-				},
-			},
-			{
-				$lookup: {
-					from: "floors",
-					localField: "_id",
-					foreignField: "buildingId",
-					as: "floors",
-				},
-			},
-			{
-				$project: {
-					createdAt: 0,
-					updatedAt: 0,
-					__v: 0,
-				},
-			},
-		]);
+    // building.name = buildingInfo.name;
+    // building.admin = buildingInfo.admin;
+    // building.floors = buildingInfo?.floors?.length
+    //   ? [...buildingInfo.floors]
+    //   : [];
+    // building.rooms = buildingInfo.rooms?.length ? [...buildingInfo.rooms] : [];
+    // building.groups = buildingInfo?.groups?.length
+    //   ? [...buildingInfo.groups]
+    //   : [];
+    // building.teams = buildingInfo?.teams?.length ? [...buildingInfo.teams] : [];
+    // building.projects = buildingInfo?.projects?.length
+    //   ? [...buildingInfo.projects]
+    //   : [];
+    // building.employees = buildingInfo?.employees?.length
+    //   ? [...buildingInfo.employees]
+    //   : [];
 
-		if (building.length <= 0) throw new Error("Building not found");
-		return building[0];
-	}
+    // const updatedBuilding = await building.save();
 
-	async deleteBuilding(_id) {
-		await Building.findByIdAndDelete(_id);
-		await UserPlace.deleteMany({ buildingId: ObjectId(_id) });
-	}
+    // return updatedBuilding;
+  }
 
-	async searchBuildingByName(name) {
-		const buildings = await await Building.aggregate([
-			{
-				$match: {
-					name: { $regex: name, $options: "i" },
-				},
-			},
-		]);
+  // delete
+  async deleteBuilding(_id) {
+    const deletedBuilding = await Building.findByIdAndDelete(_id);
 
-		return buildings;
-	}
+    return deletedBuilding;
+  }
+
+  // get floor list in building
+  async getFloorsByBuildingId(buildingId) {
+    const floors = await Building.findById(buildingId)
+      .select("floors")
+      .populate("floors");
+
+    return floors;
+  }
+
+  // get room list in building
+  async getListRoomByBuildingId(buildingId) {
+    const rooms = await Building.findById(buildingId)
+      .select("rooms")
+      .populate("rooms");
+
+    return rooms;
+  }
+
+  // get group list in building
+  async getListGroupByBuilding(buildingId) {
+    const groups = await Building.findById(buildingId)
+      .select("groups")
+      .populate("groups");
+
+    return groups;
+  }
+
+  // get team list in building
+  async getListTeamByBuilding(buildingId) {
+    const teams = await Building.findById(buildingId)
+      .select("teams")
+      .populate("teams");
+
+    return teams;
+  }
+
+  // get project list in building
+  async getListProjectByBuilding(buildingId) {
+    const projects = await Building.findById(buildingId)
+      .select("projects")
+      .populate("projects");
+
+    return projects;
+  }
+
+  // get employee list in building
+  async getListEmployeeByBuilding(buildingId) {
+    const employees = await Building.findById(buildingId)
+      .select("employees")
+      .populate("employees");
+
+    return employees;
+  }
 }
 
 module.exports = new BuildingService();

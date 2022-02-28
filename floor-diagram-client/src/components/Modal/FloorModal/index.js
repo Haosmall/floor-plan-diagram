@@ -9,144 +9,144 @@ import { fetchListUsers } from "redux/userSlice";
 import { INITIAL_FLOOR } from "utils/constants";
 
 const FloorModal = (props) => {
-	const { visible, onCancel, initialValues, isAddMode, title, buildingId } =
-		props;
-	const { users } = useSelector((state) => state.user);
-	const { Option } = Select;
-	const [form] = Form.useForm();
+  const { visible, onCancel, initialValues, isAddMode, title, buildingId } =
+    props;
+  const { users } = useSelector((state) => state.user);
+  const { Option } = Select;
+  const [form] = Form.useForm();
 
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	useEffect(() => form.resetFields(), [initialValues]);
+  useEffect(() => form.resetFields(), [initialValues]);
 
-	useEffect(() => {
-		if (!users) {
-			dispatch(fetchListUsers());
-		}
-	}, []);
+  useEffect(() => {
+    if (!users) {
+      dispatch(fetchListUsers());
+    }
+  }, []);
 
-	const handleSubmit = async () => {
-		const values = await form.validateFields();
-		const { name, admin, users } = values;
+  const handleSubmit = async () => {
+    const values = await form.validateFields();
+    const { name, admin, users } = values;
 
-		try {
-			if (isAddMode) {
-				const response = await floorApi.addFloor(
-					name,
-					buildingId,
-					admin,
-					users
-				);
+    try {
+      if (isAddMode) {
+        const response = await floorApi.addFloor(
+          name,
+          buildingId,
+          admin,
+          users
+        );
 
-				dispatch(addNewFloor({ floor: response }));
-			} else {
-				const response = await floorApi.updateFloor(
-					initialValues._id,
-					initialValues.buildingId,
-					name,
-					admin,
-					users
-				);
+        dispatch(addNewFloor({ floor: response }));
+      } else {
+        const response = await floorApi.updateFloor(
+          initialValues._id,
+          initialValues.buildingId,
+          name,
+          admin,
+          users
+        );
 
-				dispatch(updateFloor({ floor: response }));
-			}
-			message.success(`${isAddMode ? "Add" : "Update"} floor successfully`);
-		} catch (error) {
-			console.error(error);
-			message.error("An error has occurred");
-		}
-		handleCancel();
-	};
+        dispatch(updateFloor({ floor: response }));
+      }
+      message.success(`${isAddMode ? "Add" : "Update"} floor successfully`);
+    } catch (error) {
+      console.error(error);
+      message.error("An error has occurred");
+    }
+    handleCancel();
+  };
 
-	const handleCancel = () => {
-		if (onCancel) {
-			form.resetFields();
-			onCancel();
-		}
-	};
+  const handleCancel = () => {
+    if (onCancel) {
+      form.resetFields();
+      onCancel();
+    }
+  };
 
-	const formItemLayout = {
-		labelCol: { span: 4 },
-		wrapperCol: { span: 18 },
-	};
-	const formItemLayoutWithOutLabel = {
-		wrapperCol: {
-			span: 18,
-			offset: 4,
-		},
-	};
+  const formItemLayout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 18 },
+  };
+  const formItemLayoutWithOutLabel = {
+    wrapperCol: {
+      span: 18,
+      offset: 4,
+    },
+  };
 
-	return (
-		<Modal
-			title={title}
-			visible={visible}
-			onOk={handleSubmit}
-			onCancel={handleCancel}
-			okText="Save"
-			forceRender
-		>
-			<Form
-				labelCol={{
-					span: 4,
-				}}
-				wrapperCol={{
-					span: 20,
-				}}
-				form={form}
-				initialValues={initialValues}
-			>
-				<Form.Item
-					label="Floor"
-					name="name"
-					rules={[
-						{
-							required: true,
-							message: "Please input name!",
-						},
-					]}
-				>
-					<Input />
-				</Form.Item>
+  return (
+    <Modal
+      title={title}
+      visible={visible}
+      onOk={handleSubmit}
+      onCancel={handleCancel}
+      okText="Save"
+      forceRender
+    >
+      <Form
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 20,
+        }}
+        form={form}
+        initialValues={initialValues}
+      >
+        <Form.Item
+          label="Floor"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Please input name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-				<Form.Item
-					label="Admin"
-					name="admin"
-					rules={[
-						{
-							required: true,
-							message: "Select admin!",
-						},
-					]}
-				>
-					<Select>
-						{users?.map((user) => (
-							<Option key={user._id} value={user._id}>
-								{user.name}
-							</Option>
-						))}
-					</Select>
-				</Form.Item>
+        <Form.Item
+          label="Admin"
+          name="admin"
+          rules={[
+            {
+              required: true,
+              message: "Select admin!",
+            },
+          ]}
+        >
+          <Select>
+            {users?.map((user) => (
+              <Option key={user._id} value={user._id}>
+                {user.name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
 
-				<Form.Item
-					label="Users"
-					name="users"
-					rules={[
-						{
-							required: true,
-							message: "Select users!",
-						},
-					]}
-				>
-					<Select mode="multiple" allowClear placeholder="Please select users">
-						{users?.map((user) => (
-							<Option key={user._id} value={user._id}>
-								{user.name}
-							</Option>
-						))}
-					</Select>
-				</Form.Item>
+        <Form.Item
+          label="Users"
+          name="users"
+          rules={[
+            {
+              required: true,
+              message: "Select users!",
+            },
+          ]}
+        >
+          <Select mode="multiple" allowClear placeholder="Please select users">
+            {users?.map((user) => (
+              <Option key={user._id} value={user._id}>
+                {user.name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
 
-				{/* <Form.List name="users">
+        {/* <Form.List name="users">
 					{(fields, { add, remove }, { errors }) => (
 						<>
 							{fields.map(({ key, name, ...field }, index) => {
@@ -223,26 +223,26 @@ const FloorModal = (props) => {
 						</>
 					)}
 				</Form.List> */}
-			</Form>
-		</Modal>
-	);
+      </Form>
+    </Modal>
+  );
 };
 
 FloorModal.propTypes = {
-	visible: PropTypes.bool,
-	onCancel: PropTypes.func,
-	onSubmit: PropTypes.func,
-	initialValues: PropTypes.object,
-	title: PropTypes.string,
-	isAddMode: PropTypes.bool,
+  visible: PropTypes.bool,
+  onCancel: PropTypes.func,
+  onSubmit: PropTypes.func,
+  initialValues: PropTypes.object,
+  title: PropTypes.string,
+  isAddMode: PropTypes.bool,
 };
 
 FloorModal.defaultProps = {
-	visible: false,
-	onCancel: null,
-	onSubmit: null,
-	initialValues: INITIAL_FLOOR,
-	title: "Modal",
-	isAddMode: true,
+  visible: false,
+  onCancel: null,
+  onSubmit: null,
+  initialValues: INITIAL_FLOOR,
+  title: "Modal",
+  isAddMode: true,
 };
 export default FloorModal;

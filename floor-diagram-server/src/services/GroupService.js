@@ -1,51 +1,84 @@
-const mongoose = require("mongoose");
+const Room = require("../models/Room");
 const Group = require("../models/Group");
+const Team = require("../models/Team");
 const Project = require("../models/Project");
-const ObjectId = mongoose.Types.ObjectId;
+const Employee = require("../models/Employee");
+const Shape = require("../models/Shape");
 
 class GroupService {
-	async getListGroupByBuilding(buildingId) {
-		const listGroups = await Group.find({ buildingId }).select(["-__v"]);
+  // add
+  async addGroup(groupInfo) {
+    const group = await Group.findOne({ name: groupInfo.name });
+    if (group) throw new Error("Group name already exist");
 
-		return listGroups;
-	}
+    // required field: name
+    const newGroup = new Group(groupInfo);
+    const savedGroup = await newGroup.save();
 
-	async addGroup(groupInfo) {
-		const group = new Group(groupInfo);
-		const newGroup = group.save(group);
-		return newGroup;
-	}
+    return savedGroup;
+  }
 
-	async updateGroup(_id, groupInfo) {
-		await Group.updateOne({ _id: ObjectId(_id) }, groupInfo);
-		return { _id, ...groupInfo };
-	}
+  // get list
+  async getListGroups() {
+    const groups = await Group.find({}).populate(
+      "room teams projects employees"
+    );
 
-	async deleteGroup(_id) {
-		await Group.deleteOne({ _id: ObjectId(_id) });
-		await Project.deleteMany({ groupId: ObjectId(_id) });
-	}
+    return groups;
+  }
 
-	async getShapesByGroup(groupId) {
-		const result = await Project.aggregate([
-			{
-				$match: { groupId: ObjectId(groupId) },
-			},
-			{
-				$lookup: {
-					from: "shapes",
-					localField: "_id",
-					foreignField: "projectId",
-					as: "result",
-				},
-			},
-			{ $unwind: "$result" },
-			{ $project: { _id: "$result._id" } },
-			{ $group: { _id: "$_id" } },
-		]);
-		const listShapes = result.map((ele) => ele._id);
-		return listShapes;
-	}
+  // get 1 group
+  async getGroupById(_id) {
+    const group = await Group.findById(_id).populate(
+      "room teams projects employees"
+    );
+    if (!group) throw new Error("Group not found");
+
+    return group;
+  }
+
+  // update
+  async updateGroup(_id, groupInfo) {
+    let updatedGroup = await Group.findOneAndUpdate({ _id }, groupInfo, {
+      new: true,
+    });
+
+    return updatedGroup;
+  }
+
+  // delete
+  async deleteGroup(_id) {
+    const deletedGroup = await Group.findByIdAndDelete(_id);
+
+    return deletedGroup;
+  }
+
+  // get team list in group
+  async getListTeamByGroup(groupId) {
+    const teams = await Group.findById(groupId)
+      .select("teams")
+      .populate("teams");
+
+    return teams;
+  }
+
+  // get project list in group
+  async getListProjectByGroup(groupId) {
+    const projects = await Group.findById(groupId)
+      .select("projects")
+      .populate("projects");
+
+    return projects;
+  }
+
+  // get employee list in group
+  async getListEmployeeByGroup(groupId) {
+    const employees = await Group.findById(groupId)
+      .select("employees")
+      .populate("employees");
+
+    return employees;
+  }
 }
 
 module.exports = new GroupService();

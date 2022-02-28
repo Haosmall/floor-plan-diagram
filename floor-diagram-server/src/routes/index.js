@@ -1,22 +1,23 @@
-const casbinAuth = require("../middleware/casbinAuth");
-const auth = require("../middleware/auth");
-const authRouter = require("./auth");
-const userRouter = require("./user");
+const { isAdmin, isAdmin_or_buildingAdmin } = require("../middleware/auth");
+const adminRouter = require("./admin");
+const employeeRouter = require("./employee");
+const roomRouter = require("./room");
 const buildingRouter = require("./building");
 const floorRouter = require("./floor");
 const groupRouter = require("./group");
+const teamRouter = require("./team");
 const projectRouter = require("./project");
-const shapeRouter = require("./shape");
-const healthRouter = require("./health");
+const buildingAdmin = require("./buildingAdmin");
 
 const route = (app) => {
-	app.use("/api/auth", authRouter());
-	app.use("/api/users", auth, userRouter());
-	app.use("/api/buildings", auth, casbinAuth, buildingRouter());
-	app.use("/api/floor", auth, casbinAuth, floorRouter());
-	app.use("/api/groups", auth, casbinAuth, groupRouter());
-	app.use("/api/projects", auth, casbinAuth, projectRouter());
-	app.use("/api/shape", auth, casbinAuth, shapeRouter());
-	app.use("/api/health", healthRouter());
+  app.use("/api/admin", adminRouter());
+  app.use("/api/buildingAdmin", buildingAdmin());
+  app.use("/api/buildings", isAdmin, buildingRouter());
+  app.use("/api/employees", isAdmin_or_buildingAdmin, employeeRouter());
+  app.use("/api/floors", isAdmin_or_buildingAdmin, floorRouter());
+  app.use("/api/rooms", isAdmin_or_buildingAdmin, roomRouter());
+  app.use("/api/groups", isAdmin_or_buildingAdmin, groupRouter());
+  app.use("/api/teams", isAdmin_or_buildingAdmin, teamRouter());
+  app.use("/api/projects", isAdmin_or_buildingAdmin, projectRouter());
 };
 module.exports = route;

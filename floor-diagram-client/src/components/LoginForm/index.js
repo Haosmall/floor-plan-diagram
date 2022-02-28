@@ -105,10 +105,10 @@ const LoginForm = (props) => {
 					>
 						{isRegister ? "Submit" : "Login"}
 					</Button>
-					<br />
+					{/* <br />
 					<Link to={isRegister ? "/login" : "/register"}>
 						{isRegister ? "Already have an account?" : "Don't have an account?"}
-					</Link>
+					</Link> */}
 				</Form.Item>
 			</Form>
 		</div>

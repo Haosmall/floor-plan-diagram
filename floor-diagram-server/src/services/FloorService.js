@@ -1,159 +1,111 @@
 const Floor = require("../models/Floor");
-const UserPlace = require("../models/UserPlace");
-const userPlaceService = require("./UserPlaceService");
-const mongoose = require("mongoose");
-const Shape = require("../models/Shape");
-const ObjectId = mongoose.Types.ObjectId;
 
 class FloorService {
-	async getListFloorsByBuildingId(buildingId) {
-		const listFloors = await Floor.aggregate([
-			{
-				$match: {
-					buildingId: ObjectId(buildingId),
-				},
-			},
-			{
-				$lookup: {
-					from: "userplaces",
-					localField: "_id",
-					foreignField: "floorId",
-					as: "users",
-				},
-			},
-			{
-				$project: {
-					users: { createdAt: 0, updatedAt: 0, __v: 0 },
-					createdAt: 0,
-					updatedAt: 0,
-					__v: 0,
-				},
-			},
-			// {
-			// 	$unwind: "$users",
-			// },
-			// {
-			// 	$lookup: {
-			// 		from: "users",
-			// 		localField: "users.userId",
-			// 		foreignField: "_id",
-			// 		as: "user",
-			// 	},
-			// },
-			// {
-			// 	$unwind: "$user",
-			// },
-			// {
-			// 	$project: {
-			// 		_id: 1,
-			// 		name: 1,
-			// 		buildingId: 1,
-			// 		admin: 1,
-			// 		user: {
-			// 			userId: "$user._id",
-			// 			name: "$user.name",
-			// 			role: "$users.role",
-			// 		},
-			// 	},
-			// },
-			// {
-			// 	$group: {
-			// 		_id: "$_id",
-			// 		name: { $first: "$name" },
-			// 		buildingId: { $first: "$buildingId" },
-			// 		admin: { $first: "$admin" },
-			// 		users: { $push: "$user" },
-			// 	},
-			// },
-		]);
+  // add
+  async addFloor(floorInfo) {
+    const floor = await Floor.findOne({ name: floorInfo.name });
+    if (floor) throw new Error("Floor name already exist");
 
-		// const listFloors = [];
+    // required field: name
+    const newFloor = new Floor(floorInfo);
+    const savedFloor = await newFloor.save();
 
-		// if (result.length > 0) {
-		// 	for (const floor of result) {
-		// 		const { _id, name, buildingId, admin } = floor;
+    return savedFloor;
+  }
 
-		// 		console.log({ uu: floor.users });
-		// 		const users = floor.users.map((ele) => ele.userId);
-		// 		listFloors.push({ _id, name, buildingId, admin, users });
-		// 	}
-		// }
+  // get list
+  async getListFloors() {
+    const floors = await Floor.find({}).populate(
+      "rooms groups teams projects employees"
+    );
 
-		return listFloors;
-	}
+    return floors;
+  }
 
-	async addFloor(floorInfo) {
-		const { name, buildingId, admin, users } = floorInfo;
+  // get 1 floor
+  async getFloorById(_id) {
+    const floor = await Floor.findById(_id).populate(
+      "rooms groups teams projects employees"
+    );
+    if (!floor) throw new Error("Floor not found");
 
-		const floor = new Floor({ name, buildingId, admin });
-		const newFloor = await floor.save(floor);
-		let userPlaces = [];
+    return floor;
+  }
 
-		if (users?.length > 0) {
-			console.log({ users });
-			for (const userId of users) {
-				const userFloor = await userPlaceService.addUserPlace(
-					userId,
-					floor._id,
-					floor.buildingId
-				);
-				userPlaces.push(userFloor);
-			}
-		}
+  // update
+  async updateFloor(_id, floorInfo) {
+    let updatedFloor = await Floor.findOneAndUpdate({ _id }, floorInfo, {
+      new: true,
+    });
 
-		return {
-			_id: newFloor._id,
-			name: newFloor.name,
-			buildingId: newFloor.buildingId,
-			admin: newFloor.admin,
-			users: userPlaces,
-		};
-	}
+    return updatedFloor;
 
-	async updateFloor(_id, floorInfo) {
-		const { name, buildingId, admin, users } = floorInfo;
-		await Floor.updateOne({ _id }, { name, buildingId, admin });
-		const listUserPlace = await UserPlace.find({ floorId: ObjectId(_id) });
+    // const floor = await Floor.findById(_id);
+    // if (!floor) throw new Error("Floor not found");
+    // floor.name = floorInfo.name;
+    // floor.building = floorInfo.building;
+    // floor.rooms = floorInfo.rooms?.length ? [...floorInfo.rooms] : [];
+    // floor.groups = floorInfo?.groups?.length ? [...floorInfo.groups] : [];
+    // floor.teams = floorInfo?.teams?.length ? [...floorInfo.teams] : [];
+    // floor.projects = floorInfo?.projects?.length ? [...floorInfo.projects] : [];
+    // floor.employees = floorInfo?.employees?.length
+    //   ? [...floorInfo.employees]
+    //   : [];
+    // const updatedFloor = await floor.save();
+    // return updatedFloor;
+  }
 
-		// const userPlaceIds = users.map((ele) => ele._id);
-		const listId = listUserPlace.map((ele) => ele._id.toString());
+  // delete
+  async deleteFloor(_id) {
+    const deletedFloor = await Floor.findByIdAndDelete(_id);
 
-		const ListUserPlaceDelete = listId.filter((ele) => !users.includes(ele));
+    return deletedFloor;
+  }
 
-		const ListUserPlaceAdd = users.filter((ele) => !listId.includes(ele));
+  // get room list in floor
+  async getListRoomByFloorId(floorId) {
+    const rooms = await Floor.findById(floorId)
+      .select("rooms")
+      .populate("rooms");
 
-		if (ListUserPlaceDelete.length > 0) {
-			for (const userPlaceId of ListUserPlaceDelete) {
-				await userPlaceService.deleteUserPlace(userPlaceId);
-			}
-		}
+    return rooms;
+  }
 
-		if (ListUserPlaceAdd.length > 0) {
-			for (const userId of ListUserPlaceAdd) {
-				await userPlaceService.addUserPlace(userId, _id, buildingId);
-			}
-		}
+  // get group list in floor
+  async getListGroupByFloor(floorId) {
+    const groups = await Floor.findById(floorId)
+      .select("groups")
+      .populate("groups");
 
-		const userPlaces = await UserPlace.find({ floorId: ObjectId(_id) });
+    return groups;
+  }
 
-		return {
-			_id,
-			name,
-			buildingId,
-			admin,
-			users: userPlaces,
-		};
-	}
+  // get team list in floor
+  async getListTeamByFloor(floorId) {
+    const teams = await Floor.findById(floorId)
+      .select("teams")
+      .populate("teams");
 
-	async deleteFloor(_id) {
-		await Floor.findByIdAndDelete(_id);
-		await UserPlace.deleteMany({ floorId: ObjectId(_id) });
-		await Shape.deleteMany({ floorId: ObjectId(_id) });
-	}
+    return teams;
+  }
 
-	async getFloorById(_id) {
-		return await Floor.findById(_id);
-	}
+  // get project list in floor
+  async getListProjectByFloor(floorId) {
+    const projects = await Floor.findById(floorId)
+      .select("projects")
+      .populate("projects");
+
+    return projects;
+  }
+
+  // get employee list in floor
+  async getListEmployeeByFloor(floorId) {
+    const employees = await Floor.findById(floorId)
+      .select("employees")
+      .populate("employees");
+
+    return employees;
+  }
 }
 
 module.exports = new FloorService();

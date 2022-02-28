@@ -47,8 +47,6 @@ function App() {
 
 					<Route path="/login" element={<Login />} />
 
-					<Route path="/register" element={<Login isRegister={true} />} />
-
 					<Route exact path="/buildings" element={<ProtectedRoute />}>
 						<Route exact path="/buildings" element={<HomePage />} />
 					</Route>

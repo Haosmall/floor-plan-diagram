@@ -1,71 +1,70 @@
-const Building = require("../models/Building");
-const mongoose = require("mongoose");
-const UserPlace = require("../models/UserPlace");
+const Group = require("../models/Group");
+const Room = require("../models/Room");
+const Team = require("../models/Team");
 const Project = require("../models/Project");
-const Shape = require("../models/Shape");
-const ObjectId = mongoose.Types.ObjectId;
+const Employee = require("../models/Employee");
 
 class ProjectService {
-	async getListProjectByBuilding(buildingId) {
-		const listProjects = await Project.aggregate([
-			{
-				$lookup: {
-					from: "groups",
-					localField: "groupId",
-					foreignField: "_id",
-					as: "group",
-				},
-			},
-			{
-				$match: {
-					"group.buildingId": ObjectId(buildingId),
-				},
-			},
-			{
-				$project: {
-					group: { __v: 0 },
-					createdAt: 0,
-					updatedAt: 0,
-					__v: 0,
-				},
-			},
-		]);
+  // add
+  async addProject(projectInfo) {
+    const project = await Project.findOne({ name: projectInfo.name });
+    if (project) throw new Error("Project name already exist");
 
-		// console.log(listProjects);
-		return listProjects;
-	}
+    // required field: name
+    const newProject = new Project(projectInfo);
+    const savedProject = await newProject.save();
 
-	async addProject(projectInfo) {
-		const project = new Project(projectInfo);
-		const newProject = project.save(project);
-		return newProject;
-	}
+    return savedProject;
+  }
 
-	async updateProject(_id, projectInfo) {
-		await Project.updateOne({ _id: ObjectId(_id) }, projectInfo);
-		return { _id, ...projectInfo };
-	}
+  // get list
+  async getListProjects() {
+    const group = await Project.find({}).populate("team employees");
 
-	async deleteProject(_id) {
-		await Project.deleteOne({ _id });
-	}
+    return group;
+  }
 
-	async getShapesByProject(projectId) {
-		const result = await Shape.aggregate([
-			{
-				$match: {
-					projectId: ObjectId(projectId),
-				},
-			},
-			{
-				$project: {
-					_id: 1,
-				},
-			},
-		]);
-		const listShapes = result.map((ele) => ele._id);
-		return listShapes;
-	}
+  // get 1 project
+  async getProjectById(_id) {
+    const project = await Project.findById(_id).populate("team employees");
+    if (!project) throw new Error("Project not found");
+
+    return project;
+  }
+
+  // update
+  async updateProject(_id, projectInfo) {
+    let updatedProject = await Project.findOneAndUpdate({ _id }, projectInfo, {
+      new: true,
+    });
+
+    return updatedProject;
+  }
+
+  // delete
+  async deleteProject(_id) {
+    const deletedProject = await Project.findByIdAndDelete(_id);
+
+    return deletedProject;
+  }
+
+  // get team by project
+  async getTeamByProject(projectId) {
+    const team = await Project.findById(projectId)
+      .select("team")
+      .populate("team");
+
+    return team;
+  }
+
+  // get employee list in project
+  async getListEmployeeByProject(projectId) {
+    const employees = await Project.findById(projectId)
+      .select("employees")
+      .populate("employees");
+
+    return employees;
+  }
 }
 
 module.exports = new ProjectService();
