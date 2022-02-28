@@ -42,7 +42,8 @@ class EmployeeService {
 
   // update
   async updateEmployee(_id, empInfo) {
-    empInfo.password = bcrypt.hashSync(empInfo.password, 8);
+    if (empInfo.password)
+      empInfo.password = bcrypt.hashSync(empInfo.password, 8);
     let updatedEmp = await Employee.findOneAndUpdate({ _id }, empInfo, {
       new: true,
     });
@@ -61,12 +62,12 @@ class EmployeeService {
     const employee = await Employee.findById(empId);
     if (!employee) throw new Error("Employee not found");
 
-    employee.isAdmin = true;
-    const { _id, name, username, isAdmin } = await employee.save();
+    employee.isBuildingAdmin = true;
+    const { _id, name, username, isBuildingAdmin } = await employee.save();
 
     const token = await generateToken(_id);
 
-    return { _id, name, username, isAdmin, token };
+    return { _id, name, username, isBuildingAdmin, token };
   }
 }
 

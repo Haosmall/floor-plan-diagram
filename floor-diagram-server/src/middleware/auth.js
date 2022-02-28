@@ -1,54 +1,39 @@
 const Admin = require("../models/Admin");
 const Employee = require("../models/Employee");
 const tokenUtils = require("../utils/tokenUtils");
+const jwt = require("jsonwebtoken");
 
 exports.isAdmin = async (req, res, next) => {
-  const authorization = req.headers.authorization;
-  if (!authorization) {
-    return res.status(401).send({ message: "There's no token" });
-  }
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const data = await tokenUtils.verifyToken(token);
 
-  const token = authorization.split(" ")[1];
-  tokenUtils
-    .verifyToken(token)
-    .then(async (decode) => {
-      const admin = await Admin.findById(decode._id);
-      if (!admin) {
-        return res.status(401).send({
-          message: "Unauthorized to access this resource",
-        });
-      }
-      req.admin = admin;
+    const admin = await Admin.findById(data._id);
+    if (!admin) throw new Error("Not authorized to access this resource");
 
-      next();
-    })
-    .catch((err) => {
-      res.status(401).send({ message: err });
+    next();
+  } catch (error) {
+    res.status(401).send({
+      status: 401,
+      error: "Not authorized to access this resource",
     });
+  }
 };
 
 exports.isAdmin_or_buildingAdmin = async (req, res, next) => {
-  const authorization = req.headers.authorization;
-  if (!authorization) {
-    return res.status(401).send({ message: "There's no token" });
-  }
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const data = await tokenUtils.verifyToken(token);
 
-  const token = authorization.split(" ")[1];
-  tokenUtils
-    .verifyToken(token)
-    .then(async (decode) => {
-      const employee = await Employee.findById(decode._id);
-      const admin = await Admin.findById(decode._id);
+    const admin = await Admin.findById(data._id);
+    const employee = await Employee.findById(data._id);
 
-      if (admin || employee.isAdmin) {
-        next();
-      } else {
-        return res.status(401).send({
-          message: "Unauthorized to access this resource",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(401).send({ message: err });
+    if (admin || employee.isBuildingAdmin) next();
+    else throw new Error("Not authorized to access this resource");
+  } catch (error) {
+    res.status(401).send({
+      status: 401,
+      error: "Not authorized to access this resource",
     });
+  }
 };

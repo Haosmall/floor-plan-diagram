@@ -46,6 +46,20 @@ adminSchema.statics.findByCredentials = async (username, password) => {
   return admin;
 };
 
+adminSchema.statics.findByCredentials_2 = async (username, password) => {
+  const admin = await Admin.findOne({
+    username,
+  });
+
+  if (!admin) return null;
+
+  const isPwdMatch = bcrypt.compareSync(password, admin.password);
+
+  if (isPwdMatch) return admin;
+
+  return null;
+};
+
 const Admin = mongoose.model("Admin", adminSchema);
 
 module.exports = Admin;

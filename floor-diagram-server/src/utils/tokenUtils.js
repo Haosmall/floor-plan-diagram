@@ -10,16 +10,10 @@ const tokenUtils = {
     });
   },
 
-  verifyToken: (token) => {
-    return new Promise((resolve, reject) => {
-      jwt.verify(token, process.env.JWT_KEY || "YourKey", (err, decode) => {
-        if (err) {
-          reject("Invalid token");
-          return;
-        }
-        resolve(decode);
-      });
-    });
+  verifyToken: async (token) => {
+    if (!token) return new Error("Token invalid");
+    const JWT_KEY = process.env.JWT_KEY || "YourKey";
+    return await jwt.verify(token, JWT_KEY);
   },
 };
 

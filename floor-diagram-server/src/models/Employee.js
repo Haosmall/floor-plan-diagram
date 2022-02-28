@@ -22,7 +22,7 @@ const employeeSchema = new Schema(
       min: 6,
       max: 255,
     },
-    isAdmin: {
+    isBuildingAdmin: {
       // true => admin building
       type: Boolean,
       required: true,
@@ -67,6 +67,20 @@ employeeSchema.statics.findByCredentials = async (username, password) => {
   if (!isPasswordMatch) throw new Error("Password invalid");
 
   return employee;
+};
+
+employeeSchema.statics.findByCredentials_2 = async (username, password) => {
+  const buildingAdmin = await Employee.findOne({
+    username,
+  });
+
+  if (!buildingAdmin) return null;
+
+  const isPwdMatch = bcrypt.compareSync(password, buildingAdmin.password);
+
+  if (buildingAdmin.isBuildingAdmin && isPwdMatch) return buildingAdmin;
+
+  return null;
 };
 
 const Employee = mongoose.model("Employee", employeeSchema);
