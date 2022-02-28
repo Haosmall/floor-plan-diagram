@@ -8,7 +8,7 @@ export const fetchUserProfile = createAsyncThunk(
 	async (params, thunkApi) => {
 		const user = await userApi.fetchUserProfile();
 		return user;
-}
+	}
 );
 
 export const fetchListUsers = createAsyncThunk(
@@ -39,6 +39,10 @@ const userSlice = createSlice({
 			state.isLogin = false;
 			localStorage.removeItem("token");
 			state.user = null;
+		},
+
+		setUser: (state, action) => {
+			state.user = action.payload;
 		},
 	},
 
@@ -75,5 +79,5 @@ const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const { setLoading, setLogin, logout } = actions;
+export const { setLoading, setLogin, logout, setUser } = actions;
 export default reducer;

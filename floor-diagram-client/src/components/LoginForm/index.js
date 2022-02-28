@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./style.scss";
 import authApi from "api/authApi";
-import { fetchUserProfile, setLogin } from "redux/userSlice";
+import { fetchUserProfile, setLogin, setUser } from "redux/userSlice";
 
 const LoginForm = (props) => {
 	const { isRegister } = props;
@@ -15,9 +15,10 @@ const LoginForm = (props) => {
 	const handleLogin = async (value) => {
 		const { username, password } = value;
 		try {
-			const { token } = await authApi.login(username, password);
+			const { token, ...userInfo } = await authApi.login(username, password);
 			localStorage.setItem("token", token);
-			await dispatch(fetchUserProfile());
+			// await dispatch(fetchUserProfile());
+			dispatch(setUser(userInfo));
 			dispatch(setLogin(true));
 			navigate("/");
 		} catch (error) {

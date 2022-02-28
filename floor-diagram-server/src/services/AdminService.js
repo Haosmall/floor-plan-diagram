@@ -18,7 +18,7 @@ class AdminService {
     // else
     const newAdmin = new Admin(data);
     const { _id, name, username } = await newAdmin.save();
-    const token = await tokenUtils.generateToken(_id);
+    const token = await tokenUtils.generateToken({ _id });
 
     return { _id, name, username, token };
   }
@@ -27,14 +27,41 @@ class AdminService {
     const { error } = loginValidator(account);
     if (error) throw new Error(error.details[0].message);
 
-    const { _id, name, username } = await Admin.findByCredentials(
+    // --- Admin
+    const admin = await Admin.findByCredentials_2(
+      account.username,
+      account.password
+    );
+    // --- Employee
+    const employee = await Employee.findByCredentials_2(
       account.username,
       account.password
     );
 
-    const token = await tokenUtils.generateToken(_id);
+    if (admin) {
+      const token = await tokenUtils.generateToken({ _id: admin._id });
+      return {
+        _id: admin._id,
+        name: admin.name,
+        username: admin.username,
+        isAdmin: true,
+        token,
+      };
+    }
 
-    return { _id, name, username, token };
+    if (employee) {
+      const token = await tokenUtils.generateToken({ _id: employee._id });
+      return {
+        _id: employee._id,
+        name: employee.name,
+        username: employee.username,
+        isBuildingAdmin: true,
+        token,
+      };
+    }
+
+    if (!admin && !employee)
+      throw new Error("Your credentials provided incorrectly");
   }
 }
 

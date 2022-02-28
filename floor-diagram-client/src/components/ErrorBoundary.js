@@ -1,4 +1,6 @@
+import { Button, Result } from "antd";
 import React from "react";
+import { useNavigate } from "react-router";
 export class ErrorBoundary extends React.Component {
 	constructor(props) {
 		super(props);
@@ -6,19 +8,22 @@ export class ErrorBoundary extends React.Component {
 	}
 
 	static getDerivedStateFromError(error) {
-		// Update state so the next render will show the fallback UI.
 		return { hasError: true };
 	}
 
 	componentDidCatch(error, errorInfo) {
-		// You can also log the error to an error reporting service
 		console.error(error, errorInfo);
 	}
 
 	render() {
 		if (this.state.hasError) {
-			// You can render any custom fallback UI
-			return <h1>Something went wrong.</h1>;
+			return (
+				<div className="exception-page">
+					<div className="main">
+						<Result status="500" title="Sorry, something went wrong." />
+					</div>
+				</div>
+			);
 		}
 
 		return this.props.children;
