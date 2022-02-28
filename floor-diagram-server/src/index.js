@@ -8,8 +8,8 @@ require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 const cors = require("cors");
 
 const app = express();
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 
 // CORS
 app.use(cors());

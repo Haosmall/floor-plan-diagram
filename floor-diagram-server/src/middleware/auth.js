@@ -28,7 +28,7 @@ exports.isAdmin_or_buildingAdmin = async (req, res, next) => {
     const admin = await Admin.findById(data._id);
     const employee = await Employee.findById(data._id);
 
-    if (admin || employee.isBuildingAdmin) next();
+    if (admin || employee?.isBuildingAdmin) next();
     else throw new Error("Not authorized to access this resource");
   } catch (error) {
     res.status(401).send({
