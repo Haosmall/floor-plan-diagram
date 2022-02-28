@@ -3,6 +3,7 @@ const Shape = require("../models/Shape");
 const Employee = require("../models/Employee");
 const Floor = require("../models/Floor");
 const Room = require("../models/Room");
+const ObjectId = mongoose.Types.ObjectId;
 // const awsS3Service = require("./AwsS3Service");
 
 class ShapeService {
@@ -68,6 +69,17 @@ class ShapeService {
     return shapes;
   }
 
+  // delete many
+  async deleteManyShape(shapeIds) {
+    const listObjectId = shapeIds.map((id) => ObjectId(id));
+    await Shape.deleteMany({ _id: { $in: listObjectId } });
+  }
+
+  // update many
+  async updateManyShape(shapeIds) {
+    //
+  }
+
   // async getListShapeByFloor(floorId) {
   // 	const listShapes = await Shape.find({ floorId }).select([
   // 		"-createdAt",
@@ -89,11 +101,13 @@ class ShapeService {
   // 	}
   // 	return result;
   // }
+
   // async addShape(shapeIfo) {
   // 	const shape = new Shape(shapeIfo);
   // 	const newShape = shape.save(shape);
   // 	return newShape;
   // }
+
   // async addImageShape(floorId, file) {
   // 	const shape = new Shape({
   // 		floorId,
@@ -106,6 +120,7 @@ class ShapeService {
   // 	await Shape.updateOne({ _id: ObjectId(_doc._id) }, { src });
   // 	return { ..._doc, src };
   // }
+
   // async uploadShapeImage(id, file) {
   // 	this.checkImage(file);
   // 	const shape = await Shape.findById(id);
@@ -121,9 +136,11 @@ class ShapeService {
   // 	);
   // 	return newImageUrl;
   // }
+
   // async updateShape(_id, shapeInfo) {
   // 	await Shape.updateOne({ _id: ObjectId(_id) }, shapeInfo);
   // }
+
   // async deleteShape(_id) {
   // 	const shape = await Shape.findOne({ _id: ObjectId(_id) });
   // 	if (shape && shape.type === "image") {
@@ -131,6 +148,7 @@ class ShapeService {
   // 	}
   // 	await Shape.deleteOne({ _id: ObjectId(_id) });
   // }
+
   // async deleteManyShape(shapeIds) {
   // 	const listObjectId = shapeIds.map((id) => ObjectId(id));
   // 	const shapes = await Shape.find({
@@ -144,6 +162,7 @@ class ShapeService {
   // 	}
   // 	await Shape.deleteMany({ _id: { $in: listObjectId } });
   // }
+
   // checkImage(file) {
   // 	const { mimetype } = file;
   // 	if (mimetype !== "image/jpeg" && mimetype !== "image/png")
