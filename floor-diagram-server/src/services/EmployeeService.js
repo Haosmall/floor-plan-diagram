@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 class EmployeeService {
   // add
   async addEmployee(empInfo) {
-    // required fields: name, username, password
+    // required fields: name, username
     const { error } = registerValidator(empInfo);
     if (error) throw new Error(error.details[0].message);
 
@@ -15,7 +15,7 @@ class EmployeeService {
     });
     if (checkUsernameExist) throw new Error("Username is exist");
 
-    empInfo.password = bcrypt.hashSync(empInfo.password, 8);
+    empInfo.password = bcrypt.hashSync("123456", 8);
     const newEmp = new Employee(empInfo);
     const savedEmp = await newEmp.save();
 
