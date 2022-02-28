@@ -5,18 +5,6 @@ const bcrypt = require("bcryptjs");
 const tokenUtils = require("../utils/tokenUtils");
 
 class EmployeeService {
-  // get me
-  async getMe(req) {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
-    const data = await tokenUtils.verifyToken(token);
-
-    const employee = await Employee.findById(data._id);
-
-    if (!employee) throw new Error("Employee not found");
-
-    return employee;
-  }
-
   // add
   async addEmployee(empInfo) {
     // required fields: name, username

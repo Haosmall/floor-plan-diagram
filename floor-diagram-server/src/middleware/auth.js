@@ -37,20 +37,3 @@ exports.isAdmin_or_buildingAdmin = async (req, res, next) => {
     });
   }
 };
-
-exports.isNormalEmployee = async (req, res, next) => {
-  try {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
-    const data = await tokenUtils.verifyToken(token);
-
-    const employee = await Employee.findById(data._id);
-
-    if (employee) next();
-    else throw new Error("Invalid token");
-  } catch (error) {
-    res.status(401).send({
-      status: 401,
-      error: "Not authorized to access this resource",
-    });
-  }
-};
