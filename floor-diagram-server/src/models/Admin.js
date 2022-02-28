@@ -27,20 +27,21 @@ const adminSchema = new Schema(
   { timestamps: true }
 );
 
-adminSchema.pre("save", async function (next) {
-  const admin = this;
-  admin.password = await bcrypt.hash(admin.password, 8);
-  next();
-});
+// adminSchema.pre("save", async function (next) {
+//   const admin = this;
+//   admin.password = await bcrypt.hash(admin.password, 8);
+//   next();
+// });
 
 adminSchema.statics.findByCredentials = async (username, password) => {
   const admin = await Admin.findOne({
     username,
   });
+
   if (!admin) throw new Error("Admin not found");
 
-  const isPasswordMatch = await bcrypt.compare(password, admin.password);
-  if (!isPasswordMatch) throw new Error("Password invalid");
+  const isPwdMatch = bcrypt.compareSync(password, admin.password);
+  if (!isPwdMatch) throw new Error("Password invalid");
 
   return admin;
 };
