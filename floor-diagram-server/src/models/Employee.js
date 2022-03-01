@@ -44,13 +44,13 @@ const employeeSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Group",
     },
-    project: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Project",
-    },
     team: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Team",
+    },
+    project: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
     },
   },
   { timestamps: true }

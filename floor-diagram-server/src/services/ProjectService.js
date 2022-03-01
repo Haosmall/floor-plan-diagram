@@ -69,6 +69,13 @@ class ProjectService {
   async deleteProject(_id) {
     const deletedProject = await Project.findByIdAndDelete(_id);
 
+    // building > floor > room > group > team > project
+    if (deletedProject && deletedProject?.team) {
+      const team = await Team.findById(deletedProject.team.toString());
+      team.project = null;
+      await team.save();
+    }
+
     return deletedProject;
   }
 
