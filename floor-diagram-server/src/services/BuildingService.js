@@ -92,6 +92,7 @@ class BuildingService {
 
     const deletedBuilding = await Building.findByIdAndDelete(_id);
 
+    // building > floor > room > group > team > project
     if (deletedBuilding && deletedBuilding?.floors.length) {
       for (let fId of deletedBuilding.floors) {
         const floor = await Floor.findById(fId.toString());

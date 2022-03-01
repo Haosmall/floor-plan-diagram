@@ -73,7 +73,49 @@ class ProjectService {
     if (deletedProject && deletedProject?.team) {
       const team = await Team.findById(deletedProject.team.toString());
       team.project = null;
-      await team.save();
+      const updatedTeam = await team.save();
+
+      if (updatedTeam?.group) {
+        const group = await Group.findById(updatedTeam.group.toString());
+        group.projects = group?.projects.length
+          ? group?.projects.filter(
+              (pId) => pId.toString() !== deletedProject._id.toString()
+            )
+          : [];
+        const updatedGroup = await group.save();
+
+        if (updatedGroup?.room) {
+          const room = await Room.findById(updatedGroup.room.toString());
+          room.projects = room?.projects.length
+            ? room?.projects.filter(
+                (pId) => pId.toString() !== deletedProject._id.toString()
+              )
+            : [];
+          const updatedRoom = await room.save();
+
+          if (updatedRoom?.floor) {
+            const floor = await Floor.findById(updatedRoom.floor.toString());
+            floor.projects = floor?.projects.length
+              ? floor?.projects.filter(
+                  (pId) => pId.toString() !== deletedProject._id.toString()
+                )
+              : [];
+            const updatedFloor = await floor.save();
+
+            if (updatedFloor?.building) {
+              const building = await Building.findById(
+                updatedFloor.building.toString()
+              );
+              building.projects = building?.projects.length
+                ? building?.projects.filter(
+                    (pId) => pId.toString() !== deletedProject._id.toString()
+                  )
+                : [];
+              await building.save();
+            }
+          }
+        }
+      }
     }
 
     return deletedProject;

@@ -74,7 +74,39 @@ class TeamService {
               (tId) => tId.toString() !== deletedTeam._id.toString()
             )
           : [];
-        await group.save();
+        const updatedGroup = await group.save();
+
+        if (updatedGroup?.room) {
+          const room = await Room.findById(updatedGroup.room.toString());
+          room.teams = room?.teams.length
+            ? room?.teams.filter(
+                (tId) => tId.toString() !== deletedTeam._id.toString()
+              )
+            : [];
+          const updatedRoom = await room.save();
+
+          if (updatedRoom?.floor) {
+            const floor = await Floor.findById(updatedRoom.floor.toString());
+            floor.teams = floor?.teams.length
+              ? floor?.teams.filter(
+                  (tId) => tId.toString() !== deletedTeam._id.toString()
+                )
+              : [];
+            const updatedFloor = await floor.save();
+
+            if (updatedFloor?.building) {
+              const building = await Floor.findById(
+                updatedFloor.building.toString()
+              );
+              building.teams = building?.teams.length
+                ? building?.teams.filter(
+                    (tId) => tId.toString() !== deletedTeam._id.toString()
+                  )
+                : [];
+              await building.save();
+            }
+          }
+        }
       }
 
       if (deletedTeam?.project) {

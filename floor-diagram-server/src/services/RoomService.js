@@ -69,7 +69,19 @@ class RoomService {
               (rId) => rId.toString() !== deletedRoom._id.toString()
             )
           : [];
-        await floor.save();
+        const updatedFloor = await floor.save();
+
+        if (updatedFloor?.building) {
+          const building = await Building.findById(
+            updatedFloor.building.toString()
+          );
+          building.rooms = building?.rooms.length
+            ? building?.rooms.filter(
+                (rId) => rId.toString() !== deletedRoom._id.toString()
+              )
+            : [];
+          await building.save();
+        }
       }
 
       if (deletedRoom?.groups.length) {
