@@ -67,6 +67,10 @@ const INITIAL_FLOOR = {
 	employees: [],
 };
 
+const INITIAL_ROOM = {
+	name: "New room",
+};
+
 const INITIAL_GROUP = {
 	title: "New group",
 };
@@ -108,6 +112,7 @@ export {
 	DEFAULT_SHAPE,
 	ROLE,
 	INITIAL_FLOOR,
+	INITIAL_ROOM,
 	INITIAL_GROUP,
 	INITIAL_PROJECT,
 	ACTION_TYPE,

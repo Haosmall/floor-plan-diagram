@@ -96,7 +96,7 @@ const DetailsSubMenu = (props) => {
 							>
 								<Form.Item label="Staff" name="staff">
 									<Select disabled={isDisable}>
-										{floor?.users.map((user) => {
+										{floor?.employees.map((user) => {
 											const userName = employees.find(
 												(ele) => ele._id === user.userId
 											)?.name;

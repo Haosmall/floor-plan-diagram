@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import groupApi from "api/groupApi";
 import projectApi from "api/projectApi";
+import roomApi from "api/roomApi";
 import floorApi from "../api/floorApi";
 import shapeApi from "../api/shapeApi";
 
@@ -24,6 +25,15 @@ export const fetchListShapeByFloor = createAsyncThunk(
 		const { floorId } = params;
 		const projects = await floorApi.fetchListShapeByFloor(floorId);
 		return projects;
+	}
+);
+
+export const fetchListShapesByRoom = createAsyncThunk(
+	`${PREFIX}/fetchListShapesByRoom`,
+	async (params, thunkApi) => {
+		const { roomId } = params;
+		const shapes = await roomApi.fetchListShapesByRoom(roomId);
+		return shapes;
 	}
 );
 
@@ -181,7 +191,7 @@ const shapeSlice = createSlice({
 		},
 
 		[fetchListShapeByFloor.fulfilled]: (state, action) => {
-			const listShapes = action.payload;
+			const listShapes = action.payload.shapes;
 			let backGroundIndex = -1;
 			if (listShapes.length > 0) {
 				backGroundIndex = listShapes.findIndex((ele) => ele?.src !== "");
@@ -194,8 +204,8 @@ const shapeSlice = createSlice({
 				state.shapes = [imageShape, ...newList];
 				state.listOriginalShapes = [imageShape, ...newList];
 			} else {
-				state.shapes = action.payload;
-				state.listOriginalShapes = action.payload;
+				state.shapes = action.payload.shapes;
+				state.listOriginalShapes = action.payload.shapes;
 			}
 
 			state.isLoading = true;
@@ -204,6 +214,40 @@ const shapeSlice = createSlice({
 		},
 
 		[fetchListShapeByFloor.rejected]: (state, action) => {
+			state.isLoading = false;
+			state.isError = true;
+		},
+
+		// ==================== fetchListShapesByRoom  ===================
+		[fetchListShapesByRoom.pending]: (state, action) => {
+			state.isLoading = false;
+			state.isError = false;
+		},
+
+		[fetchListShapesByRoom.fulfilled]: (state, action) => {
+			const listShapes = action.payload.shapes;
+			let backGroundIndex = -1;
+			if (listShapes.length > 0) {
+				backGroundIndex = listShapes.findIndex((ele) => ele?.src !== "");
+			}
+
+			if (backGroundIndex >= 0) {
+				const imageShape = listShapes[backGroundIndex];
+
+				const newList = listShapes.filter((ele) => ele._id !== imageShape._id);
+				state.shapes = [imageShape, ...newList];
+				state.listOriginalShapes = [imageShape, ...newList];
+			} else {
+				state.shapes = action.payload.shapes;
+				state.listOriginalShapes = action.payload.shapes;
+			}
+
+			state.isLoading = true;
+			state.shape = null;
+			state.selectedShapes = [];
+		},
+
+		[fetchListShapesByRoom.rejected]: (state, action) => {
 			state.isLoading = false;
 			state.isError = true;
 		},

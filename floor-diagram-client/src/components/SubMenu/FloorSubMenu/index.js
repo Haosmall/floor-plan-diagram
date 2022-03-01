@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { deleteFloor, setFloor } from "redux/floorSlice";
+import { fetchListRoomsByFloor } from "redux/roomSlice";
 import {
 	fetchListShapeByFloor,
 	resetShapeState,
@@ -73,6 +74,7 @@ const FloorSubMenu = (props) => {
 
 		dispatch(setFloor({ floorId }));
 		dispatch(fetchListShapeByFloor({ floorId }));
+		dispatch(fetchListRoomsByFloor({ id: floorId }));
 
 		if (listNewShapes.length > 0) await shapeApi.deleteManyShape(listNewShapes);
 

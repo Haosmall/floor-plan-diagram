@@ -19,9 +19,12 @@ import { INITIAL_SHAPE, SHAPE_TYPE } from "utils/constants";
 import "./style.scss";
 import { Header } from "antd/lib/layout/layout";
 import { fetchListEmployees } from "redux/employeeSlice";
+import RoomSubMenu from "components/SubMenu/RoomSubMenu";
 
 const BuildingPage = (props) => {
 	const { user } = useSelector((state) => state.employee);
+	const { floor } = useSelector((state) => state.floor);
+
 	const { building, buildings, isError } = useSelector(
 		(state) => state.building
 	);
@@ -113,6 +116,13 @@ const BuildingPage = (props) => {
 							building={building}
 							isBuildingAdmin={isBuildingAdmin || user.isAdmin}
 						/>
+						{floor && (
+							<RoomSubMenu
+								floor={floor}
+								isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+							/>
+						)}
+
 						<GroupSubMenu
 							building={building}
 							isBuildingAdmin={isBuildingAdmin || user.isAdmin}

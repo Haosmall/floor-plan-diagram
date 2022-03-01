@@ -3,8 +3,8 @@ import floorApi from "api/floorApi";
 
 const PREFIX = "room";
 
-export const fetchListRoomsByFloorId = createAsyncThunk(
-	`${PREFIX}/fetchListRoomsByFloorId`,
+export const fetchListRoomsByFloor = createAsyncThunk(
+	`${PREFIX}/fetchListRoomsByFloor`,
 	async (params, thunkApi) => {
 		const { id } = params;
 		const rooms = await floorApi.fetchListRoomsByFloor(id);
@@ -51,18 +51,18 @@ const roomSlice = createSlice({
 	},
 
 	extraReducers: {
-		// ==================== fetchListRoomsByFloorId  ===================
-		[fetchListRoomsByFloorId.pending]: (state, action) => {
+		// ==================== fetchListRoomsByFloor  ===================
+		[fetchListRoomsByFloor.pending]: (state, action) => {
 			state.isLoading = false;
 			state.isError = false;
 		},
 
-		[fetchListRoomsByFloorId.fulfilled]: (state, action) => {
+		[fetchListRoomsByFloor.fulfilled]: (state, action) => {
 			state.isLoading = true;
 			state.rooms = action.payload.rooms;
 		},
 
-		[fetchListRoomsByFloorId.rejected]: (state, action) => {
+		[fetchListRoomsByFloor.rejected]: (state, action) => {
 			state.isLoading = false;
 			state.isError = true;
 		},

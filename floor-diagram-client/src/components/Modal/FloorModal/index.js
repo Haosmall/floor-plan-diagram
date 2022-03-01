@@ -16,8 +16,6 @@ const FloorModal = (props) => {
 
 	const dispatch = useDispatch();
 
-	console.log({ initialValues });
-
 	useEffect(() => form.resetFields(), [initialValues]);
 
 	useEffect(() => {
@@ -28,24 +26,20 @@ const FloorModal = (props) => {
 
 	const handleSubmit = async () => {
 		const values = await form.validateFields();
-		const { name, admin, users } = values;
-
-		console.log(values);
 
 		try {
 			if (isAddMode) {
 				const response = await floorApi.addFloor({
 					...values,
-					buildingId,
+					building: buildingId,
 				});
 
 				dispatch(addNewFloor({ floor: response }));
 			} else {
-				const response = await floorApi.updateFloor(
-					initialValues._id,
-					initialValues.buildingId,
-					...values
-				);
+				const response = await floorApi.updateFloor(initialValues._id, {
+					building: initialValues.buildingId,
+					...values,
+				});
 
 				dispatch(updateFloor({ floor: response }));
 			}
