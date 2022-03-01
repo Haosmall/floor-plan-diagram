@@ -5,37 +5,37 @@ import {
 	PlusCircleOutlined,
 } from "@ant-design/icons";
 import { Button, Menu, message } from "antd";
-import floorApi from "api/floorApi";
+import roomApi from "api/roomApi";
 import shapeApi from "api/shapeApi";
-import FloorModal from "components/Modal/FloorModal";
+import RoomModal from "components/Modal/RoomModal";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { deleteFloor, setFloor } from "redux/floorSlice";
-import { fetchListRoomsByFloor } from "redux/roomSlice";
+import { deleteRoom, setRoom } from "redux/roomSlice";
 import {
-	fetchListShapeByFloor,
+	fetchListShapesByRoom,
 	resetShapeState,
 	resetTempShapeState,
 } from "redux/shapeSlice";
 import commonUtils from "utils/commonUtils";
-import { INITIAL_FLOOR } from "utils/constants";
+import { INITIAL_ROOM } from "utils/constants";
 import "./style.scss";
 
-const FloorSubMenu = (props) => {
-	const { building, isBuildingAdmin } = props;
+const RoomSubMenu = (props) => {
+	const { floor, isBuildingAdmin } = props;
 
-	const { floors, floor } = useSelector((state) => state.floor);
+	const { rooms, room } = useSelector((state) => state.room);
+
 	const { listNewShapes } = useSelector((state) => state.shape);
 
 	// Hooks
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const [isAddFloor, setIsAddFloor] = useState(true);
-	const [selectedFloor, setSelectedFloor] = useState(INITIAL_FLOOR);
-	const [isFloorModalVisible, setIsFloorModalVisible] = useState(false);
+	const [isAddRoom, setIsAddRoom] = useState(true);
+	const [selectedRoom, setSelectedRoom] = useState(INITIAL_ROOM);
+	const [isRoomModalVisible, setIsRoomModalVisible] = useState(false);
 
 	const { SubMenu } = Menu;
 
@@ -43,10 +43,10 @@ const FloorSubMenu = (props) => {
 		e.stopPropagation();
 
 		commonUtils.confirmModal(async () => {
-			await floorApi.deleteFloor(id);
-			dispatch(deleteFloor({ _id: id }));
+			await roomApi.deleteRoom(id);
+			dispatch(deleteRoom({ _id: id }));
 
-			if (floor._id === id) {
+			if (room._id === id) {
 				dispatch(resetShapeState());
 			}
 
@@ -54,27 +54,26 @@ const FloorSubMenu = (props) => {
 		});
 	};
 
-	const showAddFloorModal = () => {
-		setIsAddFloor(true);
-		setIsFloorModalVisible(true);
-		setSelectedFloor(INITIAL_FLOOR);
+	const showAddRoomModal = () => {
+		setIsAddRoom(true);
+		setIsRoomModalVisible(true);
+		setSelectedRoom(INITIAL_ROOM);
 	};
 
-	const showUpdateFloorModal = (e, id) => {
+	const showUpdateRoomModal = (e, id) => {
 		e.stopPropagation();
-		const floor = floors.find((ele) => ele._id === id);
+		const room = rooms.find((ele) => ele._id === id);
 
-		setIsAddFloor(false);
-		setIsFloorModalVisible(true);
-		setSelectedFloor(floor);
+		setIsAddRoom(false);
+		setIsRoomModalVisible(true);
+		setSelectedRoom(room);
 	};
 
-	const handleSelectFloor = async (floorId) => {
-		if (floor?._id === floorId) return;
+	const handleSelectRoom = async (roomId) => {
+		if (room?._id === roomId) return;
 
-		dispatch(setFloor({ floorId }));
-		dispatch(fetchListShapeByFloor({ floorId }));
-		dispatch(fetchListRoomsByFloor({ id: floorId }));
+		dispatch(setRoom({ roomId }));
+		dispatch(fetchListShapesByRoom({ roomId }));
 
 		if (listNewShapes.length > 0) await shapeApi.deleteManyShape(listNewShapes);
 
@@ -90,7 +89,7 @@ const FloorSubMenu = (props) => {
 				defaultOpenKeys={["sub1"]}
 				mode="inline"
 			>
-				<SubMenu key="sub1" icon={<AppstoreOutlined />} title="Floor">
+				<SubMenu key="sub1" icon={<AppstoreOutlined />} title="Room">
 					{isBuildingAdmin && (
 						<Menu.ItemGroup className="menu-item-group">
 							<Menu.Item key="-1" disabled className="item-group">
@@ -98,18 +97,18 @@ const FloorSubMenu = (props) => {
 									className="menu-item-btn btn-add"
 									icon={<PlusCircleOutlined />}
 									shape="round"
-									onClick={showAddFloorModal}
+									onClick={showAddRoomModal}
 								>
 									Add
 								</Button>
 							</Menu.Item>
 						</Menu.ItemGroup>
 					)}
-					{floors?.map((floor) => (
+					{rooms?.map((floor) => (
 						<Menu.Item
 							eventKey={floor._id}
 							key={floor._id}
-							onClick={() => handleSelectFloor(floor._id)}
+							onClick={() => handleSelectRoom(floor._id)}
 						>
 							<div className="menu-item">
 								<div className="menu-item-name">{floor.name}</div>
@@ -118,7 +117,7 @@ const FloorSubMenu = (props) => {
 										<Button
 											shape="circle"
 											icon={<EditOutlined />}
-											onClick={(e) => showUpdateFloorModal(e, floor._id)}
+											onClick={(e) => showUpdateRoomModal(e, floor._id)}
 										/>
 										<Button
 											shape="circle"
@@ -131,24 +130,24 @@ const FloorSubMenu = (props) => {
 							</div>
 						</Menu.Item>
 					))}
-					{floors?.length <= 0 && (
+					{rooms?.length <= 0 && (
 						<Menu.ItemGroup title="No data"></Menu.ItemGroup>
 					)}
 				</SubMenu>
 			</Menu>
 
-			<FloorModal
-				visible={isFloorModalVisible}
-				onCancel={() => setIsFloorModalVisible(false)}
-				isAddMode={isAddFloor}
-				buildingId={building?._id}
-				initialValues={selectedFloor}
+			<RoomModal
+				visible={isRoomModalVisible}
+				onCancel={() => setIsRoomModalVisible(false)}
+				isAddMode={isAddRoom}
+				floorId={floor?._id}
+				initialValues={selectedRoom}
 			/>
 		</>
 	);
 };
 
-FloorSubMenu.propTypes = {
+RoomSubMenu.propTypes = {
 	onAddFloor: PropTypes.func,
 	onEditFloor: PropTypes.func,
 	onAddGroup: PropTypes.func,
@@ -157,7 +156,7 @@ FloorSubMenu.propTypes = {
 	onEditProject: PropTypes.func,
 };
 
-FloorSubMenu.defaultProps = {
+RoomSubMenu.defaultProps = {
 	onAddFloor: null,
 	onEditFloor: null,
 	onAddGroup: null,
@@ -165,4 +164,4 @@ FloorSubMenu.defaultProps = {
 	onAddProject: null,
 	onEditProject: null,
 };
-export default React.memo(FloorSubMenu);
+export default React.memo(RoomSubMenu);

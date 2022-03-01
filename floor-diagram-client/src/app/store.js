@@ -1,18 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
-import user from "../redux/userSlice";
 import building from "../redux/buildingSlice";
+import employee from "../redux/employeeSlice";
 import floor from "../redux/floorSlice";
 import group from "../redux/groupSlice";
 import project from "../redux/projectSlice";
+import room from "../redux/roomSlice";
 import shape from "../redux/shapeSlice";
 
 const rootReducer = {
-	user,
+	employee,
 	building,
 	floor,
 	group,
 	project,
 	shape,
+	room,
 };
 
 const store = configureStore({

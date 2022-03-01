@@ -7,7 +7,7 @@ import { INITIAL_BUILDING } from "utils/constants";
 const BuildingModal = (props) => {
 	const { visible, onCancel, onSubmit, initialValues, isAddMode, title } =
 		props;
-	const { users } = useSelector((state) => state.user);
+	const { employees } = useSelector((state) => state.employee);
 	const { Option } = Select;
 	const [form] = Form.useForm();
 
@@ -71,7 +71,7 @@ const BuildingModal = (props) => {
 					]}
 				>
 					<Select>
-						{users?.map((user) => (
+						{employees?.map((user) => (
 							<Option key={user._id} value={user._id}>
 								{user.name}
 							</Option>

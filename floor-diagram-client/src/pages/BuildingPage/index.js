@@ -15,12 +15,16 @@ import { fetchListFloorsByBuildingId } from "redux/floorSlice";
 import { fetchListGroupByBuilding } from "redux/groupSlice";
 import { fetchListProjectByBuilding } from "redux/projectSlice";
 import { setShape } from "redux/shapeSlice";
-import { fetchListUsers } from "redux/userSlice";
 import { INITIAL_SHAPE, SHAPE_TYPE } from "utils/constants";
 import "./style.scss";
+import { Header } from "antd/lib/layout/layout";
+import { fetchListEmployees } from "redux/employeeSlice";
+import RoomSubMenu from "components/SubMenu/RoomSubMenu";
 
 const BuildingPage = (props) => {
-	const { user } = useSelector((state) => state.user);
+	const { user } = useSelector((state) => state.employee);
+	const { floor } = useSelector((state) => state.floor);
+
 	const { building, buildings, isError } = useSelector(
 		(state) => state.building
 	);
@@ -39,7 +43,7 @@ const BuildingPage = (props) => {
 
 	useEffect(() => {
 		dispatch(fetchListBuildings());
-		dispatch(fetchListUsers());
+		dispatch(fetchListEmployees());
 		dispatch(fetchBuildingById({ id }));
 		dispatch(fetchListFloorsByBuildingId({ id }));
 		dispatch(fetchListGroupByBuilding({ id }));
@@ -62,7 +66,7 @@ const BuildingPage = (props) => {
 	if (isError) return <Navigate to="/error" />;
 	return (
 		<>
-			<Layout>
+			{/* <Layout>
 				<Sider className="left-sider" width={255} theme="light">
 					<div className="building-title">{building?.name}</div>
 					<FloorSubMenu
@@ -96,6 +100,50 @@ const BuildingPage = (props) => {
 						isLockBackGround={isLockBackGround}
 					/>
 				</Sider>
+			</Layout> */}
+			<Layout>
+				<Header>
+					<div className="building-title">{building?.name}</div>
+					<FloorTopBar buildings={buildings} />
+					<div style={{ height: "64px", paddingInline: "20px" }}>
+						<UserBar name={user.name} />
+					</div>
+				</Header>
+
+				<Layout>
+					<Sider className="left-sider" width={255} theme="light">
+						<FloorSubMenu
+							building={building}
+							isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+						/>
+						{floor && (
+							<RoomSubMenu
+								floor={floor}
+								isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+							/>
+						)}
+
+						<GroupSubMenu
+							building={building}
+							isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+						/>
+						<ProjectSubMenu
+							building={building}
+							isBuildingAdmin={isBuildingAdmin || user.isAdmin}
+						/>
+						<DetailsSubMenu />
+					</Sider>
+
+					<Canvas isLockBackGround={isLockBackGround} />
+
+					<Sider theme="light">
+						<ToolBar
+							userName={user.name}
+							onLockBackGround={handleLockBackground}
+							isLockBackGround={isLockBackGround}
+						/>
+					</Sider>
+				</Layout>
 			</Layout>
 		</>
 	);

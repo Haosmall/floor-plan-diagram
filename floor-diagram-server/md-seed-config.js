@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Admin = require("./seeders/admin.seeder");
 
 const mongoURL =
-  process.env.MONGODB_URL || "mongodb://localhost:27017/floor-diagram-db";
+	process.env.MONGODB_URL || "mongodb://localhost:27017/floor-diagram-db";
 
 /**
  * Seeders List
@@ -11,14 +11,14 @@ const mongoURL =
  * @type {Object}
  */
 exports.seedersList = {
-  Admin,
+	Admin,
 };
 /**
  * Connect to mongodb implementation
  * @return {Promise}
  */
 exports.connect = async () =>
-  await mongoose.connect(mongoURL, { useNewUrlParser: true });
+	await mongoose.connect(mongoURL, { useNewUrlParser: true });
 /**
  * Drop/Clear the database implementation
  * @return {Promise}

@@ -12,7 +12,7 @@ const Canvas = (props) => {
 
 	const { shapes, shape, selectedShapes } = useSelector((state) => state.shape);
 	const { floor } = useSelector((state) => state.floor);
-	const { users } = useSelector((state) => state.user);
+	const { employees } = useSelector((state) => state.employee);
 
 	const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ const Canvas = (props) => {
 				<Layer>
 					{floor &&
 						shapes.map((ele, index) => {
-							const staff = users.find((user) => user._id === ele.staff);
+							const staff = employees.find((user) => user._id === ele.staff);
 
 							const text = staff?.name || "[null]";
 							return (

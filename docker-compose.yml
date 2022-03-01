@@ -38,29 +38,30 @@ services:
       AWS_SECRET_KEY:
       AWS_NAME_PATH: test
       HOST_NAME:
+
     build:
       context: ./floor-diagram-server
     networks:
       - floor-diagram
 
-  # floor-diagram-client:
-  #   image: floor-diagram-client
-  #   container_name: floor-diagram-client
-  #   restart: on-failure:5
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   depends_on:
-  #     - floor-diagram-server
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #   build:
-  #     context: ./floor-diagram-client
-  #     args:
-  #       #- REACT_APP_API_URL=http://floor-plan-diagram.xyz/api
-  #       - REACT_APP_API_URL= http://your-domain/api
-  #   networks:
-  #     - floor-diagram
+  floor-diagram-client:
+    image: floor-diagram-client
+    container_name: floor-diagram-client
+    restart: on-failure:5
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - floor-diagram-server
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    build:
+      context: ./floor-diagram-client
+      args:
+        #- REACT_APP_API_URL=http://floor-plan-diagram.xyz
+        - REACT_APP_API_URL= http://local
+    networks:
+      - floor-diagram
 
 networks:
   floor-diagram:

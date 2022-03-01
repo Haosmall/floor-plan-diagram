@@ -3,42 +3,44 @@ import axiosClient from "./axiosClient";
 const API_URL = "/buildings";
 
 const buildingApi = {
-	fetchListBuildings: (name) => {
-		return axiosClient.get(`${API_URL}/`, {
-			params: { name },
-		});
+	fetchListBuildings: () => {
+		return axiosClient.get(`${API_URL}/`);
 	},
 
 	fetchBuildingById: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}`, {
-			params: { buildingId },
-		});
+		return axiosClient.get(`${API_URL}/${buildingId}`);
 	},
 
 	fetchListFloorsByBuildingId: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}/floors`, {
-			params: { buildingId },
-		});
+		return axiosClient.get(`${API_URL}/${buildingId}/floors`);
+	},
+
+	fetchListRoomsByBuildingId: (buildingId) => {
+		return axiosClient.get(`${API_URL}/${buildingId}/rooms`);
 	},
 
 	fetchListGroupsByBuildingId: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}/groups`, {
-			params: { buildingId },
-		});
+		return axiosClient.get(`${API_URL}/${buildingId}/groups`);
+	},
+
+	fetchListTeamsByBuildingId: (buildingId) => {
+		return axiosClient.get(`${API_URL}/${buildingId}/teams`);
 	},
 
 	fetchListProjectsByBuildingId: (buildingId) => {
-		return axiosClient.get(`${API_URL}/${buildingId}/projects/`, {
-			params: { buildingId },
-		});
+		return axiosClient.get(`${API_URL}/${buildingId}/projects/`);
 	},
 
-	addBuilding: (name, users, admin) => {
-		return axiosClient.post(`${API_URL}`, { name, users, admin });
+	fetchListEmployeesByBuildingId: (buildingId) => {
+		return axiosClient.get(`${API_URL}/${buildingId}/employees/`);
 	},
 
-	updateBuilding: (buildingId, name, users, admin) => {
-		return axiosClient.put(`${API_URL}/${buildingId}/`, { name, users, admin });
+	addBuilding: (buildingInfo) => {
+		return axiosClient.post(`${API_URL}`, buildingInfo);
+	},
+
+	updateBuilding: (buildingId, buildingInfo) => {
+		return axiosClient.put(`${API_URL}/${buildingId}/`, buildingInfo);
 	},
 
 	deleteBuilding: (buildingId) => {

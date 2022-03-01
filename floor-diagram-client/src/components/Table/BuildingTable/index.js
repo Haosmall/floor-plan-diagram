@@ -8,7 +8,7 @@ import "./style.scss";
 const BuildingTable = (props) => {
 	const { data, onEdit, onDelete, onSelect } = props;
 
-	const { user } = useSelector((state) => state.user);
+	const { user } = useSelector((state) => state.employee);
 
 	const { Column } = Table;
 

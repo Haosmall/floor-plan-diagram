@@ -57,30 +57,30 @@ const employeeSchema = new Schema(
 );
 
 employeeSchema.statics.findByCredentials = async (username, password) => {
-  const employee = await Employee.findOne({
-    username,
-  });
-  if (!employee) throw new Error("Employee not found");
-  if (!employee.isAdmin) throw new Error("Employee is not an admin");
+	const employee = await Employee.findOne({
+		username,
+	});
+	if (!employee) throw new Error("Employee not found");
+	if (!employee.isAdmin) throw new Error("Employee is not an admin");
 
-  const isPasswordMatch = await bcrypt.compare(password, employee.password);
-  if (!isPasswordMatch) throw new Error("Password invalid");
+	const isPasswordMatch = await bcrypt.compare(password, employee.password);
+	if (!isPasswordMatch) throw new Error("Password invalid");
 
-  return employee;
+	return employee;
 };
 
 employeeSchema.statics.findByCredentials_2 = async (username, password) => {
-  const buildingAdmin = await Employee.findOne({
-    username,
-  });
+	const buildingAdmin = await Employee.findOne({
+		username,
+	});
 
-  if (!buildingAdmin) return null;
+	if (!buildingAdmin) return null;
 
-  const isPwdMatch = bcrypt.compareSync(password, buildingAdmin.password);
+	const isPwdMatch = bcrypt.compareSync(password, buildingAdmin.password);
 
-  if (isPwdMatch) return buildingAdmin;
+	if (isPwdMatch) return buildingAdmin;
 
-  return null;
+	return null;
 };
 
 const Employee = mongoose.model("Employee", employeeSchema);

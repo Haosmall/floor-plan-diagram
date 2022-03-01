@@ -63,7 +63,7 @@ const projectSlice = createSlice({
 
 		[fetchListProjectByBuilding.fulfilled]: (state, action) => {
 			state.isLoading = true;
-			state.projects = action.payload;
+			state.projects = action.payload.projects;
 		},
 
 		[fetchListProjectByBuilding.rejected]: (state, action) => {
