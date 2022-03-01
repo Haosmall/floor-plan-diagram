@@ -15,18 +15,18 @@ class FloorService {
 
   // get list
   async getListFloors() {
-    const floors = await Floor.find({}).populate(
-      "rooms groups teams projects employees"
-    );
+    const floors = await Floor.find({})
+      .populate("rooms groups teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return floors;
   }
 
   // get 1 floor
   async getFloorById(_id) {
-    const floor = await Floor.findById(_id).populate(
-      "rooms groups teams projects employees"
-    );
+    const floor = await Floor.findById(_id)
+      .populate("rooms groups teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!floor) throw new Error("Floor not found");
 
     return floor;
@@ -39,20 +39,6 @@ class FloorService {
     });
 
     return updatedFloor;
-
-    // const floor = await Floor.findById(_id);
-    // if (!floor) throw new Error("Floor not found");
-    // floor.name = floorInfo.name;
-    // floor.building = floorInfo.building;
-    // floor.rooms = floorInfo.rooms?.length ? [...floorInfo.rooms] : [];
-    // floor.groups = floorInfo?.groups?.length ? [...floorInfo.groups] : [];
-    // floor.teams = floorInfo?.teams?.length ? [...floorInfo.teams] : [];
-    // floor.projects = floorInfo?.projects?.length ? [...floorInfo.projects] : [];
-    // floor.employees = floorInfo?.employees?.length
-    //   ? [...floorInfo.employees]
-    //   : [];
-    // const updatedFloor = await floor.save();
-    // return updatedFloor;
   }
 
   // delete

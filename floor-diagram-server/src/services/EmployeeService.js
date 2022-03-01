@@ -25,18 +25,18 @@ class EmployeeService {
 
   // get list
   async getListEmployees() {
-    const employees = await Employee.find({}).populate(
-      "building floor room group project team"
-    );
+    const employees = await Employee.find({})
+      .populate("building floor room group project team")
+      .select(["-password", "-__v", "-createdAt", "-updatedAt"]);
 
     return employees;
   }
 
   // get employee by id
   async getEmployeeById(empId) {
-    const employee = await Employee.findById(empId).populate(
-      "building floor room group project team"
-    );
+    const employee = await Employee.findById(empId)
+      .populate("building floor room group project team")
+      .select(["-password", "-__v", "-createdAt", "-updatedAt"]);
 
     return employee;
   }

@@ -20,18 +20,18 @@ class GroupService {
 
   // get list
   async getListGroups() {
-    const groups = await Group.find({}).populate(
-      "room teams projects employees"
-    );
+    const groups = await Group.find({})
+      .populate("room teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return groups;
   }
 
   // get 1 group
   async getGroupById(_id) {
-    const group = await Group.findById(_id).populate(
-      "room teams projects employees"
-    );
+    const group = await Group.findById(_id)
+      .populate("room teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!group) throw new Error("Group not found");
 
     return group;

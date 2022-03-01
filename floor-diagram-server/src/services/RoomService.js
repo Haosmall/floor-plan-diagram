@@ -21,18 +21,18 @@ class RoomService {
 
   // get list
   async getListRooms() {
-    const rooms = await Room.find({}).populate(
-      "floor groups teams projects employees shapes"
-    );
+    const rooms = await Room.find({})
+      .populate("floor groups teams projects employees shapes")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return rooms;
   }
 
   // get 1 room
   async getRoomById(_id) {
-    const room = await Room.findById(_id).populate(
-      "floor groups teams projects employees shapes"
-    );
+    const room = await Room.findById(_id)
+      .populate("floor groups teams projects employees shapes")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!room) throw new Error("Room not found");
 
     return room;
@@ -45,18 +45,6 @@ class RoomService {
     });
 
     return updatedRoom;
-
-    // const room = await Room.findById(_id);
-    // if (!room) throw new Error("Room not found");
-    // room.name = roomInfo.name;
-    // room.building = roomInfo.building;
-    // room.rooms = roomInfo.rooms?.length ? [...roomInfo.rooms] : [];
-    // room.groups = roomInfo?.groups?.length ? [...roomInfo.groups] : [];
-    // room.teams = roomInfo?.teams?.length ? [...roomInfo.teams] : [];
-    // room.projects = roomInfo?.projects?.length ? [...roomInfo.projects] : [];
-    // room.employees = roomInfo?.employees?.length ? [...roomInfo.employees] : [];
-    // const updatedRoom = await room.save();
-    // return updatedRoom;
   }
 
   // delete

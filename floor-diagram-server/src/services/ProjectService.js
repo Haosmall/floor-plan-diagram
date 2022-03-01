@@ -19,14 +19,18 @@ class ProjectService {
 
   // get list
   async getListProjects() {
-    const group = await Project.find({}).populate("team employees");
+    const group = await Project.find({})
+      .populate("team employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return group;
   }
 
   // get 1 project
   async getProjectById(_id) {
-    const project = await Project.findById(_id).populate("team employees");
+    const project = await Project.findById(_id)
+      .populate("team employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!project) throw new Error("Project not found");
 
     return project;
