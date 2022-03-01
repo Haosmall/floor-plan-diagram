@@ -54,6 +54,28 @@ class FloorService {
   async deleteFloor(_id) {
     const deletedFloor = await Floor.findByIdAndDelete(_id);
 
+    if (deletedFloor) {
+      if (deletedFloor?.building) {
+        const building = await Building.findById(
+          deletedFloor.building.toString()
+        );
+        building.floors = building?.floors.length
+          ? building?.floors.filter(
+              (fId) => fId.toString() !== deletedFloor._id.toString()
+            )
+          : [];
+        await building.save();
+      }
+
+      if (deletedFloor?.rooms.length) {
+        for (let rId of deletedFloor.rooms) {
+          const room = await Room.findById(rId.toString());
+          room.floor = null;
+          await room.save();
+        }
+      }
+    }
+
     return deletedFloor;
   }
 

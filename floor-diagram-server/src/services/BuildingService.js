@@ -6,6 +6,7 @@ const Team = require("../models/Team");
 const Project = require("../models/Project");
 const Employee = require("../models/Employee");
 const Shape = require("../models/Shape");
+const Floor = require("../models/Floor");
 
 class BuildingService {
   // add
@@ -90,6 +91,14 @@ class BuildingService {
     }
 
     const deletedBuilding = await Building.findByIdAndDelete(_id);
+
+    if (deletedBuilding && deletedBuilding?.floors.length) {
+      for (let fId of deletedBuilding.floors) {
+        const floor = await Floor.findById(fId.toString());
+        floor.building = null;
+        await floor.save();
+      }
+    }
 
     return deletedBuilding;
   }

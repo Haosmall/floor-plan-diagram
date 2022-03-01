@@ -62,6 +62,27 @@ class GroupService {
   async deleteGroup(_id) {
     const deletedGroup = await Group.findByIdAndDelete(_id);
 
+    // building > floor > room > group > team > project
+    if (deletedGroup) {
+      if (deletedGroup?.room) {
+        const room = await Room.findById(deletedGroup.room.toString());
+        room.groups = room?.groups.length
+          ? room?.groups.filter(
+              (gId) => gId.toString() !== deletedGroup._id.toString()
+            )
+          : [];
+        await room.save();
+      }
+
+      if (deletedGroup?.teams.length) {
+        for (let tId of deletedGroup.teams) {
+          const team = await Team.findById(tId.toString());
+          team.group = null;
+          await team.save();
+        }
+      }
+    }
+
     return deletedGroup;
   }
 

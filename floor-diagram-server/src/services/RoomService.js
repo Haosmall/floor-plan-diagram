@@ -15,7 +15,9 @@ class RoomService {
 
     if (roomInfo?.floor) {
       const floor = await Floor.findById(roomInfo.floor.toString());
-      floor.rooms = [savedRoom._id, ...floor.rooms];
+      floor.rooms = floor?.rooms.length
+        ? [savedRoom._id, ...floor.rooms]
+        : [savedRoom._id];
       const updatedFloor = await floor.save();
 
       const building = await Building.findById(updatedFloor?.building);
@@ -57,6 +59,27 @@ class RoomService {
   // delete
   async deleteRoom(_id) {
     const deletedRoom = await Room.findByIdAndDelete(_id);
+
+    // building > floor > room > group > team > project
+    if (deletedRoom) {
+      if (deletedRoom?.floor) {
+        const floor = await Floor.findById(deletedRoom.floor.toString());
+        floor.rooms = floor?.rooms.length
+          ? floor?.rooms.filter(
+              (rId) => rId.toString() !== deletedRoom._id.toString()
+            )
+          : [];
+        await floor.save();
+      }
+
+      if (deletedRoom?.groups.length) {
+        for (let gId of deletedRoom.groups) {
+          const group = await Group.findById(gId.toString());
+          group.room = null;
+          await group.save();
+        }
+      }
+    }
 
     return deletedRoom;
   }
