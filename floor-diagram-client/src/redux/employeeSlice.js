@@ -57,6 +57,8 @@ const employeeSlice = createSlice({
 			state.isLoading = true;
 			state.isLogin = true;
 			state.user = action.payload;
+
+			if (!("isBuildingAdmin" in action.payload)) state.user.isAdmin = true;
 		},
 
 		[fetchUserProfile.rejected]: (state, action) => {

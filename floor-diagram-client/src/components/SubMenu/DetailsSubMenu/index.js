@@ -16,7 +16,7 @@ const DetailsSubMenu = (props) => {
 	const { listProjectByGroup } = useSelector((state) => state.project);
 	const { groups } = useSelector((state) => state.group);
 	const { shape } = useSelector((state) => state.shape);
-	const { users } = useSelector((state) => state.user);
+	const { employees } = useSelector((state) => state.employee);
 
 	// Hooks
 	const dispatch = useDispatch();
@@ -97,7 +97,7 @@ const DetailsSubMenu = (props) => {
 								<Form.Item label="Staff" name="staff">
 									<Select disabled={isDisable}>
 										{floor?.users.map((user) => {
-											const userName = users.find(
+											const userName = employees.find(
 												(ele) => ele._id === user.userId
 											)?.name;
 											return (

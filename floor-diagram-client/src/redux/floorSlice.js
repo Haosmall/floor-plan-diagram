@@ -59,7 +59,7 @@ const floorSlice = createSlice({
 
 		[fetchListFloorsByBuildingId.fulfilled]: (state, action) => {
 			state.isLoading = true;
-			state.floors = action.payload;
+			state.floors = action.payload.floors;
 		},
 
 		[fetchListFloorsByBuildingId.rejected]: (state, action) => {

@@ -41,9 +41,11 @@ const HomePage = (props) => {
 
 	const handleSubmit = async (building) => {
 		try {
-			const { name, admin, users } = building;
+			const { name, admin } = building;
+
+			console.log({ building });
 			if (isAddMode) {
-				const response = await buildingApi.addBuilding(name, users, admin);
+				const response = await buildingApi.addBuilding(name, admin);
 				dispatch(fetchListBuildings({ building: response }));
 			} else {
 				await buildingApi.updateBuilding(selectedBuilding._id, name, admin);
