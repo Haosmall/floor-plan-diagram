@@ -15,6 +15,8 @@ class BuildingService {
 
     if (buildingInfo?.admin) {
       const employee = await Employee.findById(buildingInfo?.admin.toString());
+      if (employee.isBuildingAdmin)
+        throw new Error("Employee already an admin on other building");
       employee.isBuildingAdmin = true;
       await employee.save();
     }
@@ -48,17 +50,22 @@ class BuildingService {
     if (buildingInfo?.admin) {
       const building = await Building.findById(_id);
       if (building.admin.toString() !== buildingInfo.admin.toString()) {
-        // promote new employee in place of old building admin
-        // old building admin
-        const oldEmployee = await Employee.findById(building.admin.toString());
-        oldEmployee.isBuildingAdmin = false;
-        await oldEmployee.save();
-        // new building admin
-        const newEmployee = await Employee.findById(
+        const newBuildingAd = await Employee.findById(
           buildingInfo.admin.toString()
         );
-        newEmployee.isBuildingAdmin = true;
-        await newEmployee.save();
+        // if new building admin already an admin
+        if (newBuildingAd.isBuildingAdmin)
+          throw new Error("Employee already an admin on other building");
+        // promote new employee in place of old building admin
+        // old building admin
+        const oldBuildingAd = await Employee.findById(
+          building.admin.toString()
+        );
+        oldBuildingAd.isBuildingAdmin = false;
+        await oldBuildingAd.save();
+        // new building admin
+        newBuildingAd.isBuildingAdmin = true;
+        await newBuildingAd.save();
       }
     }
 
