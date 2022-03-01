@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import employeeApi from "api/employeeApi";
 import userApi from "../api/userApi";
 
 const PREFIX = "user";
@@ -14,7 +15,7 @@ export const fetchUserProfile = createAsyncThunk(
 export const fetchListUsers = createAsyncThunk(
 	`${PREFIX}/fetchListUsers`,
 	async (params, thunkApi) => {
-		const users = await userApi.fetchListUsers(params?.name);
+		const users = await employeeApi.fetchListEmployees();
 		return users;
 	}
 );
