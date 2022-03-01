@@ -8,7 +8,7 @@ import "./style.scss";
 const BuildingTable = (props) => {
 	const { data, onEdit, onDelete, onSelect } = props;
 
-	const { user } = useSelector((state) => state.user);
+	const { user } = useSelector((state) => state.employee);
 
 	const { Column } = Table;
 
@@ -53,11 +53,11 @@ const BuildingTable = (props) => {
 			/>
 
 			<Column title="Building name" dataIndex="name" key="name" />
-			<Column
+			{/* <Column
 				title="Admin"
 				dataIndex="admin"
 				render={(_, { admin }) => <span>{admin.name}</span>}
-			/>
+			/> */}
 			{user.isAdmin && (
 				<Column
 					align="left"

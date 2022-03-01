@@ -15,13 +15,13 @@ import { fetchListFloorsByBuildingId } from "redux/floorSlice";
 import { fetchListGroupByBuilding } from "redux/groupSlice";
 import { fetchListProjectByBuilding } from "redux/projectSlice";
 import { setShape } from "redux/shapeSlice";
-import { fetchListUsers } from "redux/userSlice";
 import { INITIAL_SHAPE, SHAPE_TYPE } from "utils/constants";
 import "./style.scss";
 import { Header } from "antd/lib/layout/layout";
+import { fetchListEmployees } from "redux/employeeSlice";
 
 const BuildingPage = (props) => {
-	const { user } = useSelector((state) => state.user);
+	const { user } = useSelector((state) => state.employee);
 	const { building, buildings, isError } = useSelector(
 		(state) => state.building
 	);
@@ -40,7 +40,7 @@ const BuildingPage = (props) => {
 
 	useEffect(() => {
 		dispatch(fetchListBuildings());
-		dispatch(fetchListUsers());
+		dispatch(fetchListEmployees());
 		dispatch(fetchBuildingById({ id }));
 		dispatch(fetchListFloorsByBuildingId({ id }));
 		dispatch(fetchListGroupByBuilding({ id }));

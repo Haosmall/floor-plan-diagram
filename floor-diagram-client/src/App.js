@@ -14,7 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import BuildingPage from "./pages/BuildingPage";
 import ExceptionPage from "./pages/ExceptionPage";
 import HomePage from "./pages/HomePage";
-import { fetchUserProfile } from "./redux/userSlice";
+import { fetchUserProfile } from "./redux/employeeSlice";
 
 function App() {
 	const dispatch = useDispatch();

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./style.scss";
 import { Avatar, Button, Popover } from "antd";
 import { useDispatch } from "react-redux";
-import { logout } from "redux/userSlice";
+import { logout } from "redux/employeeSlice";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 
 const UserBar = (props) => {

@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./style.scss";
 import authApi from "api/authApi";
-import { fetchUserProfile, setLogin, setUser } from "redux/userSlice";
+import { fetchUserProfile, setLogin, setUser } from "redux/employeeSlice";
 
 const LoginForm = (props) => {
 	const { isRegister } = props;

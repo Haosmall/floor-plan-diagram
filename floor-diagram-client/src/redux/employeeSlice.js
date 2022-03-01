@@ -2,31 +2,31 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import employeeApi from "api/employeeApi";
 import userApi from "../api/userApi";
 
-const PREFIX = "user";
+const PREFIX = "employee";
 
 export const fetchUserProfile = createAsyncThunk(
-	`${PREFIX}/fetchUser`,
+	`${PREFIX}/fetchUserProfile`,
 	async (params, thunkApi) => {
 		const user = await userApi.fetchUserProfile();
 		return user;
 	}
 );
 
-export const fetchListUsers = createAsyncThunk(
-	`${PREFIX}/fetchListUsers`,
+export const fetchListEmployees = createAsyncThunk(
+	`${PREFIX}/fetchListEmployees`,
 	async (params, thunkApi) => {
-		const users = await employeeApi.fetchListEmployees();
-		return users;
+		const employees = await employeeApi.fetchListEmployees();
+		return employees;
 	}
 );
 
-const userSlice = createSlice({
+const employeeSlice = createSlice({
 	name: PREFIX,
 	initialState: {
 		isLoading: false,
 		isLogin: false,
 		user: null,
-		users: [],
+		employees: [],
 	},
 
 	reducers: {
@@ -63,22 +63,22 @@ const userSlice = createSlice({
 			state.isLoading = false;
 		},
 
-		// TODO: <-------------------- fetchListUsers -------------------->
-		[fetchListUsers.pending]: (state, action) => {
+		// TODO: <-------------------- fetchListEmployees -------------------->
+		[fetchListEmployees.pending]: (state, action) => {
 			state.isLoading = false;
 		},
 
-		[fetchListUsers.fulfilled]: (state, action) => {
+		[fetchListEmployees.fulfilled]: (state, action) => {
 			state.isLoading = true;
-			state.users = action.payload;
+			state.employees = action.payload;
 		},
 
-		[fetchListUsers.rejected]: (state, action) => {
+		[fetchListEmployees.rejected]: (state, action) => {
 			state.isLoading = false;
 		},
 	},
 });
 
-const { reducer, actions } = userSlice;
+const { reducer, actions } = employeeSlice;
 export const { setLoading, setLogin, logout, setUser } = actions;
 export default reducer;

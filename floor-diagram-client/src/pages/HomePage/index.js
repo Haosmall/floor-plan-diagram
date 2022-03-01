@@ -8,13 +8,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { deleteBuilding, fetchListBuildings } from "redux/buildingSlice";
-import { fetchListUsers } from "redux/userSlice";
+import { fetchListEmployees } from "redux/employeeSlice";
 import commonUtils from "utils/commonUtils";
 import { INITIAL_BUILDING } from "utils/constants";
 import "./style.scss";
 
 const HomePage = (props) => {
-	const { user, users, isLogin } = useSelector((state) => state.user);
+	const { user, employees, isLogin } = useSelector((state) => state.employee);
 	const { buildings } = useSelector((state) => state.building);
 
 	const [isAddMode, setIsAddMode] = useState(true);
@@ -30,7 +30,7 @@ const HomePage = (props) => {
 
 	useEffect(() => {
 		dispatch(fetchListBuildings());
-		dispatch(fetchListUsers());
+		dispatch(fetchListEmployees());
 	}, []);
 
 	const handleOnClickAdd = () => {
@@ -105,7 +105,7 @@ const HomePage = (props) => {
 								/>
 							</TabPane>
 							<TabPane tab="Users" key="2">
-								<UserPane users={users} onSelect={handleSelectUser} />
+								<UserPane users={employees} onSelect={handleSelectUser} />
 							</TabPane>
 						</Tabs>
 					) : (
