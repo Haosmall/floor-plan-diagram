@@ -18,14 +18,18 @@ class ShapeService {
 
   // get list
   async getListShapes() {
-    const shapes = await Shape.find({}).populate("employee floor room");
+    const shapes = await Shape.find({})
+      .populate("employee floor room")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return shapes;
   }
 
   // get 1 shape
   async getShapeById(_id) {
-    const shape = await Shape.findById(_id).populate("employee floor room");
+    const shape = await Shape.findById(_id)
+      .populate("employee floor room")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!shape) throw new Error("Shape not found");
 
     return shape;

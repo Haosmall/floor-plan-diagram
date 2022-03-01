@@ -18,14 +18,18 @@ class TeamService {
 
   // get list
   async getListTeams() {
-    const group = await Team.find({}).populate("group project employees");
+    const group = await Team.find({})
+      .populate("group project employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return group;
   }
 
   // get 1 team
   async getTeamById(_id) {
-    const team = await Team.findById(_id).populate("group project employees");
+    const team = await Team.findById(_id)
+      .populate("group project employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!team) throw new Error("Team not found");
 
     return team;

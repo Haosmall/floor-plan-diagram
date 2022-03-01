@@ -15,18 +15,18 @@ class BuildingService {
 
   // get list
   async getListBuildings() {
-    const buildings = await Building.find({}).populate(
-      "floors rooms groups teams projects employees"
-    );
+    const buildings = await Building.find({})
+      .populate("floors rooms groups teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return buildings;
   }
 
   // get building by Id
   async getBuildingById(_id) {
-    const building = await Building.findById(_id).populate(
-      "floors rooms groups teams projects employees"
-    );
+    const building = await Building.findById(_id)
+      .populate("floors rooms groups teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!building) throw new Error("Building not found");
 
     return building;

@@ -10,8 +10,18 @@ class AdminService {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     const data = await tokenUtils.verifyToken(token);
 
-    const admin = await Admin.findById(data._id);
-    const employee = await Employee.findById(data._id);
+    const admin = await Admin.findById(data._id).select([
+      "-password",
+      "-__v",
+      "-createdAt",
+      "-updatedAt",
+    ]);
+    const employee = await Employee.findById(data._id).select([
+      "-password",
+      "-__v",
+      "-createdAt",
+      "-updatedAt",
+    ]);
 
     if (!admin && !employee) throw new Error("Invalid token");
 
