@@ -22,7 +22,7 @@ import commonUtils from "utils/commonUtils";
 import { INITIAL_FLOOR } from "utils/constants";
 import "./style.scss";
 
-const FloorSubMenu = (props) => {
+const RoomSubMenu = (props) => {
 	const { building, isBuildingAdmin } = props;
 
 	const { floors, floor } = useSelector((state) => state.floor);
@@ -63,9 +63,11 @@ const FloorSubMenu = (props) => {
 		e.stopPropagation();
 		const floor = floors.find((ele) => ele._id === id);
 
+		const users = floor.users.map((ele) => ele.userId);
+
 		setIsAddFloor(false);
 		setIsFloorModalVisible(true);
-		setSelectedFloor(floor);
+		setSelectedFloor({ ...floor, users });
 	};
 
 	const handleSelectFloor = async (floorId) => {
@@ -146,7 +148,7 @@ const FloorSubMenu = (props) => {
 	);
 };
 
-FloorSubMenu.propTypes = {
+RoomSubMenu.propTypes = {
 	onAddFloor: PropTypes.func,
 	onEditFloor: PropTypes.func,
 	onAddGroup: PropTypes.func,
@@ -155,7 +157,7 @@ FloorSubMenu.propTypes = {
 	onEditProject: PropTypes.func,
 };
 
-FloorSubMenu.defaultProps = {
+RoomSubMenu.defaultProps = {
 	onAddFloor: null,
 	onEditFloor: null,
 	onAddGroup: null,
@@ -163,4 +165,4 @@ FloorSubMenu.defaultProps = {
 	onAddProject: null,
 	onEditProject: null,
 };
-export default React.memo(FloorSubMenu);
+export default React.memo(RoomSubMenu);

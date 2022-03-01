@@ -7,7 +7,7 @@ import { fetchListEmployees } from "redux/employeeSlice";
 import { addNewFloor, updateFloor } from "redux/floorSlice";
 import { INITIAL_FLOOR } from "utils/constants";
 
-const FloorModal = (props) => {
+const RoomModal = (props) => {
 	const { visible, onCancel, initialValues, isAddMode, title, buildingId } =
 		props;
 	const { employees } = useSelector((state) => state.employee);
@@ -15,8 +15,6 @@ const FloorModal = (props) => {
 	const [form] = Form.useForm();
 
 	const dispatch = useDispatch();
-
-	console.log({ initialValues });
 
 	useEffect(() => form.resetFields(), [initialValues]);
 
@@ -208,7 +206,7 @@ const FloorModal = (props) => {
 	);
 };
 
-FloorModal.propTypes = {
+RoomModal.propTypes = {
 	visible: PropTypes.bool,
 	onCancel: PropTypes.func,
 	onSubmit: PropTypes.func,
@@ -217,7 +215,7 @@ FloorModal.propTypes = {
 	isAddMode: PropTypes.bool,
 };
 
-FloorModal.defaultProps = {
+RoomModal.defaultProps = {
 	visible: false,
 	onCancel: null,
 	onSubmit: null,
@@ -225,4 +223,4 @@ FloorModal.defaultProps = {
 	title: "Modal",
 	isAddMode: true,
 };
-export default FloorModal;
+export default RoomModal;

@@ -7,7 +7,11 @@ import UserPane from "components/TabPane/UserPane";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { deleteBuilding, fetchListBuildings } from "redux/buildingSlice";
+import {
+	deleteBuilding,
+	fetchListBuildings,
+	updateBuilding,
+} from "redux/buildingSlice";
 import { fetchListEmployees } from "redux/employeeSlice";
 import commonUtils from "utils/commonUtils";
 import { INITIAL_BUILDING } from "utils/constants";
@@ -41,17 +45,14 @@ const HomePage = (props) => {
 
 	const handleSubmit = async (building) => {
 		try {
-			const { name, admin } = building;
-
-			console.log({ building });
 			if (isAddMode) {
-				const response = await buildingApi.addBuilding(name, admin);
+				const response = await buildingApi.addBuilding(building);
 				dispatch(fetchListBuildings({ building: response }));
 			} else {
-				await buildingApi.updateBuilding(selectedBuilding._id, name, admin);
+				await buildingApi.updateBuilding(selectedBuilding._id, building);
 				dispatch(
-					fetchListBuildings({
-						building: { _id: selectedBuilding._id, name, admin },
+					updateBuilding({
+						building: { _id: selectedBuilding._id, ...building },
 					})
 				);
 			}

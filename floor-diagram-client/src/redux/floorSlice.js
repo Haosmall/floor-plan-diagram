@@ -46,6 +46,7 @@ const floorSlice = createSlice({
 		setFloor: (state, action) => {
 			const { floorId } = action.payload;
 			const selectedFloor = state.floors.find((ele) => ele._id === floorId);
+
 			state.floor = selectedFloor;
 		},
 	},

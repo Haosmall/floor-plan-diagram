@@ -35,12 +35,12 @@ const buildingApi = {
 		return axiosClient.get(`${API_URL}/${buildingId}/employees/`);
 	},
 
-	addBuilding: (name, admin) => {
-		return axiosClient.post(`${API_URL}`, { name, admin });
+	addBuilding: (buildingInfo) => {
+		return axiosClient.post(`${API_URL}`, buildingInfo);
 	},
 
-	updateBuilding: (buildingId, name, admin) => {
-		return axiosClient.put(`${API_URL}/${buildingId}/`, { name, admin });
+	updateBuilding: (buildingId, buildingInfo) => {
+		return axiosClient.put(`${API_URL}/${buildingId}/`, buildingInfo);
 	},
 
 	deleteBuilding: (buildingId) => {
