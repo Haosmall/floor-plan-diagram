@@ -1,11 +1,6 @@
-const {
-  isAdmin,
-  isAdmin_or_buildingAdmin,
-  isNormalEmployee,
-} = require("../middleware/auth");
+const { isAdmin, isAdmin_or_buildingAdmin } = require("../middleware/auth");
 const adminRouter = require("./admin");
 const employeesRouter = require("./employees");
-const employeeRouter = require("./employee");
 const roomRouter = require("./room");
 const buildingRouter = require("./building");
 const floorRouter = require("./floor");
@@ -18,7 +13,6 @@ const route = (app) => {
   app.use("/api/admin", adminRouter());
   app.use("/api/buildings", isAdmin, buildingRouter());
   app.use("/api/employees", isAdmin_or_buildingAdmin, employeesRouter());
-  app.use("/api/employee", isNormalEmployee, employeeRouter());
   app.use("/api/floors", isAdmin_or_buildingAdmin, floorRouter());
   app.use("/api/rooms", isAdmin_or_buildingAdmin, roomRouter());
   app.use("/api/groups", isAdmin_or_buildingAdmin, groupRouter());

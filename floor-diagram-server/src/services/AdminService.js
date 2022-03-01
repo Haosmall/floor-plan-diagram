@@ -5,6 +5,20 @@ const tokenUtils = require("../utils/tokenUtils");
 const { registerValidator, loginValidator } = require("../validations/auth");
 
 class AdminService {
+  // get me
+  async getMe(req) {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const data = await tokenUtils.verifyToken(token);
+
+    const admin = await Admin.findById(data._id);
+    const employee = await Employee.findById(data._id);
+
+    if (!admin && !employee) throw new Error("Invalid token");
+
+    if (admin) return admin;
+    if (employee) return employee;
+  }
+
   async registry(data) {
     const { error } = registerValidator(data);
     if (error) throw new Error(error.details[0].message);
