@@ -2,7 +2,6 @@ const Employee = require("../models/Employee");
 const { generateToken } = require("../utils/tokenUtils");
 const { registerValidator } = require("../validations/auth");
 const bcrypt = require("bcryptjs");
-const tokenUtils = require("../utils/tokenUtils");
 
 class EmployeeService {
   // add

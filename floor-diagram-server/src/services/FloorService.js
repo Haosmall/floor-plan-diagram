@@ -1,4 +1,10 @@
 const Floor = require("../models/Floor");
+const Room = require("../models/Room");
+const Group = require("../models/Group");
+const Team = require("../models/Team");
+const Project = require("../models/Project");
+const Employee = require("../models/Employee");
+const Shape = require("../models/Shape");
 
 class FloorService {
   // add

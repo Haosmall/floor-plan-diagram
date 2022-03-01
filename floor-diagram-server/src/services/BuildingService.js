@@ -1,4 +1,11 @@
 const Building = require("../models/Building");
+const Admin = require("../models/Admin");
+const Room = require("../models/Room");
+const Group = require("../models/Group");
+const Team = require("../models/Team");
+const Project = require("../models/Project");
+const Employee = require("../models/Employee");
+const Shape = require("../models/Shape");
 
 class BuildingService {
   // add
@@ -6,7 +13,11 @@ class BuildingService {
     const building = await Building.findOne({ name: buildingInfo.name });
     if (building) throw new Error("Building name already exist");
 
-    // required field: name
+    if (buildingInfo?.admin) {
+      const employee = await Employee.findById(buildingInfo?.admin.toString());
+      employee.isBuildingAdmin = true;
+      await employee.save();
+    }
     const newBuilding = new Building(buildingInfo);
     const savedBuilding = await newBuilding.save();
 
@@ -34,6 +45,23 @@ class BuildingService {
 
   // update
   async updateBuilding(_id, buildingInfo) {
+    if (buildingInfo?.admin) {
+      const building = await Building.findById(_id);
+      if (building.admin.toString() !== buildingInfo.admin.toString()) {
+        // promote new employee in place of old building admin
+        // old building admin
+        const oldEmployee = await Employee.findById(building.admin.toString());
+        oldEmployee.isBuildingAdmin = false;
+        await oldEmployee.save();
+        // new building admin
+        const newEmployee = await Employee.findById(
+          buildingInfo.admin.toString()
+        );
+        newEmployee.isBuildingAdmin = true;
+        await newEmployee.save();
+      }
+    }
+
     let updatedBuilding = await Building.findOneAndUpdate(
       { _id },
       buildingInfo,
@@ -47,6 +75,13 @@ class BuildingService {
 
   // delete
   async deleteBuilding(_id) {
+    const building = await Building.findById(_id);
+    if (building?.admin) {
+      const employee = await Employee.findById(building.admin.toString());
+      employee.isBuildingAdmin = false;
+      await employee.save();
+    }
+
     const deletedBuilding = await Building.findByIdAndDelete(_id);
 
     return deletedBuilding;
