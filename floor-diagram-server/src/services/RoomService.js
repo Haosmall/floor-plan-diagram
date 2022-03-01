@@ -5,16 +5,23 @@ const Team = require("../models/Team");
 const Project = require("../models/Project");
 const Employee = require("../models/Employee");
 const Shape = require("../models/Shape");
+const Building = require("../models/Building");
 
 class RoomService {
   // add
   async addRoom(roomInfo) {
-    const room = await Room.findOne({ name: roomInfo.name });
-    if (room) throw new Error("Room name already exist");
-
-    // required field: name
     const newRoom = new Room(roomInfo);
     const savedRoom = await newRoom.save();
+
+    if (roomInfo?.floor) {
+      const floor = await Floor.findById(roomInfo.floor.toString());
+      floor.rooms = [savedRoom._id, ...floor.rooms];
+      const updatedFloor = await floor.save();
+
+      const building = await Building.findById(updatedFloor?.building);
+      building.rooms = [savedRoom._id, ...building.rooms];
+      await building.save();
+    }
 
     return savedRoom;
   }

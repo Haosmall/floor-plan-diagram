@@ -3,16 +3,36 @@ const Room = require("../models/Room");
 const Team = require("../models/Team");
 const Project = require("../models/Project");
 const Employee = require("../models/Employee");
+const Floor = require("../models/Floor");
+const Building = require("../models/Building");
 
 class ProjectService {
   // add
   async addProject(projectInfo) {
-    const project = await Project.findOne({ name: projectInfo.name });
-    if (project) throw new Error("Project name already exist");
-
-    // required field: name
     const newProject = new Project(projectInfo);
     const savedProject = await newProject.save();
+
+    if (projectInfo?.team) {
+      const team = await Team.findById(projectInfo.team);
+      team.project = savedProject._id;
+      const updatedTeam = await team.save();
+
+      const group = await Group.findById(updatedTeam?.group);
+      group.projects = [savedProject._id, ...group.projects];
+      const updatedGroup = await group.save();
+
+      const room = await Room.findById(updatedGroup?.room);
+      room.projects = [savedProject._id, ...room.projects];
+      const updatedRoom = await room.save();
+
+      const floor = await Floor.findById(updatedRoom?.floor);
+      floor.projects = [savedProject._id, ...floor.projects];
+      const updatedFloor = await floor.save();
+
+      const building = await Building.findById(updatedFloor?.building);
+      building.projects = [savedProject._id, ...building.projects];
+      await building.save();
+    }
 
     return savedProject;
   }

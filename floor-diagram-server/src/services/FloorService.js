@@ -1,3 +1,4 @@
+const Building = require("../models/Building");
 const Floor = require("../models/Floor");
 const Room = require("../models/Room");
 const Group = require("../models/Group");
@@ -9,12 +10,14 @@ const Shape = require("../models/Shape");
 class FloorService {
   // add
   async addFloor(floorInfo) {
-    const floor = await Floor.findOne({ name: floorInfo.name });
-    if (floor) throw new Error("Floor name already exist");
-
-    // required field: name
     const newFloor = new Floor(floorInfo);
     const savedFloor = await newFloor.save();
+
+    if (floorInfo?.building) {
+      const building = await Building.findById(floorInfo.building.toString());
+      building.floors = [savedFloor._id, ...building.floors];
+      await building.save();
+    }
 
     return savedFloor;
   }
@@ -22,7 +25,7 @@ class FloorService {
   // get list
   async getListFloors() {
     const floors = await Floor.find({})
-      .populate("rooms groups teams projects employees")
+      .populate("building rooms groups teams projects employees")
       .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return floors;
@@ -31,7 +34,7 @@ class FloorService {
   // get 1 floor
   async getFloorById(_id) {
     const floor = await Floor.findById(_id)
-      .populate("rooms groups teams projects employees")
+      .populate("building rooms groups teams projects employees")
       .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!floor) throw new Error("Floor not found");
 
