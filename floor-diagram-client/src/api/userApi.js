@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const API_URL = "/users";
+const API_URL = "/employee";
 
 const userApi = {
 	fetchUserProfile: () => {

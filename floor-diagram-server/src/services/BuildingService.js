@@ -43,30 +43,6 @@ class BuildingService {
     );
 
     return updatedBuilding;
-
-    // const building = await Building.findById(_id);
-    // if (!building) throw new Error("Building not found");
-
-    // building.name = buildingInfo.name;
-    // building.admin = buildingInfo.admin;
-    // building.floors = buildingInfo?.floors?.length
-    //   ? [...buildingInfo.floors]
-    //   : [];
-    // building.rooms = buildingInfo.rooms?.length ? [...buildingInfo.rooms] : [];
-    // building.groups = buildingInfo?.groups?.length
-    //   ? [...buildingInfo.groups]
-    //   : [];
-    // building.teams = buildingInfo?.teams?.length ? [...buildingInfo.teams] : [];
-    // building.projects = buildingInfo?.projects?.length
-    //   ? [...buildingInfo.projects]
-    //   : [];
-    // building.employees = buildingInfo?.employees?.length
-    //   ? [...buildingInfo.employees]
-    //   : [];
-
-    // const updatedBuilding = await building.save();
-
-    // return updatedBuilding;
   }
 
   // delete

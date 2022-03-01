@@ -78,7 +78,7 @@ employeeSchema.statics.findByCredentials_2 = async (username, password) => {
 
 	const isPwdMatch = bcrypt.compareSync(password, buildingAdmin.password);
 
-	if (buildingAdmin.isBuildingAdmin && isPwdMatch) return buildingAdmin;
+	if (isPwdMatch) return buildingAdmin;
 
 	return null;
 };

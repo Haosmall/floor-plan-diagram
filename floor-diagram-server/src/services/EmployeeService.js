@@ -2,8 +2,21 @@ const Employee = require("../models/Employee");
 const { generateToken } = require("../utils/tokenUtils");
 const { registerValidator } = require("../validations/auth");
 const bcrypt = require("bcryptjs");
+const tokenUtils = require("../utils/tokenUtils");
 
 class EmployeeService {
+  // get me
+  async getMe(req) {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const data = await tokenUtils.verifyToken(token);
+
+    const employee = await Employee.findById(data._id);
+
+    if (!employee) throw new Error("Employee not found");
+
+    return employee;
+  }
+
   // add
   async addEmployee(empInfo) {
     // required fields: name, username

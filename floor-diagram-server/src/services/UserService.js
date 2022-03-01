@@ -5,62 +5,62 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 class UserService {
-	async getListUsers(name) {
-		const listUsers = await User.aggregate([
-			{
-				$match: {
-					name: { $regex: name, $options: "i" },
-				},
-			},
-			{
-				$project: {
-					password: 0,
-					__v: 0,
-					createdAt: 0,
-					updatedAt: 0,
-				},
-			},
-		]);
-		return listUsers;
-	}
+  async getListUsers(name) {
+    const listUsers = await User.aggregate([
+      {
+        $match: {
+          name: { $regex: name, $options: "i" },
+        },
+      },
+      {
+        $project: {
+          password: 0,
+          __v: 0,
+          createdAt: 0,
+          updatedAt: 0,
+        },
+      },
+    ]);
+    return listUsers;
+  }
 
-	async getUserById(_id) {
-		const user = await User.findOne({ _id }).select([
-			"-password",
-			"-__v",
-			"-createdAt",
-			"-updatedAt",
-		]);
-		if (!user) throw new Error("User not found");
-		return user;
-	}
+  async getUserById(_id) {
+    const user = await User.findOne({ _id }).select([
+      "-password",
+      "-__v",
+      "-createdAt",
+      "-updatedAt",
+    ]);
+    if (!user) throw new Error("User not found");
+    return user;
+  }
 
-	async getListUserPlacesByUserId(_id) {
-		const users = await User.aggregate([
-			// {
-			// 	$match: {
-			// 		_id: ObjectId(_id),
-			// 	},
-			// },
-			{
-				$lookup: {
-					from: "userplaces",
-					localField: "_id",
-					foreignField: "userId",
-					as: "test",
-				},
-			},
-			// { $unwind: "$test" },
-			// { $project: { test: 1 } },
-			// {
-			// 	$match: {
-			// 		"test.userId": ObjectId(_id),
-			// 	},
-			// },
-		]);
-		if (!users) throw new Error("User not found");
-		return users;
-	}
+  async getListUserPlacesByUserId(_id) {
+    const users = await User.aggregate([
+      // {
+      // 	$match: {
+      // 		_id: ObjectId(_id),
+      // 	},
+      // },
+      {
+        $lookup: {
+          from: "userplaces",
+          localField: "_id",
+          foreignField: "userId",
+          as: "test",
+        },
+      },
+      // { $unwind: "$test" },
+      // { $project: { test: 1 } },
+      // {
+      // 	$match: {
+      // 		"test.userId": ObjectId(_id),
+      // 	},
+      // },
+    ]);
+    if (!users) throw new Error("User not found");
+    return users;
+  }
 }
 
 module.exports = new UserService();

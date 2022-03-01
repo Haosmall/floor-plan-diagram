@@ -1,6 +1,18 @@
 const employeeService = require("../services/EmployeeService");
 
 class EmployeeController {
+  // [GET] /api/employees/me
+  async getMe(req, res, next) {
+    try {
+      const response = await employeeService.getMe(req);
+
+      res.status(200).json(response);
+    } catch (err) {
+      // console.log(err);
+      next(err);
+    }
+  }
+
   // [POST] /api/employees
   async addEmployee(req, res, next) {
     try {

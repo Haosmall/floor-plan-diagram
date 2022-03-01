@@ -16,7 +16,16 @@ const shapeSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employee",
     },
-    items: [{ type: String }],
+    pcInfo: [{ type: String }],
+    chairNumber: { type: Number },
+    floor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Floor",
+    },
+    room: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
+    },
   },
   { timestamps: true }
 );
