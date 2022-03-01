@@ -4,16 +4,28 @@ const Team = require("../models/Team");
 const Project = require("../models/Project");
 const Employee = require("../models/Employee");
 const Shape = require("../models/Shape");
+const Floor = require("../models/Floor");
+const Building = require("../models/Building");
 
 class GroupService {
   // add
   async addGroup(groupInfo) {
-    const group = await Group.findOne({ name: groupInfo.name });
-    if (group) throw new Error("Group name already exist");
-
-    // required field: name
     const newGroup = new Group(groupInfo);
     const savedGroup = await newGroup.save();
+
+    if (groupInfo?.room) {
+      const room = await Room.findById(groupInfo.room);
+      room.groups = [savedGroup._id, ...room.groups];
+      const updatedRoom = await room.save();
+
+      const floor = await Floor.findById(updatedRoom?.floor);
+      floor.groups = [savedGroup._id, ...floor.groups];
+      const updatedFloor = await floor.save();
+
+      const building = await Building.findById(updatedFloor?.building);
+      building.groups = [savedGroup._id, ...building.groups];
+      await building.save();
+    }
 
     return savedGroup;
   }
