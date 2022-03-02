@@ -13,6 +13,7 @@ const floorRouter = () => {
   router.get("/:id/teams", floorController.getListTeamByFloor);
   router.get("/:id/projects", floorController.getListProjectByFloor);
   router.get("/:id/employees", floorController.getListEmployeeByFloor);
+  router.get("/:id/shape", floorController.getShapeByFloor);
 
   return router;
 };
