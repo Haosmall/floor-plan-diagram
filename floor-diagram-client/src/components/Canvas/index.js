@@ -48,9 +48,7 @@ const Canvas = (props) => {
 				<Layer>
 					{floor &&
 						shapes.map((ele, index) => {
-							const staff = employees.find((user) => user._id === ele.staff);
-
-							const text = staff?.name || "[null]";
+							const text = ele?.chairNumber?.toString() || "#";
 							return (
 								<Shape
 									key={ele._id}

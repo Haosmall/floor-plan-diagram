@@ -19,12 +19,12 @@ const INITIAL_STATE = {
 	selectedShapes: [],
 };
 
-export const fetchListShapeByFloor = createAsyncThunk(
-	`${PREFIX}/fetchListShapeByFloor`,
+export const fetchShapeByFloor = createAsyncThunk(
+	`${PREFIX}/fetchShapeByFloor`,
 	async (params, thunkApi) => {
 		const { floorId } = params;
-		const projects = await floorApi.fetchListShapeByFloor(floorId);
-		return projects;
+		const shape = await floorApi.fetchShapeByFloor(floorId);
+		return shape;
 	}
 );
 
@@ -184,36 +184,26 @@ const shapeSlice = createSlice({
 	},
 
 	extraReducers: {
-		// ==================== fetchListShapeByFloor  ===================
-		[fetchListShapeByFloor.pending]: (state, action) => {
+		// ==================== fetchShapeByFloor  ===================
+		[fetchShapeByFloor.pending]: (state, action) => {
 			state.isLoading = false;
 			state.isError = false;
 		},
 
-		[fetchListShapeByFloor.fulfilled]: (state, action) => {
-			const listShapes = action.payload.shapes;
-			let backGroundIndex = -1;
-			if (listShapes.length > 0) {
-				backGroundIndex = listShapes.findIndex((ele) => ele?.src !== "");
-			}
+		[fetchShapeByFloor.fulfilled]: (state, action) => {
+			const shape = action.payload?.shape;
 
-			if (backGroundIndex >= 0) {
-				const imageShape = listShapes[backGroundIndex];
+			const listShapes = shape ? [shape] : []
 
-				const newList = listShapes.filter((ele) => ele._id !== imageShape._id);
-				state.shapes = [imageShape, ...newList];
-				state.listOriginalShapes = [imageShape, ...newList];
-			} else {
-				state.shapes = action.payload.shapes;
-				state.listOriginalShapes = action.payload.shapes;
-			}
+			state.shapes = listShapes;
+			state.listOriginalShapes = listShapes;
 
 			state.isLoading = true;
 			state.shape = null;
 			state.selectedShapes = [];
 		},
 
-		[fetchListShapeByFloor.rejected]: (state, action) => {
+		[fetchShapeByFloor.rejected]: (state, action) => {
 			state.isLoading = false;
 			state.isError = true;
 		},

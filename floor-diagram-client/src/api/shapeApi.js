@@ -7,8 +7,8 @@ const shapeApi = {
 		return axiosClient.post(`${API_URL}/`, shape);
 	},
 
-	updateShape: (shape) => {
-		return axiosClient.put(`${API_URL}/${shape._id}`, shape);
+	updateShape: (shapeId, shape) => {
+		return axiosClient.put(`${API_URL}/${shapeId}`, shape);
 	},
 
 	deleteShape: (shapeId) => {

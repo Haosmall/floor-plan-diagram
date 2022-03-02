@@ -93,10 +93,11 @@ const DEFAULT_SHAPE = {
 	y: 200,
 	radius: 50,
 	src: "",
-	items: [],
-	staff: null,
-	floorId: null,
-	projectId: null,
+	employee: null,
+	pcInfo: [undefined],
+	chairNumber: null,
+	floor: null,
+	room: null,
 };
 
 const ACTION_TYPE = {

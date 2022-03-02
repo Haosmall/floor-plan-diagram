@@ -106,24 +106,24 @@ const RoomSubMenu = (props) => {
 					)}
 					{rooms?.map((floor) => (
 						<Menu.Item
-							eventKey={floor._id}
-							key={floor._id}
-							onClick={() => handleSelectRoom(floor._id)}
+							eventKey={floor?._id}
+							key={floor?._id}
+							onClick={() => handleSelectRoom(floor?._id)}
 						>
 							<div className="menu-item">
-								<div className="menu-item-name">{floor.name}</div>
+								<div className="menu-item-name">{floor?.name}</div>
 								{isBuildingAdmin && (
 									<div className="menu-item-btn">
 										<Button
 											shape="circle"
 											icon={<EditOutlined />}
-											onClick={(e) => showUpdateRoomModal(e, floor._id)}
+											onClick={(e) => showUpdateRoomModal(e, floor?._id)}
 										/>
 										<Button
 											shape="circle"
 											danger
 											icon={<DeleteOutlined />}
-											onClick={(e) => handleDelete(e, floor._id)}
+											onClick={(e) => handleDelete(e, floor?._id)}
 										/>
 									</div>
 								)}

@@ -12,6 +12,7 @@ const ToolBar = (props) => {
 	const { onLockBackGround, isLockBackGround } = props;
 
 	const { floor } = useSelector((state) => state.floor);
+	const { room } = useSelector((state) => state.room);
 	const { shapes } = useSelector((state) => state.shape);
 
 	const dispatch = useDispatch();
@@ -21,9 +22,9 @@ const ToolBar = (props) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	const handleAddShape = async (e, type) => {
-		if (!floor?._id) {
+		if (!room?._id) {
 			message.warning(
-				"Please selectPlease select the floor before adding shapes"
+				"Please selectPlease select the room before adding shapes"
 			);
 			return;
 		}
@@ -38,7 +39,7 @@ const ToolBar = (props) => {
 			type,
 			x: type !== SHAPE_TYPE.rect ? x : x - 75,
 			y: type !== SHAPE_TYPE.rect ? y : y - 50,
-			floorId: floor._id,
+			room: room._id,
 		};
 
 		const response = await shapeApi.addShape(shape);
@@ -46,11 +47,11 @@ const ToolBar = (props) => {
 	};
 
 	const handleOpenModal = () => {
-		if (floor) {
+		if (room || floor) {
 			setIsModalVisible(true);
 		} else {
 			message.warn(
-				"Please selectPlease select the floor before adding background"
+				"Please selectPlease select the floor or room before adding diagram"
 			);
 		}
 	};
@@ -91,11 +92,11 @@ const ToolBar = (props) => {
 
 			<Button onClick={handleOpenModal}>
 				{shapes?.[0]?.type !== SHAPE_TYPE.image
-					? "Add background"
-					: "Update background"}
+					? "Add diagram"
+					: "Update diagram"}
 			</Button>
 			<Checkbox onChange={() => onLockBackGround(!isLockBackGround)}>
-				Lock background
+				Lock diagram
 			</Checkbox>
 
 			{isModalVisible && (
@@ -103,6 +104,9 @@ const ToolBar = (props) => {
 					isAddMode={isAddMode}
 					visible={isModalVisible}
 					onCancel={() => setIsModalVisible(false)}
+					title={`${isAddMode ? "Add" : "Update"} ${
+						room?._id ? "room" : "floor"
+					} diagram`}
 				/>
 			)}
 		</div>

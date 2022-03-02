@@ -31,6 +31,10 @@ const floorApi = {
 		return axiosClient.get(`${API_URL}/${floorId}/employees/`);
 	},
 
+	fetchShapeByFloor: (floorId) => {
+		return axiosClient.get(`${API_URL}/${floorId}/shape/`);
+	},
+
 	addFloor: (floorInfo) => {
 		return axiosClient.post(`${API_URL}/`, floorInfo);
 	},

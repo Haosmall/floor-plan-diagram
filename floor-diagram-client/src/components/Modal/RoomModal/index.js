@@ -1,11 +1,9 @@
 import { Form, Input, message, Modal, Select } from "antd";
-import floorApi from "api/floorApi";
 import roomApi from "api/roomApi";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchListEmployees } from "redux/employeeSlice";
-import { addNewFloor, updateFloor } from "redux/floorSlice";
 import { addNewRoom, updateRoom } from "redux/roomSlice";
 import { INITIAL_FLOOR } from "utils/constants";
 
@@ -34,6 +32,8 @@ const RoomModal = (props) => {
 					...values,
 					floor: floorId,
 				});
+
+				console.log({ response });
 
 				dispatch(addNewRoom({ room: response }));
 			} else {

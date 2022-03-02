@@ -26,8 +26,8 @@ const roomSlice = createSlice({
 			state.isLoading = action.payload;
 		},
 		addNewRoom: (state, action) => {
-			const { floor } = action.payload;
-			state.rooms.push(floor);
+			const { room } = action.payload;
+			state.rooms.push(room);
 		},
 		updateRoom: (state, action) => {
 			const { room } = action.payload;
@@ -45,6 +45,12 @@ const roomSlice = createSlice({
 		},
 		setRoom: (state, action) => {
 			const { roomId } = action.payload;
+
+			if (roomId === null) {
+				state.room = null;
+				return;
+			}
+
 			const selectedRoom = state.rooms.find((ele) => ele._id === roomId);
 			state.room = selectedRoom;
 		},
