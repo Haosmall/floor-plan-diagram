@@ -13,6 +13,20 @@ class ShapeService {
     const newShape = new Shape(shapeInfo);
     const savedShape = await newShape.save();
 
+    if (shapeInfo.floor) {
+      const floor = await Floor.findById(shapeInfo.floor.toString());
+      floor.shape = savedShape._id;
+      await floor.save();
+    }
+
+    if (shapeInfo.room) {
+      const room = await Room.findById(shapeInfo.room.toString());
+      room.shapes = room.shapes.length
+        ? [savedShape._id, ...room.shapes]
+        : [savedShape._id];
+      await room.save();
+    }
+
     return savedShape;
   }
 
