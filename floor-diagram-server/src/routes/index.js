@@ -11,7 +11,7 @@ const shapeRouter = require("./shape");
 
 const route = (app) => {
   app.use("/api/admin", adminRouter());
-  app.use("/api/buildings", isAdmin, buildingRouter());
+  app.use("/api/buildings", isAdmin_or_buildingAdmin, buildingRouter());
   app.use("/api/employees", isAdmin_or_buildingAdmin, employeesRouter());
   app.use("/api/floors", isAdmin_or_buildingAdmin, floorRouter());
   app.use("/api/rooms", isAdmin_or_buildingAdmin, roomRouter());
