@@ -96,19 +96,26 @@ const DetailsSubMenu = (props) => {
 							>
 								<Form.Item label="Staff" name="employee">
 									<Select disabled={isDisable}>
-										{floor?.employees.map((user) => {
-											const userName = employees.find(
-												(ele) => ele._id === user.userId
-											)?.name;
+										{employees.map((user) => {
 											return (
-												<Option key={user.userId} value={user.userId}>
-													{userName}
-												</Option>
+												floor?.employees.includes(user._id) && (
+													<Option key={user._id} value={user._id}>
+														{user.name}
+													</Option>
+												)
 											);
 										})}
 									</Select>
 								</Form.Item>
 
+								<Form.Item label="Number" name="chairNumber">
+									<Input
+										disabled={isDisable}
+										placeholder="Chair number"
+										type="number"
+									/>
+								</Form.Item>
+								{/* 
 								<Form.Item label="Group" name="groupId">
 									<Select disabled={isDisable} onSelect={handleSelectGroup}>
 										{groups.map((group) => (
@@ -127,7 +134,7 @@ const DetailsSubMenu = (props) => {
 											</Option>
 										))}
 									</Select>
-								</Form.Item>
+								</Form.Item> */}
 
 								<Form.List name="pcInfo">
 									{(fields, { add, remove }, { errors }) => (
@@ -137,7 +144,7 @@ const DetailsSubMenu = (props) => {
 													{...(index === 0
 														? formItemLayout
 														: formItemLayoutWithOutLabel)}
-													label={index === 0 ? "Pc info" : ""}
+													label={index === 0 ? "PC info" : ""}
 													key={field.key}
 												>
 													<Form.Item

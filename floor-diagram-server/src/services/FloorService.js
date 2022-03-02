@@ -126,9 +126,9 @@ class FloorService {
 
 	// get shape by floor Id
 	async getShapeByFloor(floorId) {
-		const shape = await Floor.findById(floorId);
-		// .select("shape")
-		// .populate("shape");
+		const shape = await Floor.findById(floorId)
+			.select("shape")
+			.populate("shape");
 
 		return shape;
 	}

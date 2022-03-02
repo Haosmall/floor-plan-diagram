@@ -191,22 +191,12 @@ const shapeSlice = createSlice({
 		},
 
 		[fetchShapeByFloor.fulfilled]: (state, action) => {
-			const listShapes = action.payload.shapes;
-			let backGroundIndex = -1;
-			if (listShapes.length > 0) {
-				backGroundIndex = listShapes.findIndex((ele) => ele?.src !== "");
-			}
+			const shape = action.payload?.shape;
 
-			if (backGroundIndex >= 0) {
-				const imageShape = listShapes[backGroundIndex];
+			const listShapes = shape ? [shape] : []
 
-				const newList = listShapes.filter((ele) => ele._id !== imageShape._id);
-				state.shapes = [imageShape, ...newList];
-				state.listOriginalShapes = [imageShape, ...newList];
-			} else {
-				state.shapes = action.payload.shapes;
-				state.listOriginalShapes = action.payload.shapes;
-			}
+			state.shapes = listShapes;
+			state.listOriginalShapes = listShapes;
 
 			state.isLoading = true;
 			state.shape = null;

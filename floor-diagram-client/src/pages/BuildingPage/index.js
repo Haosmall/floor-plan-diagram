@@ -123,14 +123,14 @@ const BuildingPage = (props) => {
 							/>
 						)}
 
-						<GroupSubMenu
+						{/* <GroupSubMenu
 							building={building}
 							isBuildingAdmin={isBuildingAdmin || user.isAdmin}
 						/>
 						<ProjectSubMenu
 							building={building}
 							isBuildingAdmin={isBuildingAdmin || user.isAdmin}
-						/>
+						/> */}
 						<DetailsSubMenu />
 					</Sider>
 

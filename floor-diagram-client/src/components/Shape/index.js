@@ -48,10 +48,9 @@ const Shape = (props) => {
 		let [x, y] = [null, null];
 
 		if (shapeType === SHAPE_TYPE.rect) {
-			x = width / 2;
-			y = height / 2;
+			x = width / 2 - (text.length / 2) * 9;
+			y = height / 2 - 6;
 		}
-
 		return { x, y };
 	})(type);
 
@@ -118,9 +117,10 @@ const Shape = (props) => {
 
 					<Text
 						text={text}
+						wrap="char"
 						align="center"
-						x={textPosition.x - 16}
-						y={textPosition.y - 4}
+						x={textPosition.x}
+						y={textPosition.y}
 						fontSize={16}
 					/>
 				</Group>

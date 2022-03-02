@@ -94,7 +94,7 @@ const DEFAULT_SHAPE = {
 	radius: 50,
 	src: "",
 	employee: null,
-	pcInfo: [undefined, undefined],
+	pcInfo: [undefined],
 	chairNumber: null,
 	floor: null,
 	room: null,
