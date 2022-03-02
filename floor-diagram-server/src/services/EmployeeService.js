@@ -1,11 +1,12 @@
 const Employee = require("../models/Employee");
 const { generateToken } = require("../utils/tokenUtils");
-const { registerValidator, loginValidator } = require("../validations/auth");
+const { registerValidator } = require("../validations/auth");
 const bcrypt = require("bcryptjs");
 
 class EmployeeService {
+  // add
   async addEmployee(empInfo) {
-    // required fields: name, username, password
+    // required fields: name, username
     const { error } = registerValidator(empInfo);
     if (error) throw new Error(error.details[0].message);
 
@@ -14,23 +15,35 @@ class EmployeeService {
     });
     if (checkUsernameExist) throw new Error("Username is exist");
 
-    empInfo.password = bcrypt.hashSync(empInfo.password, 8);
+    empInfo.password = bcrypt.hashSync("123456", 8);
     const newEmp = new Employee(empInfo);
     const savedEmp = await newEmp.save();
 
     return savedEmp;
   }
 
+  // get list
   async getListEmployees() {
-    const employees = await Employee.find({}).populate(
-      "building floor room group project team"
-    );
+    const employees = await Employee.find({})
+      .populate("building floor room group project team")
+      .select(["-password", "-__v", "-createdAt", "-updatedAt"]);
 
     return employees;
   }
 
+  // get employee by id
+  async getEmployeeById(empId) {
+    const employee = await Employee.findById(empId)
+      .populate("building floor room group project team")
+      .select(["-password", "-__v", "-createdAt", "-updatedAt"]);
+
+    return employee;
+  }
+
+  // update
   async updateEmployee(_id, empInfo) {
-    empInfo.password = bcrypt.hashSync(empInfo.password, 8);
+    if (empInfo.password)
+      empInfo.password = bcrypt.hashSync(empInfo.password, 8);
     let updatedEmp = await Employee.findOneAndUpdate({ _id }, empInfo, {
       new: true,
     });
@@ -38,6 +51,7 @@ class EmployeeService {
     return updatedEmp;
   }
 
+  // delete
   async deleteEmployee(_id) {
     const deletedEmp = await Employee.findByIdAndDelete(_id);
 
@@ -48,12 +62,12 @@ class EmployeeService {
     const employee = await Employee.findById(empId);
     if (!employee) throw new Error("Employee not found");
 
-    employee.isAdmin = true;
-    const { _id, name, username, isAdmin } = await employee.save();
+    employee.isBuildingAdmin = true;
+    const { _id, name, username, isBuildingAdmin } = await employee.save();
 
     const token = await generateToken(_id);
 
-    return { _id, name, username, isAdmin, token };
+    return { _id, name, username, isBuildingAdmin, token };
   }
 }
 

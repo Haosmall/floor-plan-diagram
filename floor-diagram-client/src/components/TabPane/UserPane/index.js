@@ -3,7 +3,7 @@ import UserTable from "components/Table/UserTable";
 import PropTypes from "prop-types";
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { fetchListUsers } from "redux/userSlice";
+import { fetchListEmployees } from "redux/employeeSlice";
 
 const UserPane = (props) => {
 	const { users, onSelect } = props;
@@ -20,7 +20,7 @@ const UserPane = (props) => {
 		}
 
 		inputRef.current = setTimeout(() => {
-			dispatch(fetchListUsers({ name: value }));
+			dispatch(fetchListEmployees());
 		}, 400);
 	};
 

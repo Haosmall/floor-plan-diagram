@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const API_URL = "/shape";
+const API_URL = "/shapes";
 
 const shapeApi = {
 	addShape: (shape) => {
@@ -11,24 +11,28 @@ const shapeApi = {
 		return axiosClient.put(`${API_URL}/${shape._id}`, shape);
 	},
 
-	updateManyShape: (shapes) => {
-		return axiosClient.put(`${API_URL}/`, { shapes });
-	},
-
 	deleteShape: (shapeId) => {
 		return axiosClient.delete(`${API_URL}/${shapeId}`);
+	},
+
+	updateManyShape: (shapes) => {
+		return axiosClient.put(`${API_URL}/`, { shapes });
 	},
 
 	deleteManyShape: (shapeIds) => {
 		return axiosClient.delete(`${API_URL}/`, { data: { shapeIds } });
 	},
 
-	addImageShape: (body) => {
-		return axiosClient.post(`${API_URL}/back-ground/`, body);
+	fetchListShapesByEmployee: (employeeId) => {
+		return axiosClient.get(`${API_URL}/${employeeId}/employees/`);
 	},
 
-	updateImageShape: (shapeId, file) => {
-		return axiosClient.patch(`${API_URL}/${shapeId}/back-ground/`, file);
+	fetchListShapesByFloor: (floorId) => {
+		return axiosClient.get(`${API_URL}/${floorId}/floors/`);
+	},
+
+	fetchListShapesByRoom: (roomId) => {
+		return axiosClient.get(`${API_URL}/${roomId}/rooms/`);
 	},
 };
 

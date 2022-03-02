@@ -1,6 +1,18 @@
 const employeeService = require("../services/EmployeeService");
 
 class EmployeeController {
+  // [GET] /api/employees/me
+  async getMe(req, res, next) {
+    try {
+      const response = await employeeService.getMe(req);
+
+      res.status(200).json(response);
+    } catch (err) {
+      // console.log(err);
+      next(err);
+    }
+  }
+
   // [POST] /api/employees
   async addEmployee(req, res, next) {
     try {
@@ -17,6 +29,18 @@ class EmployeeController {
   async getListEmployees(req, res, next) {
     try {
       const response = await employeeService.getListEmployees();
+
+      res.status(200).json(response);
+    } catch (err) {
+      // console.log(err);
+      next(err);
+    }
+  }
+
+  // [GET] /api/employees/:id
+  async getEmployeeById(req, res, next) {
+    try {
+      const response = await employeeService.getEmployeeById(req.params.id);
 
       res.status(200).json(response);
     } catch (err) {

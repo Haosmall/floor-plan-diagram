@@ -1,4 +1,12 @@
 const Building = require("../models/Building");
+const Admin = require("../models/Admin");
+const Room = require("../models/Room");
+const Group = require("../models/Group");
+const Team = require("../models/Team");
+const Project = require("../models/Project");
+const Employee = require("../models/Employee");
+const Shape = require("../models/Shape");
+const Floor = require("../models/Floor");
 
 class BuildingService {
   // add
@@ -6,7 +14,13 @@ class BuildingService {
     const building = await Building.findOne({ name: buildingInfo.name });
     if (building) throw new Error("Building name already exist");
 
-    // required field: name
+    if (buildingInfo?.admin) {
+      const employee = await Employee.findById(buildingInfo?.admin.toString());
+      if (employee.isBuildingAdmin)
+        throw new Error("Employee already an admin on other building");
+      employee.isBuildingAdmin = true;
+      await employee.save();
+    }
     const newBuilding = new Building(buildingInfo);
     const savedBuilding = await newBuilding.save();
 
@@ -15,18 +29,18 @@ class BuildingService {
 
   // get list
   async getListBuildings() {
-    const buildings = await Building.find({}).populate(
-      "floors rooms groups teams projects employees"
-    );
+    const buildings = await Building.find({})
+      .populate("admin floors rooms groups teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return buildings;
   }
 
   // get building by Id
   async getBuildingById(_id) {
-    const building = await Building.findById(_id).populate(
-      "floors rooms groups teams projects employees"
-    );
+    const building = await Building.findById(_id)
+      .populate("admin floors rooms groups teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!building) throw new Error("Building not found");
 
     return building;
@@ -34,6 +48,28 @@ class BuildingService {
 
   // update
   async updateBuilding(_id, buildingInfo) {
+    if (buildingInfo?.admin) {
+      const building = await Building.findById(_id);
+      if (building.admin.toString() !== buildingInfo.admin.toString()) {
+        const newBuildingAd = await Employee.findById(
+          buildingInfo.admin.toString()
+        );
+        // if new building admin already an admin
+        if (newBuildingAd.isBuildingAdmin)
+          throw new Error("Employee already an admin on other building");
+        // promote new employee in place of old building admin
+        // old building admin
+        const oldBuildingAd = await Employee.findById(
+          building.admin.toString()
+        );
+        oldBuildingAd.isBuildingAdmin = false;
+        await oldBuildingAd.save();
+        // new building admin
+        newBuildingAd.isBuildingAdmin = true;
+        await newBuildingAd.save();
+      }
+    }
+
     let updatedBuilding = await Building.findOneAndUpdate(
       { _id },
       buildingInfo,
@@ -43,35 +79,27 @@ class BuildingService {
     );
 
     return updatedBuilding;
-
-    // const building = await Building.findById(_id);
-    // if (!building) throw new Error("Building not found");
-
-    // building.name = buildingInfo.name;
-    // building.admin = buildingInfo.admin;
-    // building.floors = buildingInfo?.floors?.length
-    //   ? [...buildingInfo.floors]
-    //   : [];
-    // building.rooms = buildingInfo.rooms?.length ? [...buildingInfo.rooms] : [];
-    // building.groups = buildingInfo?.groups?.length
-    //   ? [...buildingInfo.groups]
-    //   : [];
-    // building.teams = buildingInfo?.teams?.length ? [...buildingInfo.teams] : [];
-    // building.projects = buildingInfo?.projects?.length
-    //   ? [...buildingInfo.projects]
-    //   : [];
-    // building.employees = buildingInfo?.employees?.length
-    //   ? [...buildingInfo.employees]
-    //   : [];
-
-    // const updatedBuilding = await building.save();
-
-    // return updatedBuilding;
   }
 
   // delete
   async deleteBuilding(_id) {
+    const building = await Building.findById(_id);
+    if (building?.admin) {
+      const employee = await Employee.findById(building.admin.toString());
+      employee.isBuildingAdmin = false;
+      await employee.save();
+    }
+
     const deletedBuilding = await Building.findByIdAndDelete(_id);
+
+    // building > floor > room > group > team > project
+    if (deletedBuilding && deletedBuilding?.floors.length) {
+      for (let fId of deletedBuilding.floors) {
+        const floor = await Floor.findById(fId.toString());
+        floor.building = null;
+        await floor.save();
+      }
+    }
 
     return deletedBuilding;
   }

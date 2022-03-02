@@ -6,7 +6,6 @@ const roomSchema = new Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
     },
     floor: {
       type: mongoose.Schema.Types.ObjectId,

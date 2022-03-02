@@ -20,7 +20,7 @@ const connect = async () => {
 				useUnifiedTopology: true,
 			}
 		);
-		console.log("connect successfully");
+		console.log("Databased connected successfully");
 	} catch (error) {
 		console.error("connect fail", error);
 	}

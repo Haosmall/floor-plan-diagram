@@ -1,6 +1,20 @@
+const Employee = require("../models/Employee");
+const Admin = require("../models/Admin");
 const adminService = require("../services/AdminService");
 
 class AdminController {
+  // [GET] /me
+  async getMe(req, res, next) {
+    try {
+      const response = await adminService.getMe(req);
+
+      res.status(201).json(response);
+    } catch (err) {
+      // console.log(err);
+      next(err);
+    }
+  }
+
   // [POST] /registry
   async registry(req, res, next) {
     try {

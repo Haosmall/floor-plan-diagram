@@ -4,34 +4,46 @@ const Team = require("../models/Team");
 const Project = require("../models/Project");
 const Employee = require("../models/Employee");
 const Shape = require("../models/Shape");
+const Floor = require("../models/Floor");
+const Building = require("../models/Building");
 
 class GroupService {
   // add
   async addGroup(groupInfo) {
-    const group = await Group.findOne({ name: groupInfo.name });
-    if (group) throw new Error("Group name already exist");
-
-    // required field: name
     const newGroup = new Group(groupInfo);
     const savedGroup = await newGroup.save();
+
+    if (groupInfo?.room) {
+      const room = await Room.findById(groupInfo.room);
+      room.groups = [savedGroup._id, ...room.groups];
+      const updatedRoom = await room.save();
+
+      const floor = await Floor.findById(updatedRoom?.floor);
+      floor.groups = [savedGroup._id, ...floor.groups];
+      const updatedFloor = await floor.save();
+
+      const building = await Building.findById(updatedFloor?.building);
+      building.groups = [savedGroup._id, ...building.groups];
+      await building.save();
+    }
 
     return savedGroup;
   }
 
   // get list
   async getListGroups() {
-    const groups = await Group.find({}).populate(
-      "room teams projects employees"
-    );
+    const groups = await Group.find({})
+      .populate("room teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return groups;
   }
 
   // get 1 group
   async getGroupById(_id) {
-    const group = await Group.findById(_id).populate(
-      "room teams projects employees"
-    );
+    const group = await Group.findById(_id)
+      .populate("room teams projects employees")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!group) throw new Error("Group not found");
 
     return group;
@@ -49,6 +61,49 @@ class GroupService {
   // delete
   async deleteGroup(_id) {
     const deletedGroup = await Group.findByIdAndDelete(_id);
+
+    // building > floor > room > group > team > project
+    if (deletedGroup) {
+      if (deletedGroup?.room) {
+        const room = await Room.findById(deletedGroup.room.toString());
+        room.groups = room?.groups.length
+          ? room?.groups.filter(
+              (gId) => gId.toString() !== deletedGroup._id.toString()
+            )
+          : [];
+        const updatedRoom = await room.save();
+
+        if (updatedRoom?.floor) {
+          const floor = await Floor.findById(updatedRoom.floor.toString());
+          floor.groups = floor?.groups.length
+            ? floor?.groups.filter(
+                (gId) => gId.toString() !== deletedGroup._id.toString()
+              )
+            : [];
+          const updatedFloor = await floor.save();
+
+          if (updatedFloor?.building) {
+            const building = await Building.findById(
+              updatedFloor.building.toString()
+            );
+            building.groups = building?.groups.length
+              ? building?.groups.filter(
+                  (gId) => gId.toString() !== deletedGroup._id.toString()
+                )
+              : [];
+            await building.save();
+          }
+        }
+      }
+
+      if (deletedGroup?.teams.length) {
+        for (let tId of deletedGroup.teams) {
+          const team = await Team.findById(tId.toString());
+          team.group = null;
+          await team.save();
+        }
+      }
+    }
 
     return deletedGroup;
   }

@@ -1,3 +1,10 @@
+import {
+	ArrowLeftOutlined,
+	DeleteOutlined,
+	SaveOutlined,
+	SyncOutlined,
+	UndoOutlined,
+} from "@ant-design/icons";
 import { Button, Select } from "antd";
 import { Header } from "antd/lib/layout/layout";
 import shapeApi from "api/shapeApi";
@@ -68,24 +75,40 @@ const TopBar = (props) => {
 	);
 
 	return (
-		<Header style={{ backgroundColor: "#f1f2f6" }}>
-			<Button disabled={isDisable} onClick={handleSave} shape="round">
-				Save
-			</Button>
-			<Button
-				disabled={!shape ? true : false}
-				onClick={handleDelete}
-				shape="round"
-				danger
-			>
-				Delete
-			</Button>
-			<Button disabled={isDisable} onClick={handleReset} shape="round">
-				Reset
-			</Button>
-			<Button onClick={handleBack} shape="round">
-				Back
-			</Button>
+		<Header>
+			<div className="btn-container">
+				<Button
+					disabled={isDisable}
+					onClick={handleSave}
+					shape="round"
+					icon={<SaveOutlined />}
+				>
+					Save
+				</Button>
+
+				<Button
+					disabled={isDisable}
+					onClick={handleReset}
+					shape="round"
+					icon={<UndoOutlined />}
+				>
+					Reset
+				</Button>
+
+				<Button
+					disabled={!shape ? true : false}
+					onClick={handleDelete}
+					shape="round"
+					danger
+					icon={<DeleteOutlined />}
+				>
+					Delete
+				</Button>
+
+				<Button onClick={handleBack} shape="round" icon={<ArrowLeftOutlined />}>
+					Back
+				</Button>
+			</div>
 
 			<Select defaultValue={id} onChange={handleOnChangeBuilding}>
 				{buildings?.map((building) => (

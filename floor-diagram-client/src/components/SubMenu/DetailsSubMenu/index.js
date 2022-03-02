@@ -16,7 +16,7 @@ const DetailsSubMenu = (props) => {
 	const { listProjectByGroup } = useSelector((state) => state.project);
 	const { groups } = useSelector((state) => state.group);
 	const { shape } = useSelector((state) => state.shape);
-	const { users } = useSelector((state) => state.user);
+	const { employees } = useSelector((state) => state.employee);
 
 	// Hooks
 	const dispatch = useDispatch();
@@ -94,10 +94,10 @@ const DetailsSubMenu = (props) => {
 								form={form}
 								onValuesChange={handleChange}
 							>
-								<Form.Item label="Staff" name="staff">
+								<Form.Item label="Staff" name="employee">
 									<Select disabled={isDisable}>
-										{floor?.users.map((user) => {
-											const userName = users.find(
+										{floor?.employees.map((user) => {
+											const userName = employees.find(
 												(ele) => ele._id === user.userId
 											)?.name;
 											return (
@@ -129,7 +129,7 @@ const DetailsSubMenu = (props) => {
 									</Select>
 								</Form.Item>
 
-								<Form.List name="items">
+								<Form.List name="pcInfo">
 									{(fields, { add, remove }, { errors }) => (
 										<>
 											{fields.map((field, index) => (
@@ -137,7 +137,7 @@ const DetailsSubMenu = (props) => {
 													{...(index === 0
 														? formItemLayout
 														: formItemLayoutWithOutLabel)}
-													label={index === 0 ? "Items" : ""}
+													label={index === 0 ? "Pc info" : ""}
 													key={field.key}
 												>
 													<Form.Item

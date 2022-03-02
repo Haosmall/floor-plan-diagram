@@ -1,15 +1,14 @@
 import { Form, Input, message, Modal, Select } from "antd";
-import floorApi from "api/floorApi";
+import roomApi from "api/roomApi";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchListEmployees } from "redux/employeeSlice";
-import { addNewFloor, updateFloor } from "redux/floorSlice";
+import { addNewRoom, updateRoom } from "redux/roomSlice";
 import { INITIAL_FLOOR } from "utils/constants";
 
-const FloorModal = (props) => {
-	const { visible, onCancel, initialValues, isAddMode, title, buildingId } =
-		props;
+const RoomModal = (props) => {
+	const { visible, onCancel, initialValues, isAddMode, title, floorId } = props;
 	const { employees } = useSelector((state) => state.employee);
 	const { Option } = Select;
 	const [form] = Form.useForm();
@@ -29,19 +28,21 @@ const FloorModal = (props) => {
 
 		try {
 			if (isAddMode) {
-				const response = await floorApi.addFloor({
+				const response = await roomApi.addRoom({
 					...values,
-					building: buildingId,
+					floor: floorId,
 				});
 
-				dispatch(addNewFloor({ floor: response }));
+				console.log({ response });
+
+				dispatch(addNewRoom({ room: response }));
 			} else {
-				const response = await floorApi.updateFloor(initialValues._id, {
-					building: initialValues.buildingId,
+				const response = await roomApi.updateRoom(initialValues._id, {
+					room: initialValues.room,
 					...values,
 				});
 
-				dispatch(updateFloor({ floor: response }));
+				dispatch(updateRoom({ room: response }));
 			}
 			message.success(`${isAddMode ? "Add" : "Update"} floor successfully`);
 		} catch (error) {
@@ -101,7 +102,7 @@ const FloorModal = (props) => {
 					<Input />
 				</Form.Item>
 
-				<Form.Item
+				{/* <Form.Item
 					label="Employees"
 					name="employees"
 					rules={[
@@ -118,7 +119,7 @@ const FloorModal = (props) => {
 							</Option>
 						))}
 					</Select>
-				</Form.Item>
+				</Form.Item> */}
 
 				{/* <Form.List name="users">
 					{(fields, { add, remove }, { errors }) => (
@@ -202,7 +203,7 @@ const FloorModal = (props) => {
 	);
 };
 
-FloorModal.propTypes = {
+RoomModal.propTypes = {
 	visible: PropTypes.bool,
 	onCancel: PropTypes.func,
 	onSubmit: PropTypes.func,
@@ -211,7 +212,7 @@ FloorModal.propTypes = {
 	isAddMode: PropTypes.bool,
 };
 
-FloorModal.defaultProps = {
+RoomModal.defaultProps = {
 	visible: false,
 	onCancel: null,
 	onSubmit: null,
@@ -219,4 +220,4 @@ FloorModal.defaultProps = {
 	title: "Modal",
 	isAddMode: true,
 };
-export default FloorModal;
+export default RoomModal;

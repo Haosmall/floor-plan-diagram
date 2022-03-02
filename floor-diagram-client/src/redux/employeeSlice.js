@@ -1,31 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import employeeApi from "api/employeeApi";
 import userApi from "../api/userApi";
 
-const PREFIX = "user";
+const PREFIX = "employee";
 
 export const fetchUserProfile = createAsyncThunk(
-	`${PREFIX}/fetchUser`,
+	`${PREFIX}/fetchUserProfile`,
 	async (params, thunkApi) => {
 		const user = await userApi.fetchUserProfile();
 		return user;
-}
-);
-
-export const fetchListUsers = createAsyncThunk(
-	`${PREFIX}/fetchListUsers`,
-	async (params, thunkApi) => {
-		const users = await userApi.fetchListUsers(params?.name);
-		return users;
 	}
 );
 
-const userSlice = createSlice({
+export const fetchListEmployees = createAsyncThunk(
+	`${PREFIX}/fetchListEmployees`,
+	async (params, thunkApi) => {
+		const employees = await employeeApi.fetchListEmployees();
+		return employees;
+	}
+);
+
+const employeeSlice = createSlice({
 	name: PREFIX,
 	initialState: {
 		isLoading: false,
 		isLogin: false,
 		user: null,
-		users: [],
+		employees: [],
 	},
 
 	reducers: {
@@ -40,6 +41,10 @@ const userSlice = createSlice({
 			localStorage.removeItem("token");
 			state.user = null;
 		},
+
+		setUser: (state, action) => {
+			state.user = action.payload;
+		},
 	},
 
 	extraReducers: {
@@ -52,28 +57,30 @@ const userSlice = createSlice({
 			state.isLoading = true;
 			state.isLogin = true;
 			state.user = action.payload;
+
+			if (!("isBuildingAdmin" in action.payload)) state.user.isAdmin = true;
 		},
 
 		[fetchUserProfile.rejected]: (state, action) => {
 			state.isLoading = false;
 		},
 
-		// TODO: <-------------------- fetchListUsers -------------------->
-		[fetchListUsers.pending]: (state, action) => {
+		// TODO: <-------------------- fetchListEmployees -------------------->
+		[fetchListEmployees.pending]: (state, action) => {
 			state.isLoading = false;
 		},
 
-		[fetchListUsers.fulfilled]: (state, action) => {
+		[fetchListEmployees.fulfilled]: (state, action) => {
 			state.isLoading = true;
-			state.users = action.payload;
+			state.employees = action.payload;
 		},
 
-		[fetchListUsers.rejected]: (state, action) => {
+		[fetchListEmployees.rejected]: (state, action) => {
 			state.isLoading = false;
 		},
 	},
 });
 
-const { reducer, actions } = userSlice;
-export const { setLoading, setLogin, logout } = actions;
+const { reducer, actions } = employeeSlice;
+export const { setLoading, setLogin, logout, setUser } = actions;
 export default reducer;

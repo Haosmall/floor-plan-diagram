@@ -11,7 +11,7 @@ import "./style.scss";
 const ToolBar = (props) => {
 	const { onLockBackGround, isLockBackGround } = props;
 
-	const { floor } = useSelector((state) => state.floor);
+	const { room } = useSelector((state) => state.room);
 	const { shapes } = useSelector((state) => state.shape);
 
 	const dispatch = useDispatch();
@@ -21,9 +21,9 @@ const ToolBar = (props) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	const handleAddShape = async (e, type) => {
-		if (!floor?._id) {
+		if (!room?._id) {
 			message.warning(
-				"Please selectPlease select the floor before adding shapes"
+				"Please selectPlease select the room before adding shapes"
 			);
 			return;
 		}
@@ -38,7 +38,7 @@ const ToolBar = (props) => {
 			type,
 			x: type !== SHAPE_TYPE.rect ? x : x - 75,
 			y: type !== SHAPE_TYPE.rect ? y : y - 50,
-			floorId: floor._id,
+			room: room._id,
 		};
 
 		const response = await shapeApi.addShape(shape);
@@ -46,11 +46,11 @@ const ToolBar = (props) => {
 	};
 
 	const handleOpenModal = () => {
-		if (floor) {
+		if (room) {
 			setIsModalVisible(true);
 		} else {
 			message.warn(
-				"Please selectPlease select the floor before adding background"
+				"Please selectPlease select the room before adding background"
 			);
 		}
 	};

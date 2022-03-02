@@ -5,34 +5,43 @@ const Team = require("../models/Team");
 const Project = require("../models/Project");
 const Employee = require("../models/Employee");
 const Shape = require("../models/Shape");
+const Building = require("../models/Building");
 
 class RoomService {
   // add
   async addRoom(roomInfo) {
-    const room = await Room.findOne({ name: roomInfo.name });
-    if (room) throw new Error("Room name already exist");
-
-    // required field: name
     const newRoom = new Room(roomInfo);
     const savedRoom = await newRoom.save();
+
+    if (roomInfo?.floor) {
+      const floor = await Floor.findById(roomInfo.floor.toString());
+      floor.rooms = floor?.rooms.length
+        ? [savedRoom._id, ...floor.rooms]
+        : [savedRoom._id];
+      const updatedFloor = await floor.save();
+
+      const building = await Building.findById(updatedFloor?.building);
+      building.rooms = [savedRoom._id, ...building.rooms];
+      await building.save();
+    }
 
     return savedRoom;
   }
 
   // get list
   async getListRooms() {
-    const rooms = await Room.find({}).populate(
-      "floor groups teams projects employees shapes"
-    );
+    const rooms = await Room.find({})
+      .populate("floor groups teams projects employees shapes")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
 
     return rooms;
   }
 
   // get 1 room
   async getRoomById(_id) {
-    const room = await Room.findById(_id).populate(
-      "floor groups teams projects employees shapes"
-    );
+    const room = await Room.findById(_id)
+      .populate("floor groups teams projects employees shapes")
+      .select(["-__v", "-createdAt", "-updatedAt"]);
     if (!room) throw new Error("Room not found");
 
     return room;
@@ -45,23 +54,44 @@ class RoomService {
     });
 
     return updatedRoom;
-
-    // const room = await Room.findById(_id);
-    // if (!room) throw new Error("Room not found");
-    // room.name = roomInfo.name;
-    // room.building = roomInfo.building;
-    // room.rooms = roomInfo.rooms?.length ? [...roomInfo.rooms] : [];
-    // room.groups = roomInfo?.groups?.length ? [...roomInfo.groups] : [];
-    // room.teams = roomInfo?.teams?.length ? [...roomInfo.teams] : [];
-    // room.projects = roomInfo?.projects?.length ? [...roomInfo.projects] : [];
-    // room.employees = roomInfo?.employees?.length ? [...roomInfo.employees] : [];
-    // const updatedRoom = await room.save();
-    // return updatedRoom;
   }
 
   // delete
   async deleteRoom(_id) {
     const deletedRoom = await Room.findByIdAndDelete(_id);
+
+    // building > floor > room > group > team > project
+    if (deletedRoom) {
+      if (deletedRoom?.floor) {
+        const floor = await Floor.findById(deletedRoom.floor.toString());
+        floor.rooms = floor?.rooms.length
+          ? floor?.rooms.filter(
+              (rId) => rId.toString() !== deletedRoom._id.toString()
+            )
+          : [];
+        const updatedFloor = await floor.save();
+
+        if (updatedFloor?.building) {
+          const building = await Building.findById(
+            updatedFloor.building.toString()
+          );
+          building.rooms = building?.rooms.length
+            ? building?.rooms.filter(
+                (rId) => rId.toString() !== deletedRoom._id.toString()
+              )
+            : [];
+          await building.save();
+        }
+      }
+
+      if (deletedRoom?.groups.length) {
+        for (let gId of deletedRoom.groups) {
+          const group = await Group.findById(gId.toString());
+          group.room = null;
+          await group.save();
+        }
+      }
+    }
 
     return deletedRoom;
   }
