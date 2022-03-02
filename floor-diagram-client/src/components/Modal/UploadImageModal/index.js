@@ -4,12 +4,14 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewShape, updateImageShape } from "redux/shapeSlice";
-import { INITIAL_PROJECT, SHAPE_TYPE } from "utils/constants";
+import { INITIAL_PROJECT, SHAPE_TYPE, DEFAULT_SHAPE } from "utils/constants";
 import "./style.scss";
 
 const UploadImageModal = (props) => {
 	const { visible, onCancel, isAddMode, title } = props;
 	const { floor } = useSelector((state) => state.floor);
+	const { room } = useSelector((state) => state.room);
+
 	const { shapes } = useSelector((state) => state.shape);
 
 	const dispatch = useDispatch();
@@ -22,23 +24,34 @@ const UploadImageModal = (props) => {
 
 		try {
 			if (isAddMode) {
-				formData.append("floorId", floor._id);
-				const response = await shapeApi.addImageShape(formData);
+				const shapeTemp = {
+					DEFAULT_SHAPE,
+					type: SHAPE_TYPE.image,
+					width: 500,
+					height: 400,
+				};
+
+				if (room?._id) {
+					shapeTemp.room = room._id;
+					formData.append("room", room._id);
+				} else {
+					shapeTemp.floor = floor._id;
+					formData.append("floor", floor._id);
+				}
+
+				const newShape = await shapeApi.addShape(shapeTemp);
+
+				const response = await shapeApi.updateShape(newShape._id, formData);
 
 				dispatch(addNewShape({ shape: response }));
 			} else {
-				const response = await shapeApi.updateImageShape(
-					shapes[0]._id,
-					formData
-				);
+				const response = await shapeApi.updateShape(shapes[0]._id, formData);
 
-				const newShape = { ...shapes[0], src: response };
+				const newShape = { ...shapes[0], src: response.src };
 
 				dispatch(updateImageShape({ shape: newShape }));
 			}
-			message.success(
-				`${isAddMode ? "Add" : "Update"} background successfully`
-			);
+			message.success(`${isAddMode ? "Add" : "Update"} diagram successfully`);
 		} catch (error) {
 			console.error(error);
 			message.error("An error has occurred");
@@ -78,7 +91,11 @@ const UploadImageModal = (props) => {
 			<input type="file" onChange={handleOnChange} />
 			<div className="fill">
 				<img
-					src={shapes?.[0]?.type !== SHAPE_TYPE.image ? url : shapes?.[0]?.src}
+					src={
+						shapes?.[0]?.type !== SHAPE_TYPE.image
+							? url
+							: `${process.env.REACT_APP_API_URL}/uploads/${shapes?.[0]?.src}`
+					}
 					alt=""
 				/>
 			</div>

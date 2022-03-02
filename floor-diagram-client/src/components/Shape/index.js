@@ -76,7 +76,7 @@ const Shape = (props) => {
 		onDragEnd(x, y);
 	};
 
-	const [image] = useImage(src);
+	const [image] = useImage(`${process.env.REACT_APP_API_URL}/uploads/${src}`);
 
 	return (
 		<>

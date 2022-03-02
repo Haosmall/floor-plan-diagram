@@ -11,6 +11,7 @@ import "./style.scss";
 const ToolBar = (props) => {
 	const { onLockBackGround, isLockBackGround } = props;
 
+	const { floor } = useSelector((state) => state.floor);
 	const { room } = useSelector((state) => state.room);
 	const { shapes } = useSelector((state) => state.shape);
 
@@ -46,11 +47,11 @@ const ToolBar = (props) => {
 	};
 
 	const handleOpenModal = () => {
-		if (room) {
+		if (room || floor) {
 			setIsModalVisible(true);
 		} else {
 			message.warn(
-				"Please selectPlease select the room before adding background"
+				"Please selectPlease select the floor or room before adding diagram"
 			);
 		}
 	};
@@ -91,11 +92,11 @@ const ToolBar = (props) => {
 
 			<Button onClick={handleOpenModal}>
 				{shapes?.[0]?.type !== SHAPE_TYPE.image
-					? "Add background"
-					: "Update background"}
+					? "Add diagram"
+					: "Update diagram"}
 			</Button>
 			<Checkbox onChange={() => onLockBackGround(!isLockBackGround)}>
-				Lock background
+				Lock diagram
 			</Checkbox>
 
 			{isModalVisible && (
@@ -103,6 +104,9 @@ const ToolBar = (props) => {
 					isAddMode={isAddMode}
 					visible={isModalVisible}
 					onCancel={() => setIsModalVisible(false)}
+					title={`${isAddMode ? "Add" : "Update"} ${
+						room?._id ? "room" : "floor"
+					} diagram`}
 				/>
 			)}
 		</div>
