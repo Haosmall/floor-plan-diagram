@@ -123,6 +123,15 @@ class FloorService {
 
     return employees;
   }
+
+  // get shape by floor Id
+  async getShapeByFloor(floorId) {
+    const shape = await Floor.findById(floorId);
+    // .select("shape")
+    // .populate("shape");
+
+    return shape;
+  }
 }
 
 module.exports = new FloorService();
