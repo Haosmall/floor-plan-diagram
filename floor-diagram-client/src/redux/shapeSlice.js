@@ -19,12 +19,12 @@ const INITIAL_STATE = {
 	selectedShapes: [],
 };
 
-export const fetchListShapeByFloor = createAsyncThunk(
-	`${PREFIX}/fetchListShapeByFloor`,
+export const fetchShapeByFloor = createAsyncThunk(
+	`${PREFIX}/fetchShapeByFloor`,
 	async (params, thunkApi) => {
 		const { floorId } = params;
-		const projects = await floorApi.fetchListShapeByFloor(floorId);
-		return projects;
+		const shape = await floorApi.fetchShapeByFloor(floorId);
+		return shape;
 	}
 );
 
@@ -184,13 +184,13 @@ const shapeSlice = createSlice({
 	},
 
 	extraReducers: {
-		// ==================== fetchListShapeByFloor  ===================
-		[fetchListShapeByFloor.pending]: (state, action) => {
+		// ==================== fetchShapeByFloor  ===================
+		[fetchShapeByFloor.pending]: (state, action) => {
 			state.isLoading = false;
 			state.isError = false;
 		},
 
-		[fetchListShapeByFloor.fulfilled]: (state, action) => {
+		[fetchShapeByFloor.fulfilled]: (state, action) => {
 			const listShapes = action.payload.shapes;
 			let backGroundIndex = -1;
 			if (listShapes.length > 0) {
@@ -213,7 +213,7 @@ const shapeSlice = createSlice({
 			state.selectedShapes = [];
 		},
 
-		[fetchListShapeByFloor.rejected]: (state, action) => {
+		[fetchShapeByFloor.rejected]: (state, action) => {
 			state.isLoading = false;
 			state.isError = true;
 		},
