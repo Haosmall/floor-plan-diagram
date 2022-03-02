@@ -56,7 +56,7 @@ const BuildingTable = (props) => {
 			<Column
 				title="Admin"
 				dataIndex="admin"
-				render={(_, { admin }) => <span>{admin.name}</span>}
+				render={(_, { admin }) => <span>{admin?.name}</span>}
 			/>
 			{user.isAdmin && (
 				<Column

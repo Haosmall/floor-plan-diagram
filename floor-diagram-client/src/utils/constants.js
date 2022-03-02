@@ -57,6 +57,11 @@ const INITIAL_SHAPE = [
 	},
 ];
 
+const INITIAL_USER = {
+	name: "new user",
+	username: "",
+};
+
 const INITIAL_BUILDING = {
 	name: "New building",
 	admin: "",
@@ -109,6 +114,7 @@ const ACTION_TYPE = {
 export {
 	SHAPE_TYPE,
 	INITIAL_SHAPE,
+	INITIAL_USER,
 	INITIAL_BUILDING,
 	DEFAULT_SHAPE,
 	ROLE,

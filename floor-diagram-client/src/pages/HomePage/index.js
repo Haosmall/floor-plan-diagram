@@ -1,6 +1,8 @@
 import { Layout, message, Table, Tabs } from "antd";
 import buildingApi from "api/buildingApi";
+import employeeApi from "api/employeeApi";
 import BuildingModal from "components/Modal/BuildingModal";
+import UserModal from "components/Modal/UserModal";
 import UserBar from "components/NavBar/UserBar";
 import BuildingPane from "components/TabPane/BuildingPane";
 import UserPane from "components/TabPane/UserPane";
@@ -12,9 +14,13 @@ import {
 	fetchListBuildings,
 	updateBuilding,
 } from "redux/buildingSlice";
-import { fetchListEmployees } from "redux/employeeSlice";
+import {
+	addNewEmployee,
+	fetchListEmployees,
+	updateEmployee,
+} from "redux/employeeSlice";
 import commonUtils from "utils/commonUtils";
-import { INITIAL_BUILDING } from "utils/constants";
+import { INITIAL_BUILDING, INITIAL_USER } from "utils/constants";
 import "./style.scss";
 
 const HomePage = (props) => {
@@ -24,6 +30,10 @@ const HomePage = (props) => {
 	const [isAddMode, setIsAddMode] = useState(true);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [selectedBuilding, setSelectedBuilding] = useState(INITIAL_BUILDING);
+
+	const [isAddUser, setIsAddUser] = useState(true);
+	const [isUserModalVisible, setIsUserModalVisible] = useState(false);
+	const [selectedUser, setSelectedUser] = useState(INITIAL_USER);
 
 	const { Column } = Table;
 
@@ -43,6 +53,12 @@ const HomePage = (props) => {
 		setSelectedBuilding(INITIAL_BUILDING);
 	};
 
+	const handleOnClickAddUser = () => {
+		setIsAddUser(true);
+		setIsUserModalVisible(true);
+		setSelectedUser(INITIAL_USER);
+	};
+
 	const handleSubmit = async (building) => {
 		try {
 			if (isAddMode) {
@@ -58,6 +74,23 @@ const HomePage = (props) => {
 			}
 
 			message.success(`${isAddMode ? "Add" : "Update"} building successfully`);
+		} catch (error) {
+			console.error(error);
+			message.error("An error has occurred");
+		}
+	};
+
+	const handleSubmitUserModal = async (user) => {
+		try {
+			if (isAddUser) {
+				const response = await employeeApi.addEmployee(user);
+				dispatch(addNewEmployee(response));
+			} else {
+				await employeeApi.updateEmployee(selectedUser._id, user);
+				dispatch(updateEmployee({ _id: selectedUser._id, ...user }));
+			}
+
+			message.success(`${isAddMode ? "Add" : "Update"} user successfully`);
 		} catch (error) {
 			console.error(error);
 			message.error("An error has occurred");
@@ -108,7 +141,11 @@ const HomePage = (props) => {
 								/>
 							</TabPane>
 							<TabPane tab="Users" key="2">
-								<UserPane users={employees} onSelect={handleSelectUser} />
+								<UserPane
+									users={employees}
+									onSelect={handleSelectUser}
+									onAdd={handleOnClickAddUser}
+								/>
 							</TabPane>
 						</Tabs>
 					) : (
@@ -130,6 +167,14 @@ const HomePage = (props) => {
 				onSubmit={handleSubmit}
 				initialValues={selectedBuilding}
 				title={isAddMode ? "Add new building" : "Edit building"}
+			/>
+
+			<UserModal
+				visible={isUserModalVisible}
+				onCancel={() => setIsUserModalVisible(false)}
+				onSubmit={handleSubmitUserModal}
+				// initialValues={selectedBuilding}
+				title={isAddUser ? "Add new user" : "Edit user"}
 			/>
 		</div>
 	);

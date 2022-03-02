@@ -45,6 +45,19 @@ const employeeSlice = createSlice({
 		setUser: (state, action) => {
 			state.user = action.payload;
 		},
+
+		addNewEmployee: (state, action) => {
+			state.employees.push(action.payload);
+		},
+
+		updateEmployee: (state, action) => {
+			const employee = action.payload;
+			const listEmployee = state.employees;
+
+			const index = listEmployee.findIndex((ele) => ele._id === employee._id);
+
+			state.employees[index] = employee;
+		},
 	},
 
 	extraReducers: {
@@ -82,5 +95,12 @@ const employeeSlice = createSlice({
 });
 
 const { reducer, actions } = employeeSlice;
-export const { setLoading, setLogin, logout, setUser } = actions;
+export const {
+	setLoading,
+	setLogin,
+	logout,
+	setUser,
+	addNewEmployee,
+	updateEmployee,
+} = actions;
 export default reducer;

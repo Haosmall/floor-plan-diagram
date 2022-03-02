@@ -35,6 +35,7 @@ const UserTable = (props) => {
 			/>
 
 			<Column title="Name" dataIndex="name" key="name" />
+			<Column title="Username" dataIndex="username" key="username" />
 			{/* <Column
 				title="Admin"
 				dataIndex="admin"

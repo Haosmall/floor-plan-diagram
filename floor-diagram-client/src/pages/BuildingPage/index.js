@@ -50,11 +50,11 @@ const BuildingPage = (props) => {
 		dispatch(fetchListProjectByBuilding({ id }));
 	}, [id]);
 
-	const isBuildingAdmin = useMemo(() => {
+	const isBuildingAdmin = () => {
 		if (!building) return;
 		if (building.admin === user._id) return true;
 		return false;
-	}, [building]);
+	};
 
 	const handleLockBackground = (isLock) => {
 		if (shape?.type === SHAPE_TYPE.image) {
