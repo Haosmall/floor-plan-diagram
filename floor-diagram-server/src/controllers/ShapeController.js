@@ -109,7 +109,7 @@ class ShapeController {
         await shapeService.updateShape(_id, shapeInfo);
       }
 
-      res.status(204).json(response);
+      res.status(204).json();
     } catch (err) {
       next(err);
     }
