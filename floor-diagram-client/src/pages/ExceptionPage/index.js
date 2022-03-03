@@ -11,7 +11,7 @@ function ExceptionPage(props) {
 
 	const navigate = useNavigate();
 	return (
-		<div id="not-found-page">
+		<div className="exception-page">
 			<div className="main">
 				<Result
 					status="404"

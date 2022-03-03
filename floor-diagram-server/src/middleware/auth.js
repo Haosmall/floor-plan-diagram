@@ -1,29 +1,39 @@
-const User = require("../models/User");
+const Admin = require("../models/Admin");
+const Employee = require("../models/Employee");
 const tokenUtils = require("../utils/tokenUtils");
+const jwt = require("jsonwebtoken");
 
-const auth = async (req, res, next) => {
-	try {
-		const token = req.header("Authorization")?.replace("Bearer ", "");
-		const data = await tokenUtils.verifyToken(token);
+exports.isAdmin = async (req, res, next) => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const data = await tokenUtils.verifyToken(token);
 
-		const user = await User.findOne({
-			_id: data._id,
-		});
-		const { createdAt } = data;
+    const admin = await Admin.findById(data._id);
+    if (!admin) throw new Error("Not authorized to access this resource");
 
-		if (!user || !createdAt) {
-			throw new Error();
-		}
-
-		req._id = data._id;
-
-		next();
-	} catch (error) {
-		console.log(error);
-		res.status(401).send({
-			status: 401,
-			error: "Not authorized to access this resource",
-		});
-	}
+    next();
+  } catch (error) {
+    res.status(401).send({
+      status: 401,
+      error: "Not authorized to access this resource",
+    });
+  }
 };
-module.exports = auth;
+
+exports.isAdmins = async (req, res, next) => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const data = await tokenUtils.verifyToken(token);
+
+    const admin = await Admin.findById(data._id);
+    const employee = await Employee.findById(data._id);
+
+    if (admin || employee?.isBuildingAdmin) next();
+    else throw new Error("Invalid token");
+  } catch (error) {
+    res.status(401).send({
+      status: 401,
+      error: "Not authorized to access this resource",
+    });
+  }
+};

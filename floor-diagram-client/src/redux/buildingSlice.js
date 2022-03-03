@@ -43,7 +43,11 @@ const buildingSlice = createSlice({
 			const index = state.buildings.findIndex(
 				(ele) => ele._id === building._id
 			);
-			state.buildings[index] = building;
+
+			const oldBuilding = state.buildings[index];
+			const adminId = building.admin;
+
+			state.buildings[index] = { ...oldBuilding, ...building };
 		},
 		deleteBuilding: (state, action) => {
 			const { _id } = action.payload;

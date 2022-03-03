@@ -14,7 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import BuildingPage from "./pages/BuildingPage";
 import ExceptionPage from "./pages/ExceptionPage";
 import HomePage from "./pages/HomePage";
-import { fetchUserProfile } from "./redux/userSlice";
+import { fetchUserProfile } from "./redux/employeeSlice";
 
 function App() {
 	const dispatch = useDispatch();
@@ -46,8 +46,6 @@ function App() {
 					<Route exact path="/" element={<Navigate to="/buildings" />} />
 
 					<Route path="/login" element={<Login />} />
-
-					<Route path="/register" element={<Login isRegister={true} />} />
 
 					<Route exact path="/buildings" element={<ProtectedRoute />}>
 						<Route exact path="/buildings" element={<HomePage />} />

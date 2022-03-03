@@ -1,5 +1,24 @@
-.ant-layout-header {
-	border-top: solid black 1px;
+.top-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex: 1;
+
+	padding-inline: 20px;
+
+	.btn-container {
+		button {
+			margin-inline: 5px;
+		}
+
+		button:first-child {
+			margin-left: 0px;
+		}
+
+		button:last-child {
+			margin-right: 0px;
+		}
+	}
 }
 // .building-selected {
 // 	border-radius: 20px !important;

@@ -3,33 +3,39 @@ import axiosClient from "./axiosClient";
 const API_URL = "/groups";
 
 const groupApi = {
-	addGroup: (title, buildingId) => {
-		return axiosClient.post(
-			`${API_URL}/`,
-			{ title, buildingId },
-			{
-				params: { buildingId },
-			}
-		);
+	addGroup: (groupInfo) => {
+		return axiosClient.post(`${API_URL}/`, groupInfo);
 	},
 
-	updateGroup: (groupId, title, buildingId) => {
-		return axiosClient.put(
-			`${API_URL}/${groupId}/`,
-			{ title, buildingId },
-			{
-				params: { buildingId },
-			}
-		);
+	updateGroup: (groupId, groupInfo) => {
+		return axiosClient.put(`${API_URL}/${groupId}/`, groupInfo);
 	},
 
 	deleteGroup: (groupId) => {
-		return axiosClient.delete(`${API_URL}/${groupId}/`, {
-			params: { groupId },
-		});
+		return axiosClient.delete(`${API_URL}/${groupId}/`);
 	},
 
-	fetchListShapeByGroup: (groupId) => {
+	fetchListGroups: () => {
+		return axiosClient.get(`${API_URL}/`);
+	},
+
+	fetchGroupById: (groupId) => {
+		return axiosClient.get(`${API_URL}/${groupId}/`);
+	},
+
+	fetchListTeamsByGroup: (groupId) => {
+		return axiosClient.get(`${API_URL}/${groupId}/teams/`);
+	},
+
+	fetchListProjectsByGroup: (groupId) => {
+		return axiosClient.get(`${API_URL}/${groupId}/projects/`);
+	},
+
+	fetchListEmployeesByGroup: (groupId) => {
+		return axiosClient.get(`${API_URL}/${groupId}/employees/`);
+	},
+
+	fetchListShapesByGroup: (groupId) => {
 		return axiosClient.get(`${API_URL}/${groupId}/shapes/`);
 	},
 };

@@ -50,7 +50,7 @@ const groupSlice = createSlice({
 
 		[fetchListGroupByBuilding.fulfilled]: (state, action) => {
 			state.isLoading = true;
-			state.groups = action.payload;
+			state.groups = action.payload.groups;
 		},
 
 		[fetchListGroupByBuilding.rejected]: (state, action) => {

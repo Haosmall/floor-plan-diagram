@@ -1,43 +1,46 @@
 import axiosClient from "./axiosClient";
 
-const API_URL = "/floor";
+const API_URL = "/floors";
 
 const floorApi = {
-	fetchListShapeByFloor: (floorId) => {
-		return axiosClient.get(`${API_URL}/${floorId}/shapes/`, {
-			params: { floorId },
-		});
+	fetchListFloors: (floorId) => {
+		return axiosClient.get(`${API_URL}/`);
 	},
 
 	fetchFloorById: (floorId) => {
-		return axiosClient.get(`${API_URL}/${floorId}/`, {
-			params: { floorId },
-		});
+		return axiosClient.get(`${API_URL}/${floorId}/`);
 	},
 
-	addFloor: (name, buildingId, admin, users) => {
-		return axiosClient.post(
-			`${API_URL}/`,
-			{ name, buildingId, admin, users },
-			{
-				params: { buildingId },
-			}
-		);
+	fetchListRoomsByFloor: (floorId) => {
+		return axiosClient.get(`${API_URL}/${floorId}/rooms/`);
 	},
 
-	updateFloor: (floorId, buildingId, name, admin, users) => {
-		return axiosClient.put(
-			`${API_URL}/${floorId}/`,
-			{
-				name,
-				buildingId,
-				admin,
-				users,
-			},
-			{
-				params: { floorId },
-			}
-		);
+	fetchListGroupsByFloor: (floorId) => {
+		return axiosClient.get(`${API_URL}/${floorId}/groups/`);
+	},
+
+	fetchListTeamsByFloor: (floorId) => {
+		return axiosClient.get(`${API_URL}/${floorId}/teams/`);
+	},
+
+	fetchListProjectsByFloor: (floorId) => {
+		return axiosClient.get(`${API_URL}/${floorId}/projects/`);
+	},
+
+	fetchListEmployeesByFloor: (floorId) => {
+		return axiosClient.get(`${API_URL}/${floorId}/employees/`);
+	},
+
+	fetchShapeByFloor: (floorId) => {
+		return axiosClient.get(`${API_URL}/${floorId}/shape/`);
+	},
+
+	addFloor: (floorInfo) => {
+		return axiosClient.post(`${API_URL}/`, floorInfo);
+	},
+
+	updateFloor: (floorId, floorInfo) => {
+		return axiosClient.put(`${API_URL}/${floorId}/`, floorInfo);
 	},
 
 	deleteFloor: (floorId) => {

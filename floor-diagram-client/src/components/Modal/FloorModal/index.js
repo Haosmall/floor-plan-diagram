@@ -1,17 +1,16 @@
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Select } from "antd";
+import { Form, Input, message, Modal, Select } from "antd";
 import floorApi from "api/floorApi";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchListEmployees } from "redux/employeeSlice";
 import { addNewFloor, updateFloor } from "redux/floorSlice";
-import { fetchListUsers } from "redux/userSlice";
 import { INITIAL_FLOOR } from "utils/constants";
 
 const FloorModal = (props) => {
 	const { visible, onCancel, initialValues, isAddMode, title, buildingId } =
 		props;
-	const { users } = useSelector((state) => state.user);
+	const { employees } = useSelector((state) => state.employee);
 	const { Option } = Select;
 	const [form] = Form.useForm();
 
@@ -20,33 +19,27 @@ const FloorModal = (props) => {
 	useEffect(() => form.resetFields(), [initialValues]);
 
 	useEffect(() => {
-		if (!users) {
-			dispatch(fetchListUsers());
+		if (!employees) {
+			dispatch(fetchListEmployees());
 		}
 	}, []);
 
 	const handleSubmit = async () => {
 		const values = await form.validateFields();
-		const { name, admin, users } = values;
 
 		try {
 			if (isAddMode) {
-				const response = await floorApi.addFloor(
-					name,
-					buildingId,
-					admin,
-					users
-				);
+				const response = await floorApi.addFloor({
+					...values,
+					building: buildingId,
+				});
 
 				dispatch(addNewFloor({ floor: response }));
 			} else {
-				const response = await floorApi.updateFloor(
-					initialValues._id,
-					initialValues.buildingId,
-					name,
-					admin,
-					users
-				);
+				const response = await floorApi.updateFloor(initialValues._id, {
+					building: initialValues.buildingId,
+					...values,
+				});
 
 				dispatch(updateFloor({ floor: response }));
 			}
@@ -109,36 +102,17 @@ const FloorModal = (props) => {
 				</Form.Item>
 
 				<Form.Item
-					label="Admin"
-					name="admin"
+					label="Employees"
+					name="employees"
 					rules={[
 						{
 							required: true,
-							message: "Select admin!",
-						},
-					]}
-				>
-					<Select>
-						{users?.map((user) => (
-							<Option key={user._id} value={user._id}>
-								{user.name}
-							</Option>
-						))}
-					</Select>
-				</Form.Item>
-
-				<Form.Item
-					label="Users"
-					name="users"
-					rules={[
-						{
-							required: true,
-							message: "Select users!",
+							message: "Select employees!",
 						},
 					]}
 				>
 					<Select mode="multiple" allowClear placeholder="Please select users">
-						{users?.map((user) => (
+						{employees?.map((user) => (
 							<Option key={user._id} value={user._id}>
 								{user.name}
 							</Option>

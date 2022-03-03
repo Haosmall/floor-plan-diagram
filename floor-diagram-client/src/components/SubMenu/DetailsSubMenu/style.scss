@@ -35,3 +35,31 @@
 		margin-left: 0px;
 	}
 }
+.shape-details {
+	color: black;
+
+	.chair-number::before {
+		content: "Chair number: ";
+	}
+
+	.staff-name::before {
+		content: "Staff name: ";
+	}
+
+	.pc-info::before {
+		content: "PC info: ";
+		margin-left: -20px;
+	}
+
+	.pc-info {
+		margin-left: 20px;
+
+		div {
+			height: 30px;
+		}
+
+		div::before {
+			content: "- ";
+		}
+	}
+}

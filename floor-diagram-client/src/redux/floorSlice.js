@@ -34,6 +34,7 @@ const floorSlice = createSlice({
 
 			const index = state.floors.findIndex((ele) => ele._id === floor._id);
 			state.floors[index] = floor;
+			state.floor = floor;
 		},
 		deleteFloor: (state, action) => {
 			const { _id } = action.payload;
@@ -46,6 +47,7 @@ const floorSlice = createSlice({
 		setFloor: (state, action) => {
 			const { floorId } = action.payload;
 			const selectedFloor = state.floors.find((ele) => ele._id === floorId);
+
 			state.floor = selectedFloor;
 		},
 	},
@@ -59,7 +61,7 @@ const floorSlice = createSlice({
 
 		[fetchListFloorsByBuildingId.fulfilled]: (state, action) => {
 			state.isLoading = true;
-			state.floors = action.payload;
+			state.floors = action.payload.floors;
 		},
 
 		[fetchListFloorsByBuildingId.rejected]: (state, action) => {

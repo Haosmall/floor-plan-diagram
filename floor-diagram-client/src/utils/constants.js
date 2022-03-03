@@ -57,6 +57,11 @@ const INITIAL_SHAPE = [
 	},
 ];
 
+const INITIAL_USER = {
+	name: "new user",
+	username: "",
+};
+
 const INITIAL_BUILDING = {
 	name: "New building",
 	admin: "",
@@ -64,8 +69,11 @@ const INITIAL_BUILDING = {
 
 const INITIAL_FLOOR = {
 	name: "New floor",
-	admin: "",
-	users: [],
+	employees: [],
+};
+
+const INITIAL_ROOM = {
+	name: "New room",
 };
 
 const INITIAL_GROUP = {
@@ -90,10 +98,11 @@ const DEFAULT_SHAPE = {
 	y: 200,
 	radius: 50,
 	src: "",
-	items: [],
-	staff: null,
-	floorId: null,
-	projectId: null,
+	employee: null,
+	pcInfo: [undefined],
+	chairNumber: null,
+	floor: null,
+	room: null,
 };
 
 const ACTION_TYPE = {
@@ -105,10 +114,12 @@ const ACTION_TYPE = {
 export {
 	SHAPE_TYPE,
 	INITIAL_SHAPE,
+	INITIAL_USER,
 	INITIAL_BUILDING,
 	DEFAULT_SHAPE,
 	ROLE,
 	INITIAL_FLOOR,
+	INITIAL_ROOM,
 	INITIAL_GROUP,
 	INITIAL_PROJECT,
 	ACTION_TYPE,

@@ -38,13 +38,13 @@ const BuildingPane = (props) => {
 						Add
 					</Button>
 				</Col>
-				<Col xs={24} sm={24} md={24} lg={20} xl={20}>
+				{/* <Col xs={24} sm={24} md={24} lg={20} xl={20}>
 					<Input
 						placeholder="Search"
 						ref={inputRef}
 						onChange={handleOnChangeText}
 					/>
-				</Col>
+				</Col> */}
 			</Row>
 
 			<BuildingTable

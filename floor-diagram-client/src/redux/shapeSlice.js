@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import groupApi from "api/groupApi";
 import projectApi from "api/projectApi";
+import roomApi from "api/roomApi";
 import floorApi from "../api/floorApi";
 import shapeApi from "../api/shapeApi";
 
@@ -18,12 +19,21 @@ const INITIAL_STATE = {
 	selectedShapes: [],
 };
 
-export const fetchListShapeByFloor = createAsyncThunk(
-	`${PREFIX}/fetchListShapeByFloor`,
+export const fetchShapeByFloor = createAsyncThunk(
+	`${PREFIX}/fetchShapeByFloor`,
 	async (params, thunkApi) => {
 		const { floorId } = params;
-		const projects = await floorApi.fetchListShapeByFloor(floorId);
-		return projects;
+		const shape = await floorApi.fetchShapeByFloor(floorId);
+		return shape;
+	}
+);
+
+export const fetchListShapesByRoom = createAsyncThunk(
+	`${PREFIX}/fetchListShapesByRoom`,
+	async (params, thunkApi) => {
+		const { roomId } = params;
+		const shapes = await roomApi.fetchListShapesByRoom(roomId);
+		return shapes;
 	}
 );
 
@@ -174,14 +184,38 @@ const shapeSlice = createSlice({
 	},
 
 	extraReducers: {
-		// ==================== fetchListShapeByFloor  ===================
-		[fetchListShapeByFloor.pending]: (state, action) => {
+		// ==================== fetchShapeByFloor  ===================
+		[fetchShapeByFloor.pending]: (state, action) => {
 			state.isLoading = false;
 			state.isError = false;
 		},
 
-		[fetchListShapeByFloor.fulfilled]: (state, action) => {
-			const listShapes = action.payload;
+		[fetchShapeByFloor.fulfilled]: (state, action) => {
+			const shape = action.payload?.shape;
+
+			const listShapes = shape ? [shape] : []
+
+			state.shapes = listShapes;
+			state.listOriginalShapes = listShapes;
+
+			state.isLoading = true;
+			state.shape = null;
+			state.selectedShapes = [];
+		},
+
+		[fetchShapeByFloor.rejected]: (state, action) => {
+			state.isLoading = false;
+			state.isError = true;
+		},
+
+		// ==================== fetchListShapesByRoom  ===================
+		[fetchListShapesByRoom.pending]: (state, action) => {
+			state.isLoading = false;
+			state.isError = false;
+		},
+
+		[fetchListShapesByRoom.fulfilled]: (state, action) => {
+			const listShapes = action.payload.shapes;
 			let backGroundIndex = -1;
 			if (listShapes.length > 0) {
 				backGroundIndex = listShapes.findIndex((ele) => ele?.src !== "");
@@ -194,8 +228,8 @@ const shapeSlice = createSlice({
 				state.shapes = [imageShape, ...newList];
 				state.listOriginalShapes = [imageShape, ...newList];
 			} else {
-				state.shapes = action.payload;
-				state.listOriginalShapes = action.payload;
+				state.shapes = action.payload.shapes;
+				state.listOriginalShapes = action.payload.shapes;
 			}
 
 			state.isLoading = true;
@@ -203,7 +237,7 @@ const shapeSlice = createSlice({
 			state.selectedShapes = [];
 		},
 
-		[fetchListShapeByFloor.rejected]: (state, action) => {
+		[fetchListShapesByRoom.rejected]: (state, action) => {
 			state.isLoading = false;
 			state.isError = true;
 		},
