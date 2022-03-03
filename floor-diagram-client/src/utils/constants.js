@@ -1,3 +1,5 @@
+export const REACT_APP_API_URL = "http://localhost:3001";
+
 const SHAPE_TYPE = {
 	circle: "circle",
 	rect: "rect",

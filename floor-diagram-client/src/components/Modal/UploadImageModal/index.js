@@ -4,7 +4,12 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewShape, updateImageShape } from "redux/shapeSlice";
-import { INITIAL_PROJECT, SHAPE_TYPE, DEFAULT_SHAPE } from "utils/constants";
+import {
+	INITIAL_PROJECT,
+	SHAPE_TYPE,
+	DEFAULT_SHAPE,
+	REACT_APP_API_URL,
+} from "utils/constants";
 import "./style.scss";
 
 const UploadImageModal = (props) => {
@@ -94,7 +99,7 @@ const UploadImageModal = (props) => {
 					src={
 						shapes?.[0]?.type !== SHAPE_TYPE.image
 							? url
-							: `${process.env.REACT_APP_API_URL}/uploads/${shapes?.[0]?.src}`
+							: `${REACT_APP_API_URL}/uploads/${shapes?.[0]?.src}`
 					}
 					alt=""
 				/>

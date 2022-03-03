@@ -10,7 +10,7 @@ import {
 	Transformer,
 } from "react-konva";
 import useImage from "use-image";
-import { DEFAULT_SHAPE, SHAPE_TYPE } from "utils/constants";
+import { DEFAULT_SHAPE, REACT_APP_API_URL, SHAPE_TYPE } from "utils/constants";
 
 const Shape = (props) => {
 	const { shape, onClick, isSelected, onChange, onDragEnd, isLockBackGround } =
@@ -75,7 +75,7 @@ const Shape = (props) => {
 		onDragEnd(x, y);
 	};
 
-	const [image] = useImage(`${process.env.REACT_APP_API_URL}/uploads/${src}`);
+	const [image] = useImage(`${REACT_APP_API_URL}/uploads/${src}`);
 
 	return (
 		<>
