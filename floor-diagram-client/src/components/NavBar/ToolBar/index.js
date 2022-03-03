@@ -23,9 +23,7 @@ const ToolBar = (props) => {
 
 	const handleAddShape = async (e, type) => {
 		if (!room?._id) {
-			message.warning(
-				"Please selectPlease select the room before adding shapes"
-			);
+			message.warning("Please select the room before adding shape");
 			return;
 		}
 
@@ -50,9 +48,7 @@ const ToolBar = (props) => {
 		if (room || floor) {
 			setIsModalVisible(true);
 		} else {
-			message.warn(
-				"Please selectPlease select the floor or room before adding diagram"
-			);
+			message.warn("Please select the floor or room before adding diagram");
 		}
 	};
 

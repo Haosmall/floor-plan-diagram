@@ -50,11 +50,11 @@ const BuildingPage = (props) => {
 		dispatch(fetchListProjectByBuilding({ id }));
 	}, [id]);
 
-	const isBuildingAdmin = useMemo(() => {
+	const isBuildingAdmin = () => {
 		if (!building) return;
 		if (building.admin === user._id) return true;
 		return false;
-	}, [building]);
+	};
 
 	const handleLockBackground = (isLock) => {
 		if (shape?.type === SHAPE_TYPE.image) {
@@ -105,7 +105,7 @@ const BuildingPage = (props) => {
 				<Header>
 					<div className="building-title">{building?.name}</div>
 					<FloorTopBar buildings={buildings} />
-					<div style={{ height: "64px", paddingInline: "20px" }}>
+					<div className="user-bar-container">
 						<UserBar name={user.name} />
 					</div>
 				</Header>

@@ -7,12 +7,12 @@ const employeeApi = {
 		return axiosClient.get(`${API_URL}/`);
 	},
 
-	addEmployee: (name, username) => {
-		return axiosClient.post(`${API_URL}`, { name, username });
+	addEmployee: (employeeInfo) => {
+		return axiosClient.post(`${API_URL}`, employeeInfo);
 	},
 
-	updateEmployee: (employeeId, name, username) => {
-		return axiosClient.put(`${API_URL}/${employeeId}/`, { name, username });
+	updateEmployee: (employeeId, employeeInfo) => {
+		return axiosClient.put(`${API_URL}/${employeeId}/`, employeeInfo);
 	},
 
 	deleteEmployee: (employeeId) => {

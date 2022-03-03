@@ -34,6 +34,7 @@ const floorSlice = createSlice({
 
 			const index = state.floors.findIndex((ele) => ele._id === floor._id);
 			state.floors[index] = floor;
+			state.floor = floor;
 		},
 		deleteFloor: (state, action) => {
 			const { _id } = action.payload;

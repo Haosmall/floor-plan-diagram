@@ -45,6 +45,43 @@ const employeeSlice = createSlice({
 		setUser: (state, action) => {
 			state.user = action.payload;
 		},
+
+		addNewEmployee: (state, action) => {
+			state.employees.push(action.payload);
+		},
+
+		updateEmployee: (state, action) => {
+			const employee = action.payload;
+			const listEmployee = state.employees;
+
+			const index = listEmployee.findIndex((ele) => ele._id === employee._id);
+
+			state.employees[index] = employee;
+		},
+
+		deleteEmployee: (state, action) => {
+			const employeeId = action.payload;
+			const currentEmployees = state.employees;
+
+			const newListEmployees = currentEmployees.filter(
+				(ele) => ele._id !== employeeId
+			);
+
+			state.employees = newListEmployees;
+		},
+
+		updateProfile: (state, action) => {
+			const newProfile = action.payload;
+
+			const index = state.employees.findIndex(
+				(ele) => ele._id === newProfile._id
+			);
+
+			if (index >= 0) {
+				state.employees[index] = newProfile;
+			}
+			state.user = newProfile;
+		},
 	},
 
 	extraReducers: {
@@ -82,5 +119,14 @@ const employeeSlice = createSlice({
 });
 
 const { reducer, actions } = employeeSlice;
-export const { setLoading, setLogin, logout, setUser } = actions;
+export const {
+	setLoading,
+	setLogin,
+	logout,
+	setUser,
+	addNewEmployee,
+	updateEmployee,
+	deleteEmployee,
+	updateProfile,
+} = actions;
 export default reducer;

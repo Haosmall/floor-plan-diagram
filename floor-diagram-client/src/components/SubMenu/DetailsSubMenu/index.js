@@ -1,14 +1,21 @@
 import {
 	MinusCircleOutlined,
+	PlusCircleOutlined,
 	PlusOutlined,
 	ProfileOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, Menu, Select } from "antd";
-import React, { useEffect } from "react";
+import { Button, Form, Input, Menu, message, Select } from "antd";
+import employeeApi from "api/employeeApi";
+import floorApi from "api/floorApi";
+import UserModal from "components/Modal/UserModal";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { addNewEmployee } from "redux/employeeSlice";
+import { updateFloor } from "redux/floorSlice";
 import { getProjectsByGroup } from "redux/projectSlice";
 import { updateShapeDetails } from "redux/shapeSlice";
+import { INITIAL_USER, SHAPE_TYPE } from "utils/constants";
 import "./style.scss";
 
 const DetailsSubMenu = (props) => {
@@ -22,6 +29,8 @@ const DetailsSubMenu = (props) => {
 	const dispatch = useDispatch();
 	const [form] = Form.useForm();
 	const { id } = useParams();
+
+	const [isUserModalVisible, setIsUserModalVisible] = useState(false);
 
 	const { Option } = Select;
 	const { SubMenu } = Menu;
@@ -65,6 +74,24 @@ const DetailsSubMenu = (props) => {
 		dispatch(getProjectsByGroup({ groupId }));
 	};
 
+	const handleSubmitUserModal = async (user) => {
+		try {
+			const newEmployee = await employeeApi.addEmployee(user);
+			dispatch(addNewEmployee(newEmployee));
+
+			const response = await floorApi.updateFloor(floor._id, {
+				employees: [...floor.employees, newEmployee._id],
+			});
+
+			dispatch(updateFloor({ floor: response }));
+
+			message.success("Add user successfully");
+		} catch (error) {
+			console.error(error);
+			message.error("An error has occurred");
+		}
+	};
+
 	return (
 		<div id="details-sub-menu">
 			<Menu
@@ -74,6 +101,20 @@ const DetailsSubMenu = (props) => {
 				mode="inline"
 			>
 				<SubMenu key="sub4" icon={<ProfileOutlined />} title="Details">
+					{shape && shape.type !== SHAPE_TYPE.image && (
+						<Menu.ItemGroup className="menu-item-group">
+							<Menu.Item key="-1" disabled className="item-group">
+								<Button
+									className="menu-item-btn btn-add"
+									icon={<PlusCircleOutlined />}
+									shape="round"
+									onClick={() => setIsUserModalVisible(true)}
+								>
+									Add new staff
+								</Button>
+							</Menu.Item>
+						</Menu.ItemGroup>
+					)}
 					<Menu.ItemGroup>
 						<Menu.Item
 							key="-1"
@@ -115,8 +156,8 @@ const DetailsSubMenu = (props) => {
 										type="number"
 									/>
 								</Form.Item>
-								{/* 
-								<Form.Item label="Group" name="groupId">
+
+								{/* <Form.Item label="Group" name="groupId">
 									<Select disabled={isDisable} onSelect={handleSelectGroup}>
 										{groups.map((group) => (
 											<Option key={group._id} value={group._id}>
@@ -153,7 +194,7 @@ const DetailsSubMenu = (props) => {
 														noStyle
 													>
 														<Input
-															placeholder="Item"
+															placeholder="Info"
 															style={{ width: "80%" }}
 														/>
 													</Form.Item>
@@ -177,9 +218,7 @@ const DetailsSubMenu = (props) => {
 													style={{ width: "50%" }}
 													icon={<PlusOutlined />}
 													disabled={isDisable}
-												>
-													Add
-												</Button>
+												/>
 											</Form.Item>
 										</>
 									)}
@@ -196,6 +235,14 @@ const DetailsSubMenu = (props) => {
 					</Menu.ItemGroup>
 				</SubMenu>
 			</Menu>
+
+			<UserModal
+				visible={isUserModalVisible}
+				onCancel={() => setIsUserModalVisible(false)}
+				onSubmit={handleSubmitUserModal}
+				// initialValues={selectedBuilding}
+				title={"Add new user"}
+			/>
 		</div>
 	);
 };
