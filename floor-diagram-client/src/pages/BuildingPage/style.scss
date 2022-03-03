@@ -12,8 +12,27 @@ aside {
 	border: 1px solid #000;
 }
 
-header {
-	border-bottom: 1px solid #000;
+.ant-layout-header {
+	// border-bottom: 1px solid #000;
+	background-color: rgb(241, 242, 246);
+	display: flex;
+
+	.building-title {
+		width: 255px;
+		margin-left: -50px;
+		border-inline: 1px solid black;
+	}
+
+	.user-bar-container {
+		display: flex;
+		justify-content: flex-end;
+		padding-inline: 24px;
+		margin-right: -50px;
+
+		height: 64px;
+		width: 200px;
+		border-inline: 1px solid black;
+	}
 }
 footer {
 	border-top: 1px solid #000;

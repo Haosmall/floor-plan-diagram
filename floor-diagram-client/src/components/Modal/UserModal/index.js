@@ -56,22 +56,24 @@ const UserModal = (props) => {
 				>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					label="Username"
-					name="username"
-					rules={[
-						{
-							required: true,
-							message: "Please input username!",
-						},
-						{
-							pattern: /^[a-z0-9]+$/,
-							message: "Only lowercase letters and numbers",
-						},
-					]}
-				>
-					<Input />
-				</Form.Item>
+				{isAddMode && (
+					<Form.Item
+						label="Username"
+						name="username"
+						rules={[
+							{
+								required: true,
+								message: "Please input username!",
+							},
+							{
+								pattern: /^[a-z0-9]+$/,
+								message: "Only lowercase letters and numbers",
+							},
+						]}
+					>
+						<Input />
+					</Form.Item>
+				)}
 			</Form>
 		</Modal>
 	);
@@ -83,6 +85,7 @@ UserModal.propTypes = {
 	onSubmit: PropTypes.func,
 	initialValues: PropTypes.object,
 	title: PropTypes.string,
+	isAddMode: PropTypes.bool,
 };
 
 UserModal.defaultProps = {
@@ -91,5 +94,6 @@ UserModal.defaultProps = {
 	onSubmit: null,
 	initialValues: INITIAL_USER,
 	title: "Modal",
+	isAddMode: true,
 };
 export default UserModal;

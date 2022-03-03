@@ -194,7 +194,7 @@ const DetailsSubMenu = (props) => {
 														noStyle
 													>
 														<Input
-															placeholder="Item"
+															placeholder="Info"
 															style={{ width: "80%" }}
 														/>
 													</Form.Item>
@@ -218,9 +218,7 @@ const DetailsSubMenu = (props) => {
 													style={{ width: "50%" }}
 													icon={<PlusOutlined />}
 													disabled={isDisable}
-												>
-													Add
-												</Button>
+												/>
 											</Form.Item>
 										</>
 									)}

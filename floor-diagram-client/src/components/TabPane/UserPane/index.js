@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { fetchListEmployees } from "redux/employeeSlice";
 
 const UserPane = (props) => {
-	const { users, onAdd, onEdit, onSelect } = props;
+	const { users, onAdd, onEdit, onDelete, onSelect } = props;
 
 	const dispatch = useDispatch();
 
@@ -47,7 +47,12 @@ const UserPane = (props) => {
 				</Col> */}
 			</Row>
 
-			<UserTable data={users} onSelect={onSelect} />
+			<UserTable
+				data={users}
+				onSelect={onSelect}
+				onEdit={onEdit}
+				onDelete={onDelete}
+			/>
 		</>
 	);
 };

@@ -105,7 +105,7 @@ const BuildingPage = (props) => {
 				<Header>
 					<div className="building-title">{building?.name}</div>
 					<FloorTopBar buildings={buildings} />
-					<div style={{ height: "64px", paddingInline: "20px" }}>
+					<div className="user-bar-container">
 						<UserBar name={user.name} />
 					</div>
 				</Header>

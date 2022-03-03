@@ -58,6 +58,30 @@ const employeeSlice = createSlice({
 
 			state.employees[index] = employee;
 		},
+
+		deleteEmployee: (state, action) => {
+			const employeeId = action.payload;
+			const currentEmployees = state.employees;
+
+			const newListEmployees = currentEmployees.filter(
+				(ele) => ele._id !== employeeId
+			);
+
+			state.employees = newListEmployees;
+		},
+
+		updateProfile: (state, action) => {
+			const newProfile = action.payload;
+
+			const index = state.employees.findIndex(
+				(ele) => ele._id === newProfile._id
+			);
+
+			if (index >= 0) {
+				state.employees[index] = newProfile;
+			}
+			state.user = newProfile;
+		},
 	},
 
 	extraReducers: {
@@ -102,5 +126,7 @@ export const {
 	setUser,
 	addNewEmployee,
 	updateEmployee,
+	deleteEmployee,
+	updateProfile,
 } = actions;
 export default reducer;

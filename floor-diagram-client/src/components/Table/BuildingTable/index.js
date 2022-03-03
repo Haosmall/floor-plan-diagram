@@ -8,7 +8,7 @@ import "./style.scss";
 const BuildingTable = (props) => {
 	const { data, onEdit, onDelete, onSelect } = props;
 
-	const { user } = useSelector((state) => state.employee);
+	const { user, employees } = useSelector((state) => state.employee);
 
 	const { Column } = Table;
 
@@ -56,7 +56,10 @@ const BuildingTable = (props) => {
 			<Column
 				title="Admin"
 				dataIndex="admin"
-				render={(_, { admin }) => <span>{admin?.name}</span>}
+				render={(_, { admin }) => {
+					const adminSearch = employees.find((ele) => ele._id === admin._id);
+					return <span>{adminSearch?.name}</span>;
+				}}
 			/>
 			{user.isAdmin && (
 				<Column

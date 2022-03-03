@@ -16,6 +16,7 @@ import {
 } from "redux/buildingSlice";
 import {
 	addNewEmployee,
+	deleteEmployee,
 	fetchListEmployees,
 	updateEmployee,
 } from "redux/employeeSlice";
@@ -113,11 +114,28 @@ const HomePage = (props) => {
 	};
 
 	const handleSelectBuilding = (buildingId) => {
-		navigate(`/buildings/${buildingId}`);
+		if (user?.isAdmin || user?.isBuildingAdmin)
+			navigate(`/buildings/${buildingId}`);
+		else message.error("You do not have permission to access this page");
+	};
+
+	const handleEditUser = (user) => {
+		setIsUserModalVisible(true);
+		setIsAddUser(false);
+		setSelectedUser(user);
+	};
+
+	const handleDeleteUser = (userId) => {
+		commonUtils.confirmModal(async () => {
+			await employeeApi.deleteEmployee(userId);
+
+			dispatch(deleteEmployee(userId));
+			message.success("Delete successfully");
+		});
 	};
 
 	const handleSelectUser = (userId) => {
-		console.log({ userId });
+		// console.log({ userId });
 	};
 
 	const { TabPane } = Tabs;
@@ -143,8 +161,10 @@ const HomePage = (props) => {
 							<TabPane tab="Users" key="2">
 								<UserPane
 									users={employees}
-									onSelect={handleSelectUser}
 									onAdd={handleOnClickAddUser}
+									onEdit={handleEditUser}
+									onDelete={handleDeleteUser}
+									onSelect={handleSelectUser}
 								/>
 							</TabPane>
 						</Tabs>
@@ -173,8 +193,9 @@ const HomePage = (props) => {
 				visible={isUserModalVisible}
 				onCancel={() => setIsUserModalVisible(false)}
 				onSubmit={handleSubmitUserModal}
-				// initialValues={selectedBuilding}
+				initialValues={selectedUser}
 				title={isAddUser ? "Add new user" : "Edit user"}
+				isAddMode={isAddUser}
 			/>
 		</div>
 	);

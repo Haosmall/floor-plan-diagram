@@ -1,12 +1,29 @@
-import { Table } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Table } from "antd";
 import PropTypes from "prop-types";
 import React from "react";
+import { useSelector } from "react-redux";
 import "./style.scss";
 
 const UserTable = (props) => {
-	const { data, onSelect } = props;
+	const { data, onSelect, onEdit, onDelete } = props;
+	const { user } = useSelector((state) => state.employee);
 
 	const { Column } = Table;
+
+	const handleOnEdit = (e, employee) => {
+		e.stopPropagation();
+		if (onEdit) {
+			onEdit(employee);
+		}
+	};
+
+	const handleOnDelete = (e, employeeId) => {
+		e.stopPropagation();
+		if (onDelete) {
+			onDelete(employeeId);
+		}
+	};
 
 	const handleOnSelect = (userId) => {
 		if (onSelect) {
@@ -36,11 +53,29 @@ const UserTable = (props) => {
 
 			<Column title="Name" dataIndex="name" key="name" />
 			<Column title="Username" dataIndex="username" key="username" />
-			{/* <Column
-				title="Admin"
-				dataIndex="admin"
-				render={(_, { admin }) => <span>{admin.name}</span>}
-			/> */}
+			{user.isAdmin && (
+				<Column
+					align="left"
+					width={120}
+					render={(record) => {
+						return (
+							<div className="btn-group">
+								<Button
+									shape="circle"
+									icon={<EditOutlined />}
+									onClick={(e) => handleOnEdit(e, record)}
+								/>
+								<Button
+									shape="circle"
+									danger
+									icon={<DeleteOutlined />}
+									onClick={(e) => handleOnDelete(e, record._id)}
+								/>
+							</div>
+						);
+					}}
+				/>
+			)}
 		</Table>
 	);
 };

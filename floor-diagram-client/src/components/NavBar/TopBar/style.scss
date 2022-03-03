@@ -1,9 +1,10 @@
-.ant-layout-header {
-	border-top: solid black 1px;
-	background-color: rgb(241, 242, 246);
+.top-bar {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	flex: 1;
+
+	padding-inline: 20px;
 
 	.btn-container {
 		button {

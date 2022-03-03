@@ -75,7 +75,7 @@ const TopBar = (props) => {
 	);
 
 	return (
-		<Header>
+		<div className="top-bar" style={{ paddingInline: "20px !important" }}>
 			<div className="btn-container">
 				<Button
 					disabled={isDisable}
@@ -117,7 +117,7 @@ const TopBar = (props) => {
 					</Option>
 				))}
 			</Select>
-		</Header>
+		</div>
 	);
 };
 
