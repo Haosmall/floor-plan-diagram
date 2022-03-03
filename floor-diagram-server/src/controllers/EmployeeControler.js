@@ -75,30 +75,6 @@ class EmployeeController {
       next(err);
     }
   }
-
-  // [PUT] /api/employees/promote/:id
-  async promoteEmployee(req, res, next) {
-    try {
-      const response = await employeeService.promoteEmployee(req.params.id);
-
-      res.status(200).json(response);
-    } catch (err) {
-      // console.log(err);
-      next(err);
-    }
-  }
-
-  // [POST] /api/employees/admin/login
-  async login(req, res, next) {
-    try {
-      const response = await employeeService.login(req.body);
-
-      res.status(200).json(response);
-    } catch (err) {
-      // console.log(err);
-      next(err);
-    }
-  }
 }
 
 module.exports = new EmployeeController();

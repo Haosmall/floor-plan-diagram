@@ -1,4 +1,4 @@
-const { isAdmin, isAdmin_or_buildingAdmin } = require("../middleware/auth");
+const { isAdmin, isAdmins } = require("../middleware/auth");
 const adminRouter = require("./admin");
 const employeesRouter = require("./employees");
 const roomRouter = require("./room");
@@ -11,14 +11,14 @@ const shapeRouter = require("./shape");
 
 const route = (app) => {
   app.use("/api/admin", adminRouter());
-  app.use("/api/buildings", isAdmin_or_buildingAdmin, buildingRouter());
-  app.use("/api/employees", isAdmin_or_buildingAdmin, employeesRouter());
-  app.use("/api/floors", isAdmin_or_buildingAdmin, floorRouter());
-  app.use("/api/rooms", isAdmin_or_buildingAdmin, roomRouter());
-  app.use("/api/groups", isAdmin_or_buildingAdmin, groupRouter());
-  app.use("/api/teams", isAdmin_or_buildingAdmin, teamRouter());
-  app.use("/api/projects", isAdmin_or_buildingAdmin, projectRouter());
-  app.use("/api/shapes", isAdmin_or_buildingAdmin, shapeRouter());
+  app.use("/api/buildings", isAdmin, buildingRouter());
+  app.use("/api/employees", employeesRouter());
+  app.use("/api/floors", isAdmins, floorRouter());
+  app.use("/api/rooms", isAdmins, roomRouter());
+  app.use("/api/groups", isAdmins, groupRouter());
+  app.use("/api/teams", isAdmins, teamRouter());
+  app.use("/api/projects", isAdmins, projectRouter());
+  app.use("/api/shapes", isAdmins, shapeRouter());
 };
 
 module.exports = route;

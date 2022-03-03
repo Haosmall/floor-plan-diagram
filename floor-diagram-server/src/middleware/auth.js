@@ -20,7 +20,7 @@ exports.isAdmin = async (req, res, next) => {
   }
 };
 
-exports.isAdmin_or_buildingAdmin = async (req, res, next) => {
+exports.isAdmins = async (req, res, next) => {
   try {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     const data = await tokenUtils.verifyToken(token);
