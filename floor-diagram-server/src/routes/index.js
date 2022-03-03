@@ -1,4 +1,4 @@
-const { isAdmin, isAdmins } = require("../middleware/auth");
+const { isAdmins } = require("../middleware/auth");
 const adminRouter = require("./admin");
 const employeesRouter = require("./employees");
 const roomRouter = require("./room");
@@ -11,7 +11,7 @@ const shapeRouter = require("./shape");
 
 const route = (app) => {
   app.use("/api/admin", adminRouter());
-  app.use("/api/buildings", isAdmin, buildingRouter());
+  app.use("/api/buildings", buildingRouter());
   app.use("/api/employees", employeesRouter());
   app.use("/api/floors", isAdmins, floorRouter());
   app.use("/api/rooms", isAdmins, roomRouter());
