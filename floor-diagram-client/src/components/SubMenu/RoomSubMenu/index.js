@@ -70,7 +70,7 @@ const RoomSubMenu = (props) => {
 	};
 
 	const handleSelectRoom = async (roomId) => {
-		if (room?._id === roomId) return;
+		// if (room?._id === roomId) return;
 
 		dispatch(setRoom({ roomId }));
 		dispatch(fetchListShapesByRoom({ roomId }));

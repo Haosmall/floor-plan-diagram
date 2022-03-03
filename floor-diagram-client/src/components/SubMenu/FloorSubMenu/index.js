@@ -71,7 +71,7 @@ const FloorSubMenu = (props) => {
 	};
 
 	const handleSelectFloor = async (floorId) => {
-		if (floor?._id === floorId) return;
+		// if (floor?._id === floorId) return;
 
 		dispatch(setFloor({ floorId }));
 		dispatch(fetchShapeByFloor({ floorId }));

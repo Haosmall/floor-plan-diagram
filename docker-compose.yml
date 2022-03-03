@@ -32,12 +32,6 @@ services:
       DATABASE_NAME: floor-diagram-db
       JWT_KEY:
       JWT_LIFE_ACCESS_TOKEN: 3d
-      AWS_BUCKET_NAME:
-      AWS_BUCKET_REGION:
-      AWS_ACCESS_KEY:
-      AWS_SECRET_KEY:
-      AWS_NAME_PATH: test
-      HOST_NAME:
 
     build:
       context: ./floor-diagram-server
@@ -58,8 +52,7 @@ services:
     build:
       context: ./floor-diagram-client
       args:
-        #- REACT_APP_API_URL=http://floor-plan-diagram.xyz
-        - REACT_APP_API_URL= http://local
+        - REACT_APP_API_URL= http://localhost:5000
     networks:
       - floor-diagram
 
